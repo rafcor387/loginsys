@@ -59,7 +59,6 @@ class AuthController extends Controller
         return response()->json(['email' => $request->user()->email]);
     }
 
-
     //cerrar la sesion de usuario
     public function logout(Request $request)
     {
