@@ -24,22 +24,38 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Usuario registrado correctamente']);
+        // Envía el correo de verificación
+        //event(new Registered($user));
+        // Iniciar sesión al usuario
+
+        $user->sendEmailVerificationNotification();
+
+
+        return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.']);
     }
 
     // Login de usuario
     public function login(Request $request)
     {
+        // Validación de los campos de email y password
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
+        // Verifica si las credenciales son correctas
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
 
         $user = Auth::user();
+
+        // Verifica si el usuario tiene el correo electrónico verificado
+        if (is_null($user->email_verified_at)) {
+            return response()->json(['message' => 'Debes verificar tu correo electrónico para iniciar sesión'], 403);
+        }
+
+        // Crea y devuelve el token de autenticación si el correo está verificado
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
