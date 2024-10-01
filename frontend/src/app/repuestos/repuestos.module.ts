@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { RepuestosPageRoutingModule } from './repuestos-routing.module';
 
 import { RepuestosPage } from './repuestos.page';
+import { UpdateRepuestoModalComponent } from '../components/update-repuesto-modal/update-repuesto-modal.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { RepuestosPage } from './repuestos.page';
     IonicModule,
     RepuestosPageRoutingModule
   ],
-  declarations: [RepuestosPage]
+  declarations: [RepuestosPage, UpdateRepuestoModalComponent]
 })
 export class RepuestosPageModule {}

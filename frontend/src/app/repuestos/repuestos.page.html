@@ -46,6 +46,7 @@
         <p>Precio de venta: {{ repuesto.precio_venta }}</p>
       </ion-label>
       <ion-button color="danger" (click)="eliminarRepuesto(repuesto.id)">Eliminar</ion-button>
+      <ion-button color="primary" (click)="openUpdateModal(repuesto)">Actualizar</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

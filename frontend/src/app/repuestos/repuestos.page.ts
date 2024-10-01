@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
+import { ModalController } from '@ionic/angular';
+import { UpdateRepuestoModalComponent } from '../components/update-repuesto-modal/update-repuesto-modal.component';
 
 @Component({
   selector: 'app-repuestos',
@@ -10,7 +12,7 @@ export class RepuestosPage implements OnInit {
   repuestos: any[] = []; // Array para almacenar los repuestos
   apiUrl: string = 'http://project.test/backend/public/api/repuestos'; // URL de la API
 
-  constructor() {}
+  constructor(private modalController: ModalController) {}
 
   ngOnInit() {
     this.listarRepuestos(); // Llamar al método al inicializar la página
@@ -26,6 +28,26 @@ export class RepuestosPage implements OnInit {
         console.error('Error al obtener los repuestos:', error);
       });
   }
+
+  async openUpdateModal(repuesto: any) {
+    const modal = await this.modalController.create({
+      component: UpdateRepuestoModalComponent,
+      componentProps: { repuesto: { ...repuesto } }, // Pass a copy of the repuesto
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        // Update the repuestos array with the updated repuesto
+        const index = this.repuestos.findIndex(r => r.id === data.data.id);
+        if (index !== -1) {
+          this.repuestos[index] = data.data;
+        }
+      }
+    });
+
+    return await modal.present();
+  }
+
   nuevoRepuesto = {
     nombre: '',
     descripcion: '',

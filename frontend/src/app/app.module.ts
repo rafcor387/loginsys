@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { NavComponent } from './components/nav/nav.component';
 import { SlideMenuComponent } from './components/slide-menu/slide-menu.component';
+
 @NgModule({
   declarations: [AppComponent, NavComponent, SlideMenuComponent],
   imports: [HttpClientModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule],
