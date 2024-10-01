@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button> <!-- This button opens the menu -->
+    </ion-buttons>
+    <ion-title>
+      <ng-content></ng-content> <!-- This allows you to pass the title dynamically -->
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/about">
+        <ion-icon name="information-circle"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/login">Go to Login</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

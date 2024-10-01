@@ -8,8 +8,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { NavComponent } from './components/nav/nav.component';
+import { SlideMenuComponent } from './components/slide-menu/slide-menu.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NavComponent, SlideMenuComponent],
   imports: [HttpClientModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
