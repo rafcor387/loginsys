@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Repuestos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (submit)="agregarRepuesto()">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.nombre" name="nombre" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.descripcion" name="descripcion" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Cantidad en stock</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.cantidad_stock" name="cantidad_stock" type="number" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Fabricante</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.fabricante" name="fabricante" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.categoria" name="categoria" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">costo_unitario</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.costo_unitario" name="costo_unitario" type="number" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Precio de venta</ion-label>
+      <ion-input [(ngModel)]="nuevoRepuesto.precio_venta" name="precio_venta" type="number" required></ion-input>
+    </ion-item>
+    <ion-button expand="full" type="submit">Agregar Repuesto</ion-button>
+  </form>
+
+  <ion-list>
+    <ion-item *ngFor="let repuesto of repuestos">
+      <ion-label>
+        <h2>{{ repuesto.nombre }}</h2>
+        <p>{{ repuesto.descripcion }}</p>
+        <p>Cantidad en stock: {{ repuesto.cantidad_stock }}</p>
+        <p>Precio de venta: {{ repuesto.precio_venta }}</p>
+      </ion-label>
+      <ion-button color="danger" (click)="eliminarRepuesto(repuesto.id)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

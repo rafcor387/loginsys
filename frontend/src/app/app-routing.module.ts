@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+//import { RepuestosPage } from './repuestos/repuestos.page';
+
 
 const routes: Routes = [
   {
@@ -23,6 +25,11 @@ const routes: Routes = [
     path: 'verification-success',
     loadChildren: () => import('./verification-success/verification-success.module').then( m => m.VerificationSuccessPageModule)
   },
+  {
+    path: 'repuestos',
+    loadChildren: () => import('./repuestos/repuestos.module').then( m => m.RepuestosPageModule)
+  },
+
 ];
 
 @NgModule({
