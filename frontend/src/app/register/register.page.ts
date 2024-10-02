@@ -12,6 +12,7 @@ export class RegisterPage {
   email: string = '';
   password: string = '';
   password_confirmation: string = '';
+  errorMessage: string = '';  // Variable para almacenar el mensaje de error
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -22,6 +23,7 @@ export class RegisterPage {
         this.router.navigate(['/login']); // Redirigir al login
       }, error => {
         console.error('Error en el registro', error);
+        this.errorMessage = error;  // Almacenar el mensaje de error
       });
   }
   

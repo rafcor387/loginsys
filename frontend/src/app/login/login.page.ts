@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LoginPage {
   email: string = '';
   password: string = '';
+  errorMessage: string = '';  // Variable para almacenar el mensaje de error
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -21,6 +22,7 @@ export class LoginPage {
         this.router.navigate(['/home']); // Cambia esto según tu estructura
       }, error => {
         console.error('Error en el login', error);
+        this.errorMessage = error;  // Almacenar el mensaje de error
       });
   }
 }

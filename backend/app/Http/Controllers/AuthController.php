@@ -16,6 +16,13 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+        ], [
+            'name.required' => 'El campo de nombre es obligatorio.',
+            'email.required' => 'El campo de correo electrónico es obligatorio.',
+            'email.email' => 'Por favor, introduce una dirección de correo válida.',
+            'password.required' => 'El campo de contraseña es obligatorio.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'email.unique' => 'El campo email ya fue tomado.',
         ]);
 
         $user = User::create([
@@ -41,7 +48,12 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+        ], [
+            'email.required' => 'El campo de correo electrónico es obligatorio.',
+            'email.email' => 'Por favor, introduce una dirección de correo válida.',
+            'password.required' => 'El campo de contraseña es obligatorio.',
         ]);
+
 
         // Verifica si las credenciales son correctas
         if (!Auth::attempt($request->only('email', 'password'))) {

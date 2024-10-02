@@ -49,7 +49,7 @@ export class RepuestosPage implements OnInit {
   }
 
   nuevoRepuesto = {
-    nombre: '',
+    nombre:'',
     descripcion: '',
     cantidad_stock: 0,
     fabricante: '',

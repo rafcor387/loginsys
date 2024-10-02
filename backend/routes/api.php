@@ -43,13 +43,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
         ->name('verification.send');
 
+
+
 });
 
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
     ->middleware(['signed'])
     ->name('verification.verify');
 
-    // Rutas para Repuestos
+
+// Rutas para Repuestos
 Route::apiResource('repuestos', RepuestoController::class);
 
 // Rutas para Proveedores

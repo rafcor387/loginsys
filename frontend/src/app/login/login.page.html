@@ -1,19 +1,44 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Iniciar Sesión</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <ng-content></ng-content>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/about">
+        <ion-icon name="information-circle"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/login">Go to Login</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form (submit)="login()">
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input [(ngModel)]="email" name="email" required type="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" name="password" required type="password"></ion-input>
-    </ion-item>
-    <ion-button expand="full" type="submit">Iniciar Sesión</ion-button>
-  </form>
+  <div class="form-wrapper">
+    <form (submit)="login()">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input
+          [(ngModel)]="email"
+          name="email"
+          required
+          type="email"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input
+          [(ngModel)]="password"
+          name="password"
+          required
+          type="password"
+        ></ion-input>
+      </ion-item>
+      <ion-button expand="full" type="submit">Iniciar Sesión</ion-button>
+    </form>
+
+    <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
+  </div>
 </ion-content>
