@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import axios from 'axios';
+import { AuthService } from '../../services/auth.service'; // Asegúrate de que el path sea correcto
 
 @Component({
   selector: 'app-update-repuesto-modal',
@@ -9,22 +9,28 @@ import axios from 'axios';
 })
 export class UpdateRepuestoModalComponent {
   @Input() repuesto: any; // Input property to receive the repuesto data
-  apiUrl: string = 'http://project.test/backend/public/api/repuestos'; // URL of the API
+  errorMessage: string = ''; // Para mostrar errores en el template
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private modalController: ModalController,
+    private authService: AuthService // Inyectamos el AuthService
+  ) {}
 
+  // Método para actualizar el repuesto
   updateRepuesto() {
-    axios
-      .put(`${this.apiUrl}/${this.repuesto.id}`, this.repuesto)
-      .then((response) => {
-        console.log('Repuesto actualizado:', response.data);
-        this.modalController.dismiss(response.data); // Dismiss the modal and return the updated repuesto
-      })
-      .catch((error) => {
+    this.authService.updateRepuesto(this.repuesto.id, this.repuesto).subscribe(
+      (response) => {
+        console.log('Repuesto actualizado:', response);
+        this.modalController.dismiss(response); // Cierra el modal y devuelve el repuesto actualizado
+      },
+      (error) => {
         console.error('Error al actualizar el repuesto:', error);
-      });
+        this.errorMessage = error; // Mostrar el error en el template
+      }
+    );
   }
 
+  // Método para cerrar el modal
   closeModal() {
     this.modalController.dismiss();
   }

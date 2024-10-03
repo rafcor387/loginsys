@@ -43,9 +43,9 @@
     <ion-item *ngFor="let repuesto of repuestos">
       <ion-label>
         <h2>{{ repuesto.nombre }}</h2>
-        <p>{{ repuesto.descripcion }}</p>
-        <p>Cantidad en stock: {{ repuesto.cantidad_stock }}</p>
-        <p>Precio de venta: {{ repuesto.precio_venta }}</p>
+        <p class="pa">{{ repuesto.descripcion }}</p>
+        <p class="pa">Cantidad en stock: {{ repuesto.cantidad_stock }}</p>
+        <p class="pa">Precio de venta: {{ repuesto.precio_venta }}</p>
       </ion-label>
       <ion-button color="danger" (click)="eliminarRepuesto(repuesto.id)">Eliminar</ion-button>
       <ion-button color="primary" (click)="openUpdateModal(repuesto)">Actualizar</ion-button>

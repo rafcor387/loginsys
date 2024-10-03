@@ -39,4 +39,7 @@
     </ion-item>
     <ion-button expand="full" type="submit">Actualizar Repuesto</ion-button>
   </form>
+  <div>
+    <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
+  </div>
 </ion-content>

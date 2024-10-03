@@ -20,7 +20,6 @@ export class AuthService {
   private handleError(error: any): Observable<never> {
     let errorMsg = '';
     let stg_error = true;
-
     
     if (error.error && error.error.message) {
       // Capturar el mensaje que envía Laravel en el campo 'message'
@@ -40,7 +39,7 @@ export class AuthService {
   }
 
   //agregar, mostrar, eliminar repuestos
-  repuestos(credentials: any): Observable<any> {
+  Agregarepuestos(credentials: any): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/repuestos`, credentials)
       .pipe(catchError(this.handleError));
@@ -55,7 +54,15 @@ export class AuthService {
       .delete(`${this.apiUrl}/repuestos/${repuestoId}`)
       .pipe(catchError(this.handleError));
   }
+  // Método para actualizar un repuesto
+  updateRepuesto(repuestoId: number, repuestoData: any): Observable<any> {
+    return this.http
+      .put(`${this.apiUrl}/repuestos/${repuestoId}`, repuestoData) // Aquí usas PUT para actualizar
+      .pipe(catchError(this.handleError)); // Manejo de errores
+  }
 
+
+  //registrar usuario
   register(user: any): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/register`, user)

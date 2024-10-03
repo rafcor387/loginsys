@@ -56,9 +56,10 @@ Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify']
 Route::apiResource('repuestos', RepuestoController::class);
 
 // Rutas para Proveedores
-Route::apiResource('proveedores', ProveedorController::class);
+//Route::apiResource('proveedores', ProveedorController::class);
 
 // Rutas para DetalleRepuestoProveedor
-Route::apiResource('detalle-repuesto-proveedor', DetalleRepuestoProveedorController::class);
-Route::put('/repuestos/{id}', [RepuestoController::class, 'update']);
-Route::delete('/repuestos/{id}', [RepuestoController::class, 'destroy']);
+//Route::apiResource('detalle-repuesto-proveedor', DetalleRepuestoProveedorController::class);
+
+//Route::put('/repuestos/{id}', [RepuestoController::class, 'update']);
+//Route::delete('/repuestos/{id}', [RepuestoController::class, 'destroy']);

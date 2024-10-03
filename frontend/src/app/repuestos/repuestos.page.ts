@@ -32,7 +32,7 @@ export class RepuestosPage implements OnInit {
   }
 
   agregarRepuesto() {
-    this.authService.repuestos(this.nuevoRepuesto)
+    this.authService.Agregarepuestos(this.nuevoRepuesto)
       .subscribe(
         (response) => {
           this.repuestos.push(response); // Agregar el nuevo repuesto a la lista
