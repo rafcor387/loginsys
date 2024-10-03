@@ -1,27 +1,19 @@
 #container {
   text-align: center;
-
   position: absolute;
   left: 0;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  background-color: black; // Set background to black
+  color: white; // Set text color to white
+  padding: 20px; // Add some padding
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+h1 {
+  color: white; // Heading color
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+p {
+  color: white; // Paragraph color
 }

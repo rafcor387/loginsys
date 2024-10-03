@@ -47,3 +47,14 @@ ion-header {
 ion-content {
     --padding-top: 56px; // Adjust this value based on your toolbar height
 }
+
+/* Global button styles */
+ion-button {
+    background-color: orange; /* Button background color */
+    color: black; /* Button text color */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Shadow for depth */
+    --box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Ensure shadow is applied */
+    --background: orange; /* Ensure background color is applied */
+    --color: black; /* Ensure text color is applied */
+}
