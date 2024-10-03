@@ -11,18 +11,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(user: any): Observable<any> {
-    return this.http
-    .post(`${this.apiUrl}/register`, user)
-    .pipe(catchError(this.handleError));
-    
-  }
-  /*
-  login(credentials: any): Observable<any> {
-    return this.http.
-    post(`${this.apiUrl}/login`, credentials);
-  }
-    */
   login(credentials: any): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/login`, credentials)
@@ -31,18 +19,55 @@ export class AuthService {
 
   private handleError(error: any): Observable<never> {
     let errorMsg = '';
+    let stg_error = true;
 
+    
     if (error.error && error.error.message) {
       // Capturar el mensaje que envía Laravel en el campo 'message'
       errorMsg = error.error.message;
-    } if (error.error && error.error.errors) {
+      stg_error = false;
+    } 
+    if (error.error && error.error.errors) {
       // Laravel envía los errores en un campo 'errors'
       errorMsg = Object.values(error.error.errors).join(' ');
-    } else {
+      stg_error = false;
+    }
+    if(stg_error){
       errorMsg = 'Error inesperado. Intenta de nuevo.';
     }
-    return throwError(errorMsg);
+    return throwError(() => (errorMsg));
+    //return throwError(errorMsg);
   }
+
+  //agregar, mostrar, eliminar repuestos
+  repuestos(credentials: any): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/repuestos`, credentials)
+      .pipe(catchError(this.handleError));
+  }
+  repuestosListar(): Observable<any> {
+    return this.http
+      .get(`${this.apiUrl}/repuestos`)
+      .pipe(catchError(this.handleError));
+  }
+  eliminarRepuesto(repuestoId: number): Observable<any> {
+    return this.http
+      .delete(`${this.apiUrl}/repuestos/${repuestoId}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  register(user: any): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/register`, user)
+      .pipe(catchError(this.handleError));
+  }
+  /*
+  login(credentials: any): Observable<any> {
+    return this.http.
+    post(`${this.apiUrl}/login`, credentials);
+  }
+    
+    */
 
   /*
   logout(token: string): Observable<any> {

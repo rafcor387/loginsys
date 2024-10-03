@@ -19,11 +19,34 @@ class RepuestoController extends Controller
         return Repuesto::findOrFail($id);
     }
 
-    // Crear un nuevo repuesto
-    public function store(Request $request)
-    {
-        return Repuesto::create($request->all());
-    }
+     // Crear un nuevo repuesto
+     public function store(Request $request)
+     {
+         // Validación de los campos
+         $request->validate([
+             'nombre' => 'required|string|max:255',
+             'descripcion' => 'required|string',
+             'cantidad_stock' => 'required|numeric|min:0',
+             'fabricante: ' => 'required',
+             'categoria' => 'required',
+             'costo_unitario' => 'required',
+             'precio_venta' => 'required',
+         ], [
+             'nombre.required' => 'El campo de nombre es obligatorio.',
+             'nombre.string' => 'El nombre debe ser una cadena de texto.',
+             'descripcion.required' => 'El campo de descripción es obligatorio.',
+             'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
+             'cantidad_stock.numeric' => 'La cantidad en stock debe ser un número.',
+             'cantidad_stock.min' => 'La cantidad en stock debe ser un valor positivo.',
+         ]);
+ 
+         try {
+             $repuesto = Repuesto::create($request->all());
+             return response()->json($repuesto, 201);
+         } catch (\Exception $e) {
+             return response()->json(['message' => 'Error al crear el repuesto'], 500);
+         }
+     }
 
     // Actualizar un repuesto existente
     public function update(Request $request, $id)
