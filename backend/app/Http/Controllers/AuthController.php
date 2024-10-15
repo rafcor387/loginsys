@@ -22,6 +22,7 @@ class AuthController extends Controller
             'email.email' => 'Por favor, introduce una dirección de correo válida.',
             'password.required' => 'El campo de contraseña es obligatorio.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.min' => 'El campo de contraseña debe tener al menos 8 caracteres.',
             'email.unique' => 'El campo email ya fue tomado.',
         ]);
 

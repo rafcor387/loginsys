@@ -11,35 +11,68 @@
   <form (ngSubmit)="updateRepuesto()">
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
-      <ion-input [(ngModel)]="repuesto.nombre" name="nombre" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.nombre"
+        name="nombre"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Descripción</ion-label>
-      <ion-input [(ngModel)]="repuesto.descripcion" name="descripcion" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.descripcion"
+        name="descripcion"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Cantidad en stock</ion-label>
-      <ion-input [(ngModel)]="repuesto.cantidad_stock" name="cantidad_stock" type="number" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.cantidad_stock"
+        name="cantidad_stock"
+        type="number"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Fabricante</ion-label>
-      <ion-input [(ngModel)]="repuesto.fabricante" name="fabricante" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.fabricante"
+        name="fabricante"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Categoría</ion-label>
-      <ion-input [(ngModel)]="repuesto.categoria" name="categoria" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.categoria"
+        name="categoria"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Costo unitario</ion-label>
-      <ion-input [(ngModel)]="repuesto.costo_unitario" name="costo_unitario" type="number" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.costo_unitario"
+        name="costo_unitario"
+        type="number"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Precio de venta</ion-label>
-      <ion-input [(ngModel)]="repuesto.precio_venta" name="precio_venta" type="number" required></ion-input>
+      <ion-input
+        [(ngModel)]="repuesto.precio_venta"
+        name="precio_venta"
+        type="number"
+        required
+      ></ion-input>
     </ion-item>
+    <div>
+      <ion-text color="danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ion-text>
+    </div>
     <ion-button expand="full" type="submit">Actualizar Repuesto</ion-button>
   </form>
-  <div>
-    <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
-  </div>
 </ion-content>
