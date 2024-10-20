@@ -3,49 +3,11 @@
     <ion-title>Empleados</ion-title>
   </ion-toolbar>
 </ion-header>
-
-
 <ion-content> 
-  <form (submit)="AddEmpleado()">
-    <ion-item>
-      <ion-label position="floating">CI</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.ci" name="ci" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Nombres</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.nombres" name="nombres" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Apellidos</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.apellidos" name="apellidos" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Id cargo</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.id_cargo" name="id_cargo" type="number" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">telefono</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.telefono" name="telefono" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">email</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.email" name="email" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">direccion</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.direccion" name="direccion" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">fecha_contratacion</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.fecha_contratacion" name="fecha_contratacion" type="date" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">salario</ion-label>
-      <ion-input [(ngModel)]="nuevoEmpleado.salario" name="salario" type="number" required></ion-input>
-    </ion-item>
-    
-    <ion-button expand="full" type="submit">Agregar Empleado</ion-button>
-  </form>
+  <ion-button (click)="openRegisterModal()" expand="full">Registrar Empleado</ion-button>
+
+
+
   <div>
     <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
   </div>
@@ -59,6 +21,7 @@
       </ion-label>
       <ion-button color="danger" (click)="DeleteEmpleado(empleado.id)">Eliminar</ion-button>
       <ion-button color="warning" (click)="CreateUser(empleado.id)">Crear Usuario</ion-button>
+      <ion-button color="primary" (click)="openUpdateModal(empleado)">Actualizar</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
