@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-//import { RepuestosPage } from './repuestos/repuestos.page';
+import { RoleGuard} from './auth.guard';
+//import { AuthGuard } from './auth.guard';
 
 
 const routes: Routes = [
@@ -10,13 +11,16 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'empleados',
     pathMatch: 'full'
   },
   {
     path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1] } 
   },
+
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
@@ -27,8 +31,18 @@ const routes: Routes = [
   },
   {
     path: 'repuestos',
-    loadChildren: () => import('./repuestos/repuestos.module').then( m => m.RepuestosPageModule)
+    loadChildren: () => import('./repuestos/repuestos.module').then( m => m.RepuestosPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] } 
   },
+  {
+    path: 'empleados',
+    loadChildren: () => import('./empleados/empleados.module').then( m => m.EmpleadosPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1] } // Solo permite acceso al rol con id 1
+  },
+  
+
 
 ];
 

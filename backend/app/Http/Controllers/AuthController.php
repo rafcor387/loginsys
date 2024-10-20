@@ -6,18 +6,25 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AuthService;
+use App\Models\Empleado;
+
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    protected $authService;
+
     // Registro de usuario
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            //'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'id_empleado' => 'required',
         ], [
-            'name.required' => 'El campo de nombre es obligatorio.',
+            //'name.required' => 'El campo de nombre es obligatorio.',
             'email.required' => 'El campo de correo electrónico es obligatorio.',
             'email.email' => 'Por favor, introduce una dirección de correo válida.',
             'password.required' => 'El campo de contraseña es obligatorio.',
@@ -30,13 +37,12 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'id_empleado' => $request->id_empleado,
         ]);
 
-        // Envía el correo de verificación
-        //event(new Registered($user));
-        // Iniciar sesión al usuario
 
-        $user->sendEmailVerificationNotification();
+
+        //$user->sendEmailVerificationNotification();
 
 
         return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.']);
@@ -63,18 +69,24 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
+        /*
         // Verifica si el usuario tiene el correo electrónico verificado
         if (is_null($user->email_verified_at)) {
             return response()->json(['message' => 'Debes verificar tu correo electrónico para iniciar sesión'], 403);
-        }
+        }*/
 
         // Crea y devuelve el token de autenticación si el correo está verificado
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Obtener el id_cargo
+        $empleado = Empleado::find($user->id_empleado);
+        $roleId = $empleado->id_cargo; // Obtener el id del cargo
 
         return response()->json([
             'message' => 'Login exitoso',
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'role_id' => $roleId, // Incluir el id_cargo en la respuesta
         ]);
     }
 
@@ -94,6 +106,22 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logout exitoso']);
+    }
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    public function user()
+    {
+        $user = $this->authService->getCurrentUser();
+        return response()->json($user);
+    }
+    public function getUser(Request $request)
+    {
+        // Devuelve el usuario autenticado
+        return response()->json($request->user());
     }
 
 }

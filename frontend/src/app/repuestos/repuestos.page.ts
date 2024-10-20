@@ -31,6 +31,20 @@ export class RepuestosPage implements OnInit {
     this.listarRepuestos(); // Llamar al método al inicializar la página
   }
 
+  listarRepuestos() {
+    this.authService.repuestosListar()
+      .subscribe(
+        (response) => {
+          this.repuestos = response; // Guardar los datos en el array
+          this.errorMessage = ''; // Limpiar cualquier error
+        },
+        (error) => {
+          console.error('Error al obtener los repuestos:', error);
+          this.errorMessage = error; // Almacenar el mensaje de error
+        }
+      );
+  }
+
   agregarRepuesto() {
     this.authService.Agregarepuestos(this.nuevoRepuesto)
       .subscribe(
@@ -54,19 +68,7 @@ export class RepuestosPage implements OnInit {
       );
   }
 
-  listarRepuestos() {
-    this.authService.repuestosListar()
-      .subscribe(
-        (response) => {
-          this.repuestos = response; // Guardar los datos en el array
-          this.errorMessage = ''; // Limpiar cualquier error
-        },
-        (error) => {
-          console.error('Error al obtener los repuestos:', error);
-          this.errorMessage = error; // Almacenar el mensaje de error
-        }
-      );
-  }
+  
 
   eliminarRepuesto(repuestoId: number) {
     this.authService.eliminarRepuesto(repuestoId)

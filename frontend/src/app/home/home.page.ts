@@ -17,7 +17,7 @@ export class HomePage implements OnInit {
   }
 
   loadUserEmail() {
-    this.authService.getUserEmail().subscribe(
+    this.authService.getUser().subscribe(
       (response) => {
         this.userEmail = response.email; // Asigna el email a la variable
       },
@@ -27,14 +27,9 @@ export class HomePage implements OnInit {
     );
   }
 
-  // Método para cerrar sesión
-  onLogout() {
-    this.authService.logout().subscribe(response => {
-      console.log(response.message); // Mostrar mensaje de éxito
-      localStorage.removeItem('token'); // Eliminar el token del almacenamiento local
-      this.router.navigate(['/login']); // Redirigir al login
-    }, error => {
-      console.error('Error en el logout', error); // Manejar errores
-    });
+  // Método que se llamará al hacer clic en el botón de cerrar sesión
+  logout() {
+    this.authService.logout();
   }
+
 }

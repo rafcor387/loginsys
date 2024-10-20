@@ -19,7 +19,8 @@ export class LoginPage {
       .subscribe(response => {
         console.log('Login exitoso', response);
         localStorage.setItem('token', response.access_token);
-        this.router.navigate(['/home']); // Cambia esto según tu estructura
+        localStorage.setItem('role_id', response.role_id);
+        this.router.navigate(['/empleados']); // Cambia esto según tu estructura
       }, error => {
         console.error('Error en el login', error);
         this.errorMessage = error;  // Almacenar el mensaje de error
