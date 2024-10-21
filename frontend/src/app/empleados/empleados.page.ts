@@ -5,8 +5,6 @@ import { UpdateEmpleadoComponent } from './update-empleado/update-empleado.compo
 import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component'; // Importa el nuevo componente
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-empleados',
   templateUrl: './empleados.page.html',
@@ -26,6 +24,24 @@ export class EmpleadosPage implements OnInit {
   ngOnInit() {
     this.LoadEmpleados(); // Llamar al método al inicializar la página
   }
+  /*
+  CreateUser(idEmpleado: number) {
+    this.router.navigate(['/register', { id_empleado: idEmpleado }]);
+  }*/
+
+  CreateUser(idEmpleado: number) {
+    this.authService.checkEmpleado(idEmpleado).subscribe(response => {
+      if (!response.exists) {
+        this.router.navigate(['/register', { id_empleado: idEmpleado }]);
+      } else {
+        // Si el empleado ya existe, puedes proceder con otra lógica
+        console.log('El id_empleado ya está registrado.');
+      }
+    }, error => {
+      console.error('Error al verificar el id_empleado:', error);
+    });
+    
+  }
 
   LoadEmpleados() {
     this.authService.ListarEmpleados().subscribe(
@@ -38,10 +54,6 @@ export class EmpleadosPage implements OnInit {
         this.errorMessage = error; // Almacenar el mensaje de error
       }
     );
-  }
-
-  CreateUser(idEmpleado: number) {
-    this.router.navigate(['/register', { id_empleado: idEmpleado }]);
   }
 
   DeleteEmpleado(empleadoId: number) {

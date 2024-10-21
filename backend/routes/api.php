@@ -7,6 +7,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\RepuestoController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Auth\VerifyEmailController;
 /*
@@ -23,6 +24,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 // Rutas públicas (sin protección de autenticación)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('users/check/{idEmpleado}', [UserController::class, 'checkEmployee']);
 
 /*
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])

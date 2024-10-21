@@ -8,13 +8,18 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://clon.test/loginsys/backend/public/api'; // Cambia esto si es necesario
-
+  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
+  
   //private userSubject = new BehaviorSubject<any>(null); // Crea un BehaviorSubject para el usuario
 
   //private isLoggedIn = false;
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  checkEmpleado(idEmpleado: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/users/check/${idEmpleado}`);
+  }
+  
 
   
   login(credentials: any): Observable<any> {

@@ -14,6 +14,17 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function checkEmployee($idEmpleado)
+    {
+        // Verifica si existe un usuario con el id_empleado proporcionado
+        $userExists = User::where('id_empleado', $idEmpleado)->exists();
+
+        // Retorna una respuesta JSON dependiendo de si se encontró el usuario o no
+        return response()->json([
+            'exists' => $userExists
+        ]);
+    }
+
     // Show the form for creating a new resource
     public function create()
     {

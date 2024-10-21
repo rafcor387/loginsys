@@ -33,7 +33,7 @@ export class RegisterPage{
       id_empleado : this.id_empleado })
       .subscribe(response => {
         console.log('Registro exitoso', response);
-        this.router.navigate(['/login']); // Redirigir al login
+        this.router.navigate(['/empleados']); // Redirigir al login
       }, error => {
         console.error('Error en el registro', error);
         this.errorMessage = error;  // Almacenar el mensaje de error
