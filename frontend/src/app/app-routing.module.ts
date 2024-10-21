@@ -41,6 +41,19 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { allowedRoles: [1] } // Solo permite acceso al rol con id 1
   },
+  {
+    path: 'marcas',
+    loadChildren: () => import('./marcas/marcas.module').then( m => m.MarcasPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] } // Solo permite acceso al rol con id 1
+  },
+  {
+    path: 'categorias',
+    loadChildren: () => import('./categorias/categorias.module').then( m => m.CategoriasPageModule),
+    data: { allowedRoles: [1,2] }
+  },
+
+
   
 
 

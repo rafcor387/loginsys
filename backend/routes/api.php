@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\RepuestoController;
 use App\Http\Controllers\EmpleadoController;
 
@@ -47,5 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('empleados', EmpleadoController::class);
 
     Route::apiResource('repuestos', RepuestoController::class);
+
+    Route::apiResource('marcas', MarcaController::class);
+
+    Route::apiResource('categorias', CategoriaController::class);
+
+
 
 });
