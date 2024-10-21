@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -10,10 +10,13 @@ import { Router } from '@angular/router';
 export class AuthService {
   private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
 
-  private isLoggedIn = false;
+  //private userSubject = new BehaviorSubject<any>(null); // Crea un BehaviorSubject para el usuario
+
+  //private isLoggedIn = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  
   login(credentials: any): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/login`, credentials)
@@ -25,7 +28,6 @@ export class AuthService {
     const token = localStorage.getItem('token');
     return !!token; // Retorna true si existe el token, false si no
   }
-  
 
   //registrar usuario
   register(user: any): Observable<any> {
@@ -46,11 +48,10 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/user`); // Asegúrate de que esta ruta existe en tu API
   }
 
-  
-
   logout() {
     localStorage.removeItem('token');
-    this.isLoggedIn = false;
+    //this.isLoggedIn = false;
+    window.location.reload();
     this.router.navigate(['/login']); // Redirige a la página de inicio de sesión
   }
 
@@ -100,7 +101,7 @@ export class AuthService {
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
     });
     return this.http
-      .delete(`${this.apiUrl}/empleados/${empleadoId}`,{headers})
+      .delete(`${this.apiUrl}/empleados/${empleadoId}`, { headers })
       .pipe(catchError(this.handleError));
   }
   // Método para actualizar un repuesto
@@ -110,10 +111,9 @@ export class AuthService {
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
     });
     return this.http
-      .put(`${this.apiUrl}/empleados/${empleadoId}`, empleadoData,{headers}) // Aquí usas PUT para actualizar
+      .put(`${this.apiUrl}/empleados/${empleadoId}`, empleadoData, { headers }) // Aquí usas PUT para actualizar
       .pipe(catchError(this.handleError)); // Manejo de errores
   }
-
 
   //crud repuestos
   Agregarepuestos(credentials: any): Observable<any> {

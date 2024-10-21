@@ -30,6 +30,7 @@ export class RegisterEmpleadoComponent {
     this.authService.AgregarEmpleado(this.nuevoEmpleado).subscribe(
       (response) => {
         this.modalController.dismiss(response); // Cierra el modal y pasa el nuevo empleado
+        window.location.reload();
       },
       (error) => {
         console.error('Error al agregar el empleado:', error);

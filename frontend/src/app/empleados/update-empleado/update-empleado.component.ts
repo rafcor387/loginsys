@@ -22,6 +22,7 @@ export class UpdateEmpleadoComponent {
       (response) => {
         console.log('Empleado actualizado:', response);
         this.modalController.dismiss(response); // Cierra el modal y devuelve el repuesto actualizado
+        window.location.reload();
       },
       (error) => {
         console.error('Error al actualizar el empleado:', error);

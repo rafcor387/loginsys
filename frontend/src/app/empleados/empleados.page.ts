@@ -27,8 +27,6 @@ export class EmpleadosPage implements OnInit {
     this.LoadEmpleados(); // Llamar al método al inicializar la página
   }
 
-  
-
   LoadEmpleados() {
     this.authService.ListarEmpleados().subscribe(
       (response) => {
@@ -45,8 +43,6 @@ export class EmpleadosPage implements OnInit {
   CreateUser(idEmpleado: number) {
     this.router.navigate(['/register', { id_empleado: idEmpleado }]);
   }
-
-  
 
   DeleteEmpleado(empleadoId: number) {
     this.authService.EliminarEmpleado(empleadoId).subscribe(
