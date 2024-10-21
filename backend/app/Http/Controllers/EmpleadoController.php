@@ -54,34 +54,20 @@ class EmpleadoController extends Controller
     public function update(Request $request, $id)
     {
         // Validación de los campos para actualizar
+        // Validación de los campos
         $request->validate([
-            'nombre' => 'required|max:50',
-            'descripcion' => 'max:255',
-            'cantidad_stock' => 'required|integer|min:0',
-            'fabricante' => 'required|string|max:50',
-            'categoria' => 'required|string|max:50',
-            'costo_unitario' => 'required|numeric|min:0',
-            'precio_venta' => 'required|numeric|min:0',
+            'ci' => 'required|integer',
+            'nombres' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:100',
+            'id_cargo' => 'required|exists:cargos,id',
+            'telefono' => 'required|string|max:15',
+            'email' => 'required|email',
+            'direccion' => 'required|string|max:255',
+            'fecha_contratacion' => 'required|date',
+            'salario' => 'required|numeric|min:0',
         ], [
-            'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.max' => 'El nombre excede el número de caracteres.',
-            //'descripcion.required' => 'El campo de descripción es obligatorio.',
-            'descripcion.max' => 'La descripcion excede el número de caracteres',
-            'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
-            'cantidad_stock.integer' => 'La cantidad en stock debe ser un número.',
-            'cantidad_stock.min' => 'La cantidad en stock debe ser un valor positivo.',
-            'fabricante.required' => 'El campo de fabricante es obligatorio.',
-            'fabricante.string' => 'El fabricante debe contener solo letras.',
-            'fabricante.max' => 'El campo de fabricante excede el número de caracteres.',
-            'categoria.required' => 'El campo de categoria es obligatorio.',
-            'categoria.string' => 'El campo de categoria debe contener solo letras.',
-            'categoria.max' => 'El campo de categoria excede el número de caracteres.',
-            'costo_unitario.required' => 'El campo de costo unitario es obligatorio.',
-            'costo_unitario.numeric' => 'El campo de costo unitario debe contener solo números.',
-            'costo_unitario.min' => 'El costo unitario debe tener un valor positivo.',
-            'precio_venta.required' => 'El campo de precio venta es obligatorio.',
-            'precio_venta.numeric' => 'El campo de precio venta debe contener números.',
-            'precio_venta.min' => 'El campo de precio venta debe ser positivo.',
+            'nombres.required' => 'El campo de nombre es obligatorio.',
+            // Puedes agregar más mensajes personalizados aquí
         ]);
 
         try {

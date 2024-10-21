@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
-import { UpdateRepuestoModalComponent } from '../components/update-repuesto-modal/update-repuesto-modal.component';
+import { UpdateEmpleadoComponent } from './update-empleado/update-empleado.component';
+import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component'; // Importa el nuevo componente
 import { Router } from '@angular/router';
+
+
+
 @Component({
   selector: 'app-empleados',
   templateUrl: './empleados.page.html',
@@ -10,17 +14,7 @@ import { Router } from '@angular/router';
 })
 export class EmpleadosPage implements OnInit {
   empleados: any[] = []; // Array para almacenar los empleados
-  nuevoEmpleado = {
-    ci: '',
-    nombres: '',
-    apellidos: '',
-    id_cargo: 2,
-    telefono: '',
-    email: '',
-    direccion: '',
-    fecha_contratacion: new Date().toISOString().substring(0, 10), // Formato 'YYYY-MM-DD'
-    salario: 0,
-  };
+
   errorMessage: string = ''; // Variable para almacenar el mensaje de error
 
   constructor(
@@ -32,6 +26,8 @@ export class EmpleadosPage implements OnInit {
   ngOnInit() {
     this.LoadEmpleados(); // Llamar al método al inicializar la página
   }
+
+  
 
   LoadEmpleados() {
     this.authService.ListarEmpleados().subscribe(
@@ -50,30 +46,7 @@ export class EmpleadosPage implements OnInit {
     this.router.navigate(['/register', { id_empleado: idEmpleado }]);
   }
 
-  AddEmpleado() {
-    this.authService.AgregarEmpleado(this.nuevoEmpleado).subscribe(
-      (response) => {
-        this.empleados.push(response); // Agregar el nuevo repuesto a la lista
-        this.nuevoEmpleado = {
-          // Reiniciar el formulario
-          ci: '',
-          nombres: '',
-          apellidos: '',
-          id_cargo: 2,
-          telefono: '',
-          email: '',
-          direccion: '',
-          fecha_contratacion: new Date().toISOString().substring(0, 10), // Formato 'YYYY-MM-DD'
-          salario: 0,
-        };
-        this.errorMessage = ''; // Limpiar cualquier mensaje de error anterior
-      },
-      (error) => {
-        console.error('Error al agregar el empleado:', error);
-        this.errorMessage = error; // Almacenar el mensaje de error
-      }
-    );
-  }
+  
 
   DeleteEmpleado(empleadoId: number) {
     this.authService.EliminarEmpleado(empleadoId).subscribe(
@@ -86,5 +59,35 @@ export class EmpleadosPage implements OnInit {
         this.errorMessage = error;
       }
     );
+  }
+
+  async openUpdateModal(empleado: any) {
+    const modal = await this.modalController.create({
+      component: UpdateEmpleadoComponent,
+      componentProps: { empleado: { ...empleado } }, // Pass a copy of the repuesto
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        // Update the empleados array with the updated empleado
+        const index = this.empleados.findIndex((r) => r.id === data.data.id);
+        if (index !== -1) {
+          this.empleados[index] = data.data;
+        }
+      }
+    });
+    return await modal.present();
+  }
+
+  async openRegisterModal() {
+    const modal = await this.modalController.create({
+      component: RegisterEmpleadoComponent,
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.empleados.push(data.data); // Agrega el nuevo empleado a la lista
+      }
+    });
+    return await modal.present();
   }
 }

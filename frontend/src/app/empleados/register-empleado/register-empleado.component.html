@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Empleado</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (submit)="AddEmpleado()">
+    <ion-item>
+      <ion-label position="floating">CI</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.ci" name="ci" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nombres</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.nombres" name="nombres" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Apellidos</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.apellidos" name="apellidos" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Id cargo</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.id_cargo" name="id_cargo" type="number" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.telefono" name="telefono" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.email" name="email" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Dirección</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.direccion" name="direccion" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Fecha Contratación</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.fecha_contratacion" name="fecha_contratacion" type="date" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Salario</ion-label>
+      <ion-input [(ngModel)]="nuevoEmpleado.salario" name="salario" type="number" required></ion-input>
+    </ion-item>
+    <ion-button expand="full" type="submit">Agregar Empleado</ion-button>
+    <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+  </form>
+</ion-content>

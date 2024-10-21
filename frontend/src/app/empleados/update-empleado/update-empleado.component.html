@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Actualizar Empleado</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="updateEmpleado()">
+    <ion-item>
+      <ion-label position="floating">CI</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.ci"
+        name="ci"
+        type="number"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nombres</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.nombres"
+        name="nombres"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Apellidos</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.apellidos"
+        name="apellidos"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">id_Cargo</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.id_cargo"
+        name="id_cargo"
+        type = "number"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">telefono</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.telefono"
+        name="telefono"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">email</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.email"
+        name="email"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">direccion</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.direccion"
+        name="direccion"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">fecha_contratacion</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.fecha_contratacion"
+        name="fecha_contratacion"
+        type = "date"
+        required
+      ></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">salario</ion-label>
+      <ion-input
+        [(ngModel)]="empleado.salario"
+        name="salario"
+        type = "number"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <div>
+      <ion-text color="danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ion-text>
+    </div>
+    <ion-button expand="full" type="submit">Actualizar Empleado</ion-button>
+  </form>
+</ion-content>
