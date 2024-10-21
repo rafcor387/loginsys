@@ -24,34 +24,36 @@ class RepuestoController extends Controller
     {
         // Validación de los campos
         $request->validate([
-            'nombre' => 'required|max:50',
-            'descripcion' => 'max:255',
+            'nombre' => 'required|max:100',
+            'descripcion' => 'max:100',
             'cantidad_stock' => 'required|integer|min:0',
-            'fabricante' => 'required|string|max:50',
-            'categoria' => 'required|string|max:50',
+            'imagen' => 'nullable|image', // Validación para imagen
+            'id_marca' => 'required|integer|exists:marcas,id',
+            'id_categoria' => 'required|integer|exists:categorias,id',
             'costo_unitario' => 'required|numeric|min:0',
-            'precio_venta' => 'required|numeric|min:0',
+            'precio_unitario' => 'required|numeric|min:0',
+            'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem',
+            'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie',
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.string' => 'El nombre debe contener solo letras.',
             'nombre.max' => 'El nombre excede el número de caracteres.',
-            //'descripcion.required' => 'El campo de descripción es obligatorio.',
-            'descripcion.max' => 'La descripcion excede el número de caracteres',
+            'descripcion.max' => 'La descripción excede el número de caracteres.',
             'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
             'cantidad_stock.integer' => 'La cantidad en stock debe ser un número.',
             'cantidad_stock.min' => 'La cantidad en stock debe ser un valor positivo.',
-            'fabricante.required' => 'El campo de fabricante es obligatorio',
-            'fabricante.string' => 'El fabricante debe contener solo letras',
-            'fabricante.max' => 'El campo de fabricante excede el número de caracteres',
-            'categoria.required' => 'El campo de categoria es obligatorio',
-            'categoria.string' => 'El campo de categoria debe contener solo letras',
-            'categoria.max' => 'El campo de categoria excede el numero de caracteres',
-            'costo_unitario.required' => 'El campo de costo unitario es obligatorio',
-            'costo_unitario.string' => 'El campo de costo unitario debe contener solo letras',
-            'costo_unitario.min' => 'El campo de costo unitario debe tener un valor positivo',
-            'precio_venta.required' => 'El campo de precio venta es obligatorio',
-            'precio_venta.numeric' => 'El campo de precio venta debe contener numeros',
-            'precio_venta.min' => 'El campo de precio venta debe ser positivo',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'id_marca.required' => 'El campo de marca es obligatorio.',
+            'id_marca.exists' => 'La marca seleccionada no es válida.',
+            'id_categoria.required' => 'El campo de categoría es obligatorio.',
+            'id_categoria.exists' => 'La categoría seleccionada no es válida.',
+            'costo_unitario.required' => 'El campo de costo unitario es obligatorio.',
+            'costo_unitario.numeric' => 'El campo de costo unitario debe contener solo números.',
+            'costo_unitario.min' => 'El costo unitario debe tener un valor positivo.',
+            'precio_unitario.required' => 'El campo de precio unitario es obligatorio.',
+            'precio_unitario.numeric' => 'El campo de precio unitario debe contener solo números.',
+            'precio_unitario.min' => 'El precio unitario debe ser positivo.',
+            'codigo_oem.unique' => 'El código OEM ya existe.',
+            'numero_serie.unique' => 'El número de serie ya existe.',
         ]);
 
         try {
@@ -67,33 +69,36 @@ class RepuestoController extends Controller
     {
         // Validación de los campos para actualizar
         $request->validate([
-            'nombre' => 'required|max:50',
-            'descripcion' => 'max:255',
+            'nombre' => 'required|max:100',
+            'descripcion' => 'max:100',
             'cantidad_stock' => 'required|integer|min:0',
-            'fabricante' => 'required|string|max:50',
-            'categoria' => 'required|string|max:50',
+            'imagen' => 'nullable|image', // Validación para imagen
+            'id_marca' => 'required|integer|exists:marcas,id',
+            'id_categoria' => 'required|integer|exists:categorias,id',
             'costo_unitario' => 'required|numeric|min:0',
-            'precio_venta' => 'required|numeric|min:0',
+            'precio_unitario' => 'required|numeric|min:0',
+            'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem,' . $id,
+            'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie,' . $id,
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
             'nombre.max' => 'El nombre excede el número de caracteres.',
-            //'descripcion.required' => 'El campo de descripción es obligatorio.',
-            'descripcion.max' => 'La descripcion excede el número de caracteres',
+            'descripcion.max' => 'La descripción excede el número de caracteres.',
             'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
             'cantidad_stock.integer' => 'La cantidad en stock debe ser un número.',
             'cantidad_stock.min' => 'La cantidad en stock debe ser un valor positivo.',
-            'fabricante.required' => 'El campo de fabricante es obligatorio.',
-            'fabricante.string' => 'El fabricante debe contener solo letras.',
-            'fabricante.max' => 'El campo de fabricante excede el número de caracteres.',
-            'categoria.required' => 'El campo de categoria es obligatorio.',
-            'categoria.string' => 'El campo de categoria debe contener solo letras.',
-            'categoria.max' => 'El campo de categoria excede el número de caracteres.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'id_marca.required' => 'El campo de marca es obligatorio.',
+            'id_marca.exists' => 'La marca seleccionada no es válida.',
+            'id_categoria.required' => 'El campo de categoría es obligatorio.',
+            'id_categoria.exists' => 'La categoría seleccionada no es válida.',
             'costo_unitario.required' => 'El campo de costo unitario es obligatorio.',
             'costo_unitario.numeric' => 'El campo de costo unitario debe contener solo números.',
             'costo_unitario.min' => 'El costo unitario debe tener un valor positivo.',
-            'precio_venta.required' => 'El campo de precio venta es obligatorio.',
-            'precio_venta.numeric' => 'El campo de precio venta debe contener números.',
-            'precio_venta.min' => 'El campo de precio venta debe ser positivo.',
+            'precio_unitario.required' => 'El campo de precio unitario es obligatorio.',
+            'precio_unitario.numeric' => 'El campo de precio unitario debe contener solo números.',
+            'precio_unitario.min' => 'El precio unitario debe ser positivo.',
+            'codigo_oem.unique' => 'El código OEM ya existe.',
+            'numero_serie.unique' => 'El número de serie ya existe.',
         ]);
 
         try {
@@ -105,7 +110,6 @@ class RepuestoController extends Controller
             return response()->json(['message' => 'Error al actualizar el repuesto'], 500);
         }
     }
-
 
     // Eliminar un repuesto
     public function destroy($id)

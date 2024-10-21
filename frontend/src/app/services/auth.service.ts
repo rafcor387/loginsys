@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
+  private apiUrl = 'http://clon.test/loginsys/backend/public/api'; // Cambia esto si es necesario
 
   private isLoggedIn = false;
 
@@ -108,26 +108,133 @@ export class AuthService {
 
 
 
-  //crud repuestos
+
+  // Método para agregar repuestos
   Agregarepuestos(credentials: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+
     return this.http
-      .post(`${this.apiUrl}/repuestos`, credentials)
+      .post(`${this.apiUrl}/repuestos`, credentials, { headers }) // Pasar los headers aquí
       .pipe(catchError(this.handleError));
   }
+
+  // Método para listar repuestos
   repuestosListar(): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+
     return this.http
-      .get(`${this.apiUrl}/repuestos`)
+      .get(`${this.apiUrl}/repuestos`, { headers }) // Pasar los headers aquí
       .pipe(catchError(this.handleError));
   }
+
+  // Método para eliminar un repuesto
   eliminarRepuesto(repuestoId: number): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+
     return this.http
-      .delete(`${this.apiUrl}/repuestos/${repuestoId}`)
+      .delete(`${this.apiUrl}/repuestos/${repuestoId}`, { headers }) // Pasar los headers aquí
       .pipe(catchError(this.handleError));
   }
+
   // Método para actualizar un repuesto
   updateRepuesto(repuestoId: number, repuestoData: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+
     return this.http
-      .put(`${this.apiUrl}/repuestos/${repuestoId}`, repuestoData) // Aquí usas PUT para actualizar
+      .put(`${this.apiUrl}/repuestos/${repuestoId}`, repuestoData, { headers }) // Pasar los headers aquí
+      .pipe(catchError(this.handleError)); // Manejo de errores
+  }
+
+    // CRUD marcas
+    AgregarMarca(credentials: any): Observable<any> {
+      const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Establecer el token en los headers
+      });
+      return this.http
+        .post<any[]>(`${this.apiUrl}/marcas`, credentials, { headers }) // Asegúrate de pasar los headers aquí
+        .pipe(catchError(this.handleError));
+    }
+  
+    listarMarcas(): Observable<any> {
+      const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Establecer el token en los headers
+      });
+      return this.http
+        .get<any[]>(`${this.apiUrl}/marcas`, { headers }) // Asegúrate de pasar los headers aquí
+        .pipe(catchError(this.handleError));
+    }
+  
+    eliminarMarca(marcaId: number): Observable<any> {
+      const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Establecer el token en los headers
+      });
+      return this.http
+        .delete(`${this.apiUrl}/marcas/${marcaId}`, { headers }) // Asegúrate de pasar los headers aquí
+        .pipe(catchError(this.handleError));
+    }
+  
+    actualizarMarca(marcaId: number, marcaData: any): Observable<any> {
+      const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Establecer el token en los headers
+      });
+      return this.http
+        .put(`${this.apiUrl}/marcas/${marcaId}`, marcaData, { headers }) // Aquí usas PUT para actualizar
+        .pipe(catchError(this.handleError)); // Manejo de errores
+    }
+      // CRUD Categorías
+  AgregarCategoria(credentials: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .post<any[]>(`${this.apiUrl}/categorias`, credentials, { headers }) // Asegúrate de pasar los headers aquí
+      .pipe(catchError(this.handleError));
+  }
+
+  listarCategorias(): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .get<any[]>(`${this.apiUrl}/categorias`, { headers }) // Asegúrate de pasar los headers aquí
+      .pipe(catchError(this.handleError));
+  }
+
+  eliminarCategoria(categoriaId: number): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .delete(`${this.apiUrl}/categorias/${categoriaId}`, { headers }) // Asegúrate de pasar los headers aquí
+      .pipe(catchError(this.handleError));
+  }
+
+  actualizarCategoria(categoriaId: number, categoriaData: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .put(`${this.apiUrl}/categorias/${categoriaId}`, categoriaData, { headers }) // Aquí usas PUT para actualizar
       .pipe(catchError(this.handleError)); // Manejo de errores
   }
 }
