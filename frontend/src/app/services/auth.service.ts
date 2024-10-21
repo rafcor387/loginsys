@@ -19,8 +19,11 @@ export class AuthService {
   checkEmpleado(idEmpleado: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/users/check/${idEmpleado}`);
   }
-  
 
+  getUserDetails(idEmpleado: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/users/show/${idEmpleado}`);
+  }
+  
   
   login(credentials: any): Observable<any> {
     return this.http

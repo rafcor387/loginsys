@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalles del Usuario</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>ID Empleado:</ion-label>
+    <ion-text>{{ user.id_empleado }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Email:</ion-label>
+    <ion-text>{{ user.email }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Fecha Creacion:</ion-label>
+    <ion-text>{{ user.created_at }}</ion-text>
+  </ion-item>
+
+  <!-- Agrega más campos según sea necesario -->
+</ion-content>

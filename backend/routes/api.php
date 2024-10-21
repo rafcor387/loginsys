@@ -25,6 +25,8 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('users/check/{idEmpleado}', [UserController::class, 'checkEmployee']);
+Route::get('users/show/{idEmpleado}', [UserController::class, 'showUser']);
+
 
 /*
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { UpdateEmpleadoComponent } from './update-empleado/update-empleado.component';
-import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component'; // Importa el nuevo componente
+import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component'; 
+import { ShowUserComponent } from './show-user/show-user.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,23 +25,19 @@ export class EmpleadosPage implements OnInit {
   ngOnInit() {
     this.LoadEmpleados(); // Llamar al método al inicializar la página
   }
-  /*
-  CreateUser(idEmpleado: number) {
-    this.router.navigate(['/register', { id_empleado: idEmpleado }]);
-  }*/
 
-  CreateUser(idEmpleado: number) {
+  Create_Show_User(idEmpleado: number) {
     this.authService.checkEmpleado(idEmpleado).subscribe(response => {
       if (!response.exists) {
         this.router.navigate(['/register', { id_empleado: idEmpleado }]);
       } else {
         // Si el empleado ya existe, puedes proceder con otra lógica
+        this.openUserDetailsModal(idEmpleado);
         console.log('El id_empleado ya está registrado.');
       }
     }, error => {
       console.error('Error al verificar el id_empleado:', error);
     });
-    
   }
 
   LoadEmpleados() {
@@ -74,7 +71,6 @@ export class EmpleadosPage implements OnInit {
       component: UpdateEmpleadoComponent,
       componentProps: { empleado: { ...empleado } }, // Pass a copy of the repuesto
     });
-
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         // Update the empleados array with the updated empleado
@@ -97,5 +93,24 @@ export class EmpleadosPage implements OnInit {
       }
     });
     return await modal.present();
+  }
+
+  async openUserDetailsModal(idEmpleado: number) {
+    // Realiza la petición para obtener los datos del usuario
+    this.authService.getUserDetails(idEmpleado).subscribe(async response => {
+      if (response.success) {
+        const modal = await this.modalController.create({
+          component: ShowUserComponent,
+          componentProps: {
+            user: response.user // Pasa los detalles del usuario al modal
+          }
+        });
+        await modal.present();
+      } else {
+        console.error('Usuario no encontrado');
+      }
+    }, error => {
+      console.error('Error al obtener los detalles del usuario:', error);
+    });
   }
 }
