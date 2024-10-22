@@ -11,6 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
+  <div class="form-wrapper">
   <!-- Lista de marcas -->
   <ion-list>
     <ion-item *ngFor="let marca of marcas">
@@ -65,4 +66,5 @@
 
   <!-- Mensaje de error -->
   <ion-note color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-note>
+</div>
 </ion-content>

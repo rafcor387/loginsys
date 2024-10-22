@@ -5,26 +5,26 @@
 </ion-header>
 
 <ion-content>
-  <form (submit)="register()">
-
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input
-        [(ngModel)]="email"
-        name="email"
-        required
-        type="email"
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input
-        [(ngModel)]="password"
-        name="password"
-        required
-        type="password"
-      ></ion-input>
-    </ion-item>
+  <div class="form-wrapper">
+    <form (submit)="register()">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input
+          [(ngModel)]="email"
+          name="email"
+          required
+          type="email"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input
+          [(ngModel)]="password"
+          name="password"
+          required
+          type="password"
+        ></ion-input>
+      </ion-item>
 <!--
      <ion-item>
       <ion-label position="floating">Empleado</ion-label>
@@ -53,4 +53,5 @@
   <ion-button routerLink="/empleados">Volver a ver los empleados</ion-button>
   <!-- Mostrar el mensaje de error -->
   <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
+</div>
 </ion-content>

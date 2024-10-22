@@ -11,33 +11,22 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- Lista de categorías -->
-  <ion-list>
-    <ion-item *ngFor="let categoria of categorias">
-      <ion-label>
-        <h2>{{ categoria.nombre }}</h2>
-        <p>{{ categoria.descripcion }}</p>
-      </ion-label>
-      <ion-button color="danger" (click)="DeleteCategoria(categoria.id)">Eliminar</ion-button>
-      <ion-button color="primary" (click)="selectCategoria(categoria)">Actualizar</ion-button>
+  <div class="form-wrapper">
+    <!-- Formulario para agregar o editar una categoría -->
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="categoriaForm.nombre" required></ion-input>
     </ion-item>
-  </ion-list>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input [(ngModel)]="categoriaForm.descripcion"></ion-input>
+    </ion-item>
 
-  <!-- Formulario para agregar o editar una categoría -->
-  <ion-item>
-    <ion-label position="floating">Nombre</ion-label>
-    <ion-input [(ngModel)]="categoriaForm.nombre" required></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Descripción</ion-label>
-    <ion-input [(ngModel)]="categoriaForm.descripcion"></ion-input>
-  </ion-item>
+    <ion-button expand="full" *ngIf="!categoriaForm.id" (click)="AddCategoria()">Agregar Categoría</ion-button>
+    <ion-button expand="full" *ngIf="categoriaForm.id" (click)="UpdateCategoria()">Actualizar Categoría</ion-button>
+    <ion-button expand="full" color="light" *ngIf="categoriaForm.id" (click)="cancelEdit()">Cancelar</ion-button>
 
-  <!-- Mostrar el botón "Agregar" o "Actualizar" según el estado de la categoría -->
-  <ion-button expand="full" *ngIf="!categoriaForm.id" (click)="AddCategoria()">Agregar Categoría</ion-button>
-  <ion-button expand="full" *ngIf="categoriaForm.id" (click)="UpdateCategoria()">Actualizar Categoría</ion-button>
-  <ion-button expand="full" color="light" *ngIf="categoriaForm.id" (click)="cancelEdit()">Cancelar</ion-button>
-
-  <!-- Mensaje de error -->
-  <ion-note color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-note>
+    <!-- Mensaje de error -->
+    <ion-note color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-note>
+  </div>
 </ion-content>

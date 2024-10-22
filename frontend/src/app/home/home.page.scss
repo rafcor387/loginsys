@@ -1,19 +1,34 @@
 #container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: black; // Set background to black
-  color: white; // Set text color to white
-  padding: 20px; // Add some padding
+  position: relative; /* Position relative for overlay */
 }
 
-h1 {
-  color: white; // Heading color
+.carousel {
+  height: 300px; /* Set height for the carousel */
+  background-color: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
 }
 
-p {
-  color: white; // Paragraph color
+.carousel img {
+  height: 100%; /* Make images take full height */
+  object-fit: cover; /* Cover the area without distortion */
+}
+
+.overlay {
+  position: absolute; /* Position overlay on top of the carousel */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for centering */
+  color: white; /* Text color */
+  text-align: center; /* Center text */
+  z-index: 10; /* Ensure overlay is above slides */
+  background-color: rgba(0, 0, 0, 0.5); /* Darker overlay background */
+  padding: 20px; /* Add some padding for better visibility */
+}
+
+.overlay h1 {
+  font-size: 36px; /* Title size */
+  margin: 0; /* Remove default margin */
+}
+
+.overlay p {
+  font-size: 18px; /* Description size */
 }

@@ -24,6 +24,7 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * Ionic Dark Mode
@@ -42,19 +43,57 @@ ion-header {
     left: 0;
     right: 0;
     z-index: 10; // Ensure it is above other content
+    background-color: #333; /* Dark background for the header */
+    color: white; /* White text color */
 }
 
 ion-content {
     --padding-top: 56px; // Adjust this value based on your toolbar height
 }
 
-/* Global button styles */
+/* Global Styles */
+body {
+    background-color: #1a1a1a; /* Dark background for the entire app */
+    font-family: 'Arial', sans-serif; /* Change font family */
+    color: white; /* Default text color */
+}
+
+ion-toolbar {
+    --background: transparent; /* Make toolbar background transparent */
+}
+
+ion-title {
+    font-size: 24px; /* Increase title size */
+    font-weight: bold; /* Bold title */
+}
+
+ion-content {
+    padding: 20px; /* Add padding to content */
+}
+
+/* Button Styles */
 ion-button {
-    background-color: orange; /* Button background color */
-    color: black; /* Button text color */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Shadow for depth */
-    --box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Ensure shadow is applied */
-    --background: orange; /* Ensure background color is applied */
-    --color: black; /* Ensure text color is applied */
+    background-color: black; /* Orange background */
+    color: white; /* White text */
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for buttons */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+/* Input Styles */
+ion-item {
+    margin-bottom: 15px; /* Space between items */
+}
+
+ion-input {
+    border-radius: 15px; /* Rounded corners for inputs */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/* Form Styles */
+form {
+    background-color: #2c2c2c; /* Dark background for forms */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside forms */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow for forms */
 }
