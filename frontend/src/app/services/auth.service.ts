@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
+  private apiUrl = 'http://proyecto.test/loginsys/backend/public/api'; // Cambia esto si es necesario
   
   //private userSubject = new BehaviorSubject<any>(null); // Crea un BehaviorSubject para el usuario
 

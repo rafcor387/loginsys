@@ -9,12 +9,10 @@ class Marca extends Model
 {
     use HasFactory;
 
-    // Nombre de la tabla en la base de datos
     protected $table = 'marcas';
 
-    public $timestamps = false; // Deshabilita los timestamps
+    public $timestamps = false;
 
-    // Los atributos que se pueden asignar masivamente
     protected $fillable = [
         'nombre',
         'pais',
@@ -25,9 +23,9 @@ class Marca extends Model
         'descripcion'
     ];
 
-    // Relación uno a uno con la tabla 'repuestos'
-    public function repuesto()
+    // Relación uno a muchos con la tabla 'repuestos'
+    public function repuestos()
     {
-        return $this->hasOne(Repuesto::class, 'id_marca', 'id');
+        return $this->hasMany(Repuesto::class, 'id_marca', 'id');
     }
 }
