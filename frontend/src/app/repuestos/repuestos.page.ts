@@ -41,6 +41,7 @@ export class RepuestosPage implements OnInit {
     this.authService.repuestosListar().subscribe(
       (response) => {
         this.repuestos = response;
+        console.log('Repuestos:', this.repuestos); // Agrega este log
         this.errorMessage = '';
       },
       (error) => {
@@ -79,12 +80,13 @@ export class RepuestosPage implements OnInit {
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.imagenSeleccionada = file;
+      this.imagenSeleccionada = file; // Asigna el archivo a imagenSeleccionada
     }
   }
 
   agregarRepuesto() {
-    
+    console.log('Datos del nuevo repuesto:', this.nuevoRepuesto); // Depuración
+
     const formData = new FormData();
 
     // Agrega los datos del nuevo repuesto
@@ -92,28 +94,25 @@ export class RepuestosPage implements OnInit {
     formData.append('descripcion', this.nuevoRepuesto.descripcion);
     formData.append('cantidad_stock', this.nuevoRepuesto.cantidad_stock.toString());
     formData.append('fabricante', this.nuevoRepuesto.fabricante);
-    
-    // Aquí se debe enviar el ID de la categoría y la marca
-    formData.append('categoria', this.nuevoRepuesto.categoria.toString()); // Asegúrate de que esto sea el ID
-    formData.append('marca', this.nuevoRepuesto.marca.toString()); // Asegúrate de que esto sea el ID
-
+    formData.append('id_marca', this.nuevoRepuesto.marca.toString());
+    formData.append('id_categoria', this.nuevoRepuesto.categoria.toString());
     formData.append('costo_unitario', this.nuevoRepuesto.costo_unitario.toString());
     formData.append('precio_unitario', this.nuevoRepuesto.precio_unitario.toString());
 
     if (this.imagenSeleccionada) {
-      formData.append('imagen', this.imagenSeleccionada);
+      formData.append('imagen', this.imagenSeleccionada); // Agrega la imagen al FormData
     }
 
     // Llama al servicio para agregar el repuesto
     this.authService.Agregarepuestos(formData).subscribe(
       (response) => {
-        this.repuestos.push(response);
+        this.repuestos.push(response); // Agrega el nuevo repuesto a la lista
         this.resetNuevoRepuesto(); // Restablecer nuevo repuesto después de agregar
         this.errorMessage = '';
       },
       (error) => {
         console.error('Error al agregar el repuesto:', error);
-        this.errorMessage = error;
+        this.errorMessage = error; // Manejo de errores
       }
     );
   }
@@ -137,11 +136,11 @@ export class RepuestosPage implements OnInit {
     this.authService.eliminarRepuesto(repuestoId).subscribe(
       (response) => {
         console.log('Repuesto eliminado:', response);
-        this.listarRepuestos();
+        this.listarRepuestos(); // Vuelve a listar los repuestos
       },
       (error) => {
         console.error('Error al eliminar el repuesto:', error);
-        this.errorMessage = error;
+        this.errorMessage = error; // Manejo de errores
       }
     );
   }
@@ -156,7 +155,7 @@ export class RepuestosPage implements OnInit {
       if (data.data) {
         const index = this.repuestos.findIndex((r) => r.id === data.data.id);
         if (index !== -1) {
-          this.repuestos[index] = data.data;
+          this.repuestos[index] = data.data; // Actualiza el repuesto en la lista
         }
       }
     });
