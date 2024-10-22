@@ -4,12 +4,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   <div class="form-wrapper">
+    <h4 style="text-align: center;">Categorias</h4>
     <!-- Formulario para agregar una categoría -->
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <ion-input [(ngModel)]="categoriaForm.nombre" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input [(ngModel)]="categoriaForm.descripcion"></ion-input>
     </ion-item>
     <ion-button expand="full" (click)="AddCategoria()">Agregar Categoría</ion-button>
 
@@ -20,6 +25,8 @@
     <ion-list>
       <ion-item *ngFor="let categoria of categorias">
         <ion-label>{{ categoria.nombre }}</ion-label>
+        <ion-button (click)="selectCategoria(categoria)">Editar</ion-button>
+        <ion-button color="danger" (click)="DeleteCategoria(categoria.id)">Eliminar</ion-button>
       </ion-item>
     </ion-list>
   </div>
