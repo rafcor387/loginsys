@@ -6,16 +6,15 @@
     <ion-title>
       <ng-content></ng-content> <!-- This allows you to pass the title dynamically -->
     </ion-title>
-    <ion-buttons slot="end">
 
-      <div *ngIf="usuario" class="ion-margin-bottom">
+    <ion-buttons slot="end">
+      <div *ngIf="usuario" class="custom-margin">
         <h6>Bienvenido, {{ usuario.email }}!</h6>
       </div>
       
-      <ion-button color="danger" (click)="logout()">
+      <ion-button *ngIf="isAuthenticated" color="danger" (click)="logout()">
         Cerrar Sesión
       </ion-button>
-      
 
     </ion-buttons>
   </ion-toolbar>
