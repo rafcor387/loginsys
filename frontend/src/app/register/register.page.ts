@@ -24,10 +24,12 @@ export class RegisterPage{
   ngOnInit() {
     // Obtener el id_empleado desde los parámetros de la ruta
     this.id_empleado = Number(this.route.snapshot.paramMap.get('id_empleado'));
+    this.email = String(this.route.snapshot.paramMap.get('email_emp'));
   }
 
   register() {
-    this.authService.register({ /*name: this.name, */email: this.email, 
+    this.authService.register({ /*name: this.name, */
+      email: this.email, 
       password: this.password, 
       password_confirmation: this.password_confirmation, 
       id_empleado : this.id_empleado })

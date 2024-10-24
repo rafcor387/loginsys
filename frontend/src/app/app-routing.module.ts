@@ -1,3 +1,4 @@
+//app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RoleGuard} from './auth.guard';
@@ -5,6 +6,12 @@ import { RoleGuard} from './auth.guard';
 
 
 const routes: Routes = [
+  {
+    path: 'empleados',
+    loadChildren: () => import('./empleados/empleados.module').then( m => m.EmpleadosPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1] } // Solo permite acceso al rol con id 1
+  },
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
@@ -37,17 +44,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { allowedRoles: [1,2] } 
   },
-  {
-    path: 'empleados',
-    loadChildren: () => import('./empleados/empleados.module').then( m => m.EmpleadosPageModule),
-    canActivate: [RoleGuard],
-    data: { allowedRoles: [1] } // Solo permite acceso al rol con id 1
-  },
+ 
   {
     path: 'marcas',
     loadChildren: () => import('./marcas/marcas.module').then( m => m.MarcasPageModule),
     canActivate: [RoleGuard],
-    data: { allowedRoles: [1,2] } // Solo permite acceso al rol con id 1
+    data: { allowedRoles: [1,2] }
   },
   {
     path: 'categorias',

@@ -5,6 +5,7 @@ import { UpdateEmpleadoComponent } from './update-empleado/update-empleado.compo
 import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component'; 
 import { ShowUserComponent } from './show-user/show-user.component';
 import { Router } from '@angular/router';
+import { EmailValidator } from '@angular/forms';
 
 @Component({
   selector: 'app-empleados',
@@ -29,7 +30,7 @@ export class EmpleadosPage implements OnInit {
   Create_Show_User(idEmpleado: number) {
     this.authService.checkEmpleado(idEmpleado).subscribe(response => {
       if (!response.exists) {
-        this.router.navigate(['/register', { id_empleado: idEmpleado }]);
+        this.router.navigate(['/register', { id_empleado: idEmpleado, email_emp:response.email }]);
       } else {
         // Si el empleado ya existe, puedes proceder con otra lógica
         this.openUserDetailsModal(idEmpleado);

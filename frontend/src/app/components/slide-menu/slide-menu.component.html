@@ -1,17 +1,22 @@
-<ion-menu contentId="main-content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item routerLink="/home">Home</ion-item>
-      <ion-item routerLink="/repuestos">Repuestos</ion-item> 
-      
-      <ion-item routerLink="/empleados">Empleados</ion-item> 
-      <ion-item routerLink="/marcas">Marcas</ion-item>
-      <ion-item routerLink="/categorias">Categorías</ion-item> 
-    </ion-list>
-  </ion-content>
-</ion-menu>
+<div *ngIf="isAuthenticated">
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <div *ngIf="userRole === 1 || userRole === 2">
+          <ion-item routerLink="/home">Home</ion-item>
+          <ion-item routerLink="/repuestos">Repuestos</ion-item>
+          <ion-item routerLink="/marcas">Marcas</ion-item>
+          <ion-item routerLink="/categorias">Categorías</ion-item>
+        </div>
+        <div *ngIf="userRole === 1">
+          <ion-item routerLink="/empleados">Empleados</ion-item>
+        </div>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+</div>

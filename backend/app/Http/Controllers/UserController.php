@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empleado;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,12 @@ class UserController extends Controller
     {
         // Verifica si existe un usuario con el id_empleado proporcionado
         $userExists = User::where('id_empleado', $idEmpleado)->exists();
+
+        $user = Empleado::where('id', $idEmpleado)->first();
         // Retorna una respuesta JSON dependiendo de si se encontró el usuario o no
         return response()->json([
-            'exists' => $userExists
+            'exists' => $userExists,
+            'email' => $user->email,
         ]);
     }
     public function showUser($idEmpleado)
