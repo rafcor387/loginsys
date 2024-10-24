@@ -10,7 +10,7 @@ class Cargo extends Model
     //use HasFactory;
     protected $table = 'cargos';
     //protected $primaryKey = 'id';
-    //public $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'nombre',

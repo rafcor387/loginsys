@@ -8,18 +8,14 @@
     </ion-title>
     <ion-buttons slot="end">
 
-      <div *ngIf="usuario">
-        <h6>Bienvenido, {{ usuario.email }}!</h6> <!-- Mostrar el nombre del usuario -->
+      <div *ngIf="usuario" class="ion-margin-bottom">
+        <h6>Bienvenido, {{ usuario.email }}!</h6>
       </div>
-
-      <ion-button routerLink="/logout">
-        <ion-icon name="information-circle"></ion-icon>
-      </ion-button>
-
-
+      
       <ion-button color="danger" (click)="logout()">
         Cerrar Sesión
       </ion-button>
+      
 
     </ion-buttons>
   </ion-toolbar>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CargoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\RepuestoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Cargo;
 
 use App\Http\Controllers\Auth\VerifyEmailController;
 /*
@@ -56,6 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('marcas', MarcaController::class);
 
     Route::apiResource('categorias', CategoriaController::class);
+
+    Route::apiResource('cargos',CargoController::class);
 
 
 

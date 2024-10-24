@@ -25,7 +25,7 @@ export class LoginPage {
           //this.router.navigate(['/empleados']); // Cambia esto según tu estructura
 
           // Redirige primero a la página de empleados
-          this.router.navigate(['/empleados']).then(() => {
+          this.router.navigate(['/home']).then(() => {
             // Luego recarga la página después de que la navegación se complete
             window.location.reload();
           });

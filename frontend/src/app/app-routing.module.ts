@@ -7,11 +7,13 @@ import { RoleGuard} from './auth.guard';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] } 
   },
   {
     path: '',
-    redirectTo: 'empleados',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -50,6 +52,7 @@ const routes: Routes = [
   {
     path: 'categorias',
     loadChildren: () => import('./categorias/categorias.module').then( m => m.CategoriasPageModule),
+    canActivate: [RoleGuard],
     data: { allowedRoles: [1,2] }
   },
 

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://proyecto.test/loginsys/backend/public/api'; // Cambia esto si es necesario
+  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
   
   //private userSubject = new BehaviorSubject<any>(null); // Crea un BehaviorSubject para el usuario
 
@@ -251,5 +251,17 @@ export class AuthService {
     return this.http
       .put(`${this.apiUrl}/categorias/${categoriaId}`, categoriaData, { headers }) // Aquí usas PUT para actualizar
       .pipe(catchError(this.handleError)); // Manejo de errores
+  }
+
+
+  //listar cargos
+  listarCargos(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+    });
+    return this.http
+      .get<any[]>(`${this.apiUrl}/cargos`, { headers }) 
+      .pipe(catchError(this.handleError));
   }
 }
