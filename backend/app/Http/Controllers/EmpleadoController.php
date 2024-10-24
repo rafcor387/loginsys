@@ -24,21 +24,41 @@ class EmpleadoController extends Controller
     // Crear un nuevo repuesto
     public function store(Request $request)
     {
-        // Validación de los campos
         $request->validate([
-            'ci' => 'required|integer',
-            'nombres' => 'required|string|max:100',
-            'apellidos' => 'required|string|max:100',
+            'ci' => 'required|digits_between:6,20', // Solo permite números, con longitud mínima de 6 y máxima de 20
+            'nombres' => 'required|string|max:100', // Solo letras y espacios
+            'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', // Solo letras y espacios
             'id_cargo' => 'required|exists:cargos,id',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|string|max:15|regex:/^[0-9]{7,15}$/', // Validar formato de teléfono
             'email' => 'required|email|unique:empleados,email',
+            //'email' => 'required|email|unique:empleados,email',
             'direccion' => 'required|string|max:255',
-            'fecha_contratacion' => 'required|date',
-            'salario' => 'required|numeric|min:0',
+            'fecha_contratacion' => 'required|date|before_or_equal:today', // No permitir fechas futuras
+            'salario' => 'required|numeric|min:0|max:1000000', // Salario con un límite razonable
         ], [
+            'ci.required' => 'El campo CI es obligatorio.',
+            'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
             'nombres.required' => 'El campo de nombre es obligatorio.',
-            // Puedes agregar más mensajes personalizados aquí
+            'nombres.string' => 'El nombre debe contener solo letras.',
+            'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+            'apellidos.required' => 'El campo de apellidos es obligatorio.',
+            'apellidos.string' => 'El apellido debe contener solo letras.',
+            'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
+            'id_cargo.required' => 'Debes seleccionar un cargo válido.',
+            'telefono.required' => 'El teléfono es obligatorio.',
+            'telefono.regex' => 'El teléfono debe contener solo números y tener entre 7 y 15 dígitos.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico debe ser válido.',
+            'email.unique' => 'El correo electrónico ya está registrado.',
+            'direccion.required' => 'La dirección es obligatoria.',
+            'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
+            'fecha_contratacion.before_or_equal' => 'La fecha de contratación no puede ser futura.',
+            'salario.required' => 'El salario es obligatorio.',
+            'salario.numeric' => 'El salario debe ser un número válido.',
+            'salario.min' => 'El salario no puede ser negativo.',
+            'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
         ]);
+
 
         try {
             $empleado = Empleado::create($request->all());

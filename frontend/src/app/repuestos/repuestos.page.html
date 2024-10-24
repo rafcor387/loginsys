@@ -23,11 +23,6 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Fabricante</ion-label>
-      <ion-input [(ngModel)]="nuevoRepuesto.fabricante" name="fabricante" required></ion-input>
-    </ion-item>
-
-    <ion-item>
       <ion-label>Categoría</ion-label>
       <ion-select [(ngModel)]="nuevoRepuesto.categoria" name="categoria" required>
         <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</ion-select-option>
