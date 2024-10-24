@@ -12,23 +12,6 @@
   </ion-header>
 
   <div class="form-wrapper">
-  <!-- Lista de marcas -->
-  <ion-list>
-    <ion-item *ngFor="let marca of marcas">
-      <ion-label>
-        <h2>{{ marca.nombre }}</h2>
-        <p>{{ marca.pais }}</p>
-        <p>{{ marca.email }}</p>
-        <p>{{ marca.telefono }}</p>
-        <p>{{ marca.direccion }}</p>
-        <p>{{ marca.sitio_web }}</p>
-        <p>{{ marca.descripcion }}</p>
-      </ion-label>
-      <ion-button color="danger" (click)="DeleteMarca(marca.id)">Eliminar</ion-button>
-      <ion-button color="primary" (click)="selectMarca(marca)">Actualizar</ion-button>
-    </ion-item>
-  </ion-list>
-
   <!-- Formulario para agregar o editar una marca -->
   <ion-item>
     <ion-label position="floating">Nombre</ion-label>
@@ -64,6 +47,23 @@
   <ion-button expand="full" *ngIf="marcaForm.id" (click)="UpdateMarca()">Actualizar Marca</ion-button>
   <ion-button expand="full" color="light" *ngIf="marcaForm.id" (click)="cancelEdit()">Cancelar</ion-button>
 
+    <!-- Lista de marcas -->
+    <ion-list>
+      <ion-item *ngFor="let marca of marcas">
+        <ion-label>
+          <h2>{{ marca.nombre }}</h2>
+          <p>{{ marca.pais }}</p>
+          <p>{{ marca.email }}</p>
+          <p>{{ marca.telefono }}</p>
+          <p>{{ marca.direccion }}</p>
+          <p>{{ marca.sitio_web }}</p>
+          <p>{{ marca.descripcion }}</p>
+        </ion-label>
+        <ion-button color="danger" (click)="DeleteMarca(marca.id)">Eliminar</ion-button>
+        <ion-button color="primary" (click)="selectMarca(marca)">Actualizar</ion-button>
+      </ion-item>
+    </ion-list>
+  
   <!-- Mensaje de error -->
   <ion-note color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-note>
 </div>
