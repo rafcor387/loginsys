@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
   <div class="form-wrapper">
     <h4 style="text-align: center;">Categorias</h4>
-    <!-- Formulario para agregar una categoría -->
+    <!-- Formulario para agregar o actualizar una categoría -->
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <ion-input [(ngModel)]="categoriaForm.nombre" required></ion-input>
@@ -16,7 +16,13 @@
       <ion-label position="floating">Descripción</ion-label>
       <ion-input [(ngModel)]="categoriaForm.descripcion"></ion-input>
     </ion-item>
-    <ion-button expand="full" (click)="AddCategoria()">Agregar Categoría</ion-button>
+
+    <!-- Botón para agregar o actualizar -->
+    <ion-button *ngIf="!isEditMode" expand="full" (click)="AddCategoria()">Agregar Categoría</ion-button>
+    <ion-button *ngIf="isEditMode" expand="full" color="success" (click)="UpdateCategoria()">Actualizar Categoría</ion-button>
+
+    <!-- Botón de cancelar cuando se está en modo de edición -->
+    <ion-button *ngIf="isEditMode" expand="full" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
 
     <!-- Mensaje de error -->
     <ion-note color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-note>
@@ -24,7 +30,10 @@
     <!-- Lista de categorías -->
     <ion-list>
       <ion-item *ngFor="let categoria of categorias">
-        <ion-label>{{ categoria.nombre }}</ion-label>
+        <ion-label>
+          <h2>{{ categoria.nombre }}</h2>
+          <p>{{ categoria.descripcion }}</p> <!-- Mostrar descripción debajo del nombre -->
+        </ion-label>
         <ion-button (click)="selectCategoria(categoria)">Editar</ion-button>
         <ion-button color="danger" (click)="DeleteCategoria(categoria.id)">Eliminar</ion-button>
       </ion-item>

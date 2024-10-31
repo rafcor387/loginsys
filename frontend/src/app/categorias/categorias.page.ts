@@ -15,6 +15,7 @@ export class CategoriasPage implements OnInit {
     descripcion: '',
   }; // Formulario compartido para agregar o actualizar categoría
   errorMessage: string = ''; // Mensaje de error
+  isEditMode: boolean = false; // Indica si estamos en modo de edición
 
   constructor(
     private authService: AuthService,
@@ -71,6 +72,7 @@ export class CategoriasPage implements OnInit {
   // Seleccionar una categoría para editar (reutilizando el mismo formulario)
   selectCategoria(categoria: any) {
     this.categoriaForm = { ...categoria }; // Copiar los datos de la categoría seleccionada al formulario
+    this.isEditMode = true; // Activar modo de edición
   }
 
   // Actualizar la categoría seleccionada
@@ -82,6 +84,7 @@ export class CategoriasPage implements OnInit {
           this.LoadCategorias(); // Recargar la lista de categorías
           this.resetForm(); // Limpiar el formulario
           this.errorMessage = '';
+          this.isEditMode = false; // Desactivar modo de edición
         },
         (error) => {
           console.error('Error al actualizar la categoría:', error);
@@ -94,6 +97,7 @@ export class CategoriasPage implements OnInit {
   // Cancelar la edición
   cancelEdit() {
     this.resetForm(); // Limpiar el formulario de edición
+    this.isEditMode = false; // Desactivar modo de edición
   }
 
   // Limpiar el formulario de categoría
