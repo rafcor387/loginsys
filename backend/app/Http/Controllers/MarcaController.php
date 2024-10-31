@@ -25,16 +25,55 @@ class MarcaController extends Controller
     {
         // Validación de los campos
         $request->validate([
-            'nombre' => 'required|string|max:100',
-            'pais' => 'required|string|max:100',
-            'email' => 'required|email|unique:marcas,email',
-            'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:15',
-            'sitio_web' => 'nullable|string|max:255',
-            'descripcion' => 'nullable|string|max:255',
+            'nombre' => [
+                'required',
+                'regex:/^[a-zA-Z0-9]+$/', // Solo letras y números
+                'max:30',
+                'not_regex:/^\s*$/' // No permite solo espacios en blanco
+            ],
+            'pais' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/', // Solo letras
+                'max:30',
+                'not_regex:/^\s*$/' // No permite solo espacios en blanco
+            ],
+            'email' => [
+                'required',
+                'email',
+                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
+                'unique:marcas,email',
+                'not_regex:/^\s*$/'
+            ],
+            'direccion' => [
+                'required',
+                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
+                'max:60',
+                'not_regex:/^\s*$/'
+            ],
+            'telefono' => [
+                'required',
+                'digits_between:1,15', // Solo números, máximo 15 caracteres
+                'not_regex:/^\s*$/'
+            ],
+            'sitio_web' => [
+                'nullable',
+                'string',
+                'max:30'
+            ],
+            'descripcion' => [
+                'nullable',
+                'string',
+                'max:200',
+                'not_regex:/^\s*$/'
+            ]
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            // Puedes agregar más mensajes personalizados aquí
+            'nombre.regex' => 'El nombre solo debe contener letras y números.',
+            'pais.regex' => 'El país solo debe contener letras.',
+            'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+            'direccion.regex' => 'La dirección solo debe contener letras y números.',
+            'telefono.digits_between' => 'El teléfono debe tener entre 1 y 15 caracteres numéricos.',
+            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
         ]);
 
         try {
@@ -52,16 +91,55 @@ class MarcaController extends Controller
     {
         // Validación de los campos para actualizar
         $request->validate([
-            'nombre' => 'required|string|max:100',
-            'pais' => 'required|string|max:100',
-            'email' => 'required|email|unique:marcas,email,'.$id,
-            'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:15',
-            'sitio_web' => 'nullable|string|max:255',
-            'descripcion' => 'nullable|string|max:255',
+            'nombre' => [
+                'required',
+                'regex:/^[a-zA-Z0-9]+$/', // Solo letras y números
+                'max:30',
+                'not_regex:/^\s*$/'
+            ],
+            'pais' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/', // Solo letras
+                'max:30',
+                'not_regex:/^\s*$/'
+            ],
+            'email' => [
+                'required',
+                'email',
+                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
+                'unique:marcas,email,' . $id,
+                'not_regex:/^\s*$/'
+            ],
+            'direccion' => [
+                'required',
+                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
+                'max:60',
+                'not_regex:/^\s*$/'
+            ],
+            'telefono' => [
+                'required',
+                'digits_between:1,15', // Solo números, máximo 15 caracteres
+                'not_regex:/^\s*$/'
+            ],
+            'sitio_web' => [
+                'nullable',
+                'string',
+                'max:30'
+            ],
+            'descripcion' => [
+                'nullable',
+                'string',
+                'max:200',
+                'not_regex:/^\s*$/'
+            ]
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            // Puedes agregar más mensajes personalizados aquí
+            'nombre.regex' => 'El nombre solo debe contener letras y números.',
+            'pais.regex' => 'El país solo debe contener letras.',
+            'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+            'direccion.regex' => 'La dirección solo debe contener letras y números.',
+            'telefono.digits_between' => 'El teléfono debe tener entre 1 y 15 caracteres numéricos.',
+            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
         ]);
 
         try {

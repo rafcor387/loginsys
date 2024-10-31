@@ -25,11 +25,23 @@ class CategoriaController extends Controller
     {
         // Validación de los campos
         $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'nullable|string|max:255',
+            'nombre' => [
+                'required',
+                'regex:/^[a-zA-Z0-9]+$/', // Solo letras y números
+                'max:30',
+                'not_regex:/^\s*$/' // No permite solo espacios en blanco
+            ],
+            'descripcion' => [
+                'nullable',
+                'string',
+                'max:200',
+                'not_regex:/^\s*$/' // No permite solo espacios en blanco
+            ]
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            // Puedes agregar más mensajes personalizados aquí
+            'nombre.regex' => 'El nombre solo debe contener letras y números.',
+            'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
+            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
         ]);
 
         try {
@@ -47,11 +59,23 @@ class CategoriaController extends Controller
     {
         // Validación de los campos para actualizar
         $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'nullable|string|max:255',
+            'nombre' => [
+                'required',
+                'regex:/^[a-zA-Z0-9]+$/', // Solo letras y números
+                'max:30',
+                'not_regex:/^\s*$/'
+            ],
+            'descripcion' => [
+                'nullable',
+                'string',
+                'max:200',
+                'not_regex:/^\s*$/'
+            ]
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            // Puedes agregar más mensajes personalizados aquí
+            'nombre.regex' => 'El nombre solo debe contener letras y números.',
+            'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
+            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
         ]);
 
         try {
