@@ -27,7 +27,7 @@ class CategoriaController extends Controller
         $request->validate([
             'nombre' => [
                 'required',
-                'regex:/^[a-zA-Z0-9]+$/', // Solo letras y números
+                'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
                 'max:30',
                 'not_regex:/^\s*$/' // No permite solo espacios en blanco
             ],
@@ -39,7 +39,7 @@ class CategoriaController extends Controller
             ]
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo debe contener letras y números.',
+            'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
             'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
             'not_regex' => 'El campo no debe contener solo espacios en blanco.'
         ]);
@@ -61,7 +61,7 @@ class CategoriaController extends Controller
         $request->validate([
             'nombre' => [
                 'required',
-                'regex:/^[a-zA-Z0-9]+$/', // Solo letras y números
+                'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
                 'max:30',
                 'not_regex:/^\s*$/'
             ],
@@ -73,7 +73,7 @@ class CategoriaController extends Controller
             ]
         ], [
             'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo debe contener letras y números.',
+            'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
             'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
             'not_regex' => 'El campo no debe contener solo espacios en blanco.'
         ]);

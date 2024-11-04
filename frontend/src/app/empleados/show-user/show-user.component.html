@@ -23,5 +23,19 @@
     <ion-text>{{ user.created_at | date: 'dd/MM/yyyy' }}</ion-text>
   </ion-item>
 
+  <ion-item>
+    <ion-label>Salario:</ion-label>
+    <ion-text>{{ user.salario }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Teléfono:</ion-label>
+    <ion-text>{{ user.telefono }}</ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Cargo:</ion-label>
+    <ion-text>{{ user.cargo }}</ion-text> <!-- Assuming cargo is a string -->
+  </ion-item>
   <!-- Agrega más campos según sea necesario -->
 </ion-content>

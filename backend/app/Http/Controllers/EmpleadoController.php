@@ -30,11 +30,16 @@ class EmpleadoController extends Controller
             'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', // Solo letras y espacios
             'id_cargo' => 'required|exists:cargos,id',
             'telefono' => 'required|string|max:15|regex:/^[0-9]{7,15}$/', // Validar formato de teléfono
-            'email' => 'required|email|unique:empleados,email',
-            //'email' => 'required|email|unique:empleados,email',
+            'email' => [
+                'required',
+                'email',
+                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Only Gmail, Yahoo, or Outlook
+                'unique:empleados,email',
+                'not_regex:/^\s*$/'
+            ],
             'direccion' => 'required|string|max:255',
             'fecha_contratacion' => 'required|date|before_or_equal:today', // No permitir fechas futuras
-            'salario' => 'required|numeric|min:0|max:1000000', // Salario con un límite razonable
+            'salario' => 'required|numeric|min:350|max:1000000', // Salario con un límite razonable
         ], [
             'ci.required' => 'El campo CI es obligatorio.',
             'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
@@ -49,13 +54,14 @@ class EmpleadoController extends Controller
             'telefono.regex' => 'El teléfono debe contener solo números y tener entre 7 y 15 dígitos.',
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico debe ser válido.',
+            'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
             'email.unique' => 'El correo electrónico ya está registrado.',
             'direccion.required' => 'La dirección es obligatoria.',
             'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
             'fecha_contratacion.before_or_equal' => 'La fecha de contratación no puede ser futura.',
             'salario.required' => 'El salario es obligatorio.',
             'salario.numeric' => 'El salario debe ser un número válido.',
-            'salario.min' => 'El salario no puede ser negativo.',
+            'salario.min' => 'El salario no puede ser negativo o ser menor a 350',
             'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
         ]);
 
@@ -81,10 +87,16 @@ class EmpleadoController extends Controller
             'apellidos' => 'required|string|max:100',
             'id_cargo' => 'required|exists:cargos,id',
             'telefono' => 'required|string|max:15',
-            'email' => 'required|email',
+            'email' => [
+                'required',
+                'email',
+                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Only Gmail, Yahoo, or Outlook
+                'unique:empleados,email,' . $id,
+                'not_regex:/^\s*$/'
+            ],
             'direccion' => 'required|string|max:255',
             'fecha_contratacion' => 'required|date',
-            'salario' => 'required|numeric|min:0',
+            'salario' => 'required|numeric|min:350',
         ], [
             'nombres.required' => 'El campo de nombre es obligatorio.',
             // Puedes agregar más mensajes personalizados aquí
