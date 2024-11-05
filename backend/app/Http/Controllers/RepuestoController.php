@@ -27,12 +27,12 @@ class RepuestoController extends Controller
         $validatedData = $request->validate([
             'nombre' => 'required|max:100',
             'descripcion' => 'max:100',
-            'cantidad_stock' => 'required|integer|min:0',
+            'cantidad_stock' => 'required|integer|min:1',
             'imagen' => 'nullable|image', // Validación para imagen
             'id_marca' => 'required|integer|exists:marcas,id',
             'id_categoria' => 'required|integer|exists:categorias,id',
-            'costo_unitario' => 'required|numeric|min:0',
-            'precio_unitario' => 'required|numeric|min:0',
+            'costo_unitario' => 'required|numeric|min:1',
+            'precio_unitario' => 'required|numeric|min:1',
             'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem',
             'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie',
         ], [

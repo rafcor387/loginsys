@@ -7,12 +7,12 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./show-user.component.scss'],
 })
 export class ShowUserComponent {
-  @Input() user: any;
+  @Input() responseData: any; // Recibirás el `response` aquí
 
   constructor(private modalController: ModalController) {}
 
-  close() {
-    this.modalController.dismiss();
+  closeModal() {
+    this.modalController.dismiss(); // Cerrar el modal
   }
 
 }

@@ -1,27 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Detalles del Usuario</ion-title>
+    <ion-title>Usuario Creado</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="close()">Cerrar</ion-button>
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>ID Empleado:</ion-label>
-    <ion-text>{{ user.id_empleado }}</ion-text>
-  </ion-item>
-
-  <ion-item>
-    <ion-label>Email:</ion-label>
-    <ion-text>{{ user.email }}</ion-text>
-  </ion-item>
-
-  <ion-item>
-    <ion-label>Fecha Creacion:</ion-label>
-    <ion-text>{{ user.created_at | date: 'dd/MM/yyyy' }}</ion-text>
-  </ion-item>
-
-  <!-- Agrega más campos según sea necesario -->
+  <div *ngIf="responseData">
+    <p><strong>Código:</strong> {{ responseData.codigo }}</p>
+    <p><strong>Mensaje:</strong> {{ responseData.message }}</p>
+    <p><strong>Contraseña:</strong> {{ responseData.password }}</p>
+  </div>
 </ion-content>

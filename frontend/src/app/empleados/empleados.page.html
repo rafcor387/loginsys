@@ -4,10 +4,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content> 
-  <ion-button (click)="openRegisterModal()" expand="full">Registrar Empleado</ion-button>
-
-
-
+  <ion-button color="success" (click)="openRegisterModal()" expand="full">Registrar Empleado</ion-button>
   <div>
     <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
   </div>
@@ -17,11 +14,16 @@
         <h2>{{ empleado.cargo?.nombre }}</h2>
         <p class="pa">Nombres: {{ empleado.nombres }}</p>
         <p class="pa">Apellidos: {{ empleado.apellidos }}</p>
-        <p class="pa">Salario: {{ empleado.salario }}</p>
+        <p class="pa">Codigo: {{ empleado.users?.email }}</p>
       </ion-label>
-      <ion-button color="danger" (click)="DeleteEmpleado(empleado.id)">Eliminar</ion-button>
-      <ion-button color="warning" (click)="Create_Show_User(empleado.id)">Crear/Mostrar Usuario</ion-button>
-      <ion-button color="primary" (click)="openUpdateModal(empleado)">Editar</ion-button>
+      <div class="button-container">
+        <ion-button color="danger" (click)="DeleteEmpleado(empleado.id)">Eliminar</ion-button>
+        <ion-button color="primary" (click)="openUpdateModal(empleado)">Editar</ion-button>
+        <ion-button color="danger" *ngIf="usuariosExistentes[empleado.id]" (click)="eliminarUsuario(empleado.id)">Borrar Usuario</ion-button>
+        <ion-button color="success" *ngIf="!usuariosExistentes[empleado.id]" (click)="Create_User(empleado.id)">Crear User</ion-button>
+        <ion-button color="secondary" (click)="showEmpleadoDetails(empleado)">Detalle</ion-button>
+      </div>
+      
     </ion-item>
   </ion-list>
 </ion-content>

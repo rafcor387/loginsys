@@ -17,7 +17,7 @@ export class RegisterEmpleadoComponent implements OnInit {
     email: '',
     direccion: '',
     fecha_contratacion: new Date().toISOString().substring(0, 10),
-    salario: 0,
+    salario: 1000.0,
   };
   errorMessage: string = '';
   cargos: any[] = []; // Array para almacenar cargos

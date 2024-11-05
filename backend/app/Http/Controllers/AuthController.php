@@ -53,11 +53,12 @@ class AuthController extends Controller
     {
         // Validación de los campos de email y password
         $request->validate([
-            'email' => 'required|email',
+            //'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ], [
             'email.required' => 'El campo de correo electrónico es obligatorio.',
-            'email.email' => 'Por favor, introduce una dirección de correo válida.',
+            //'email.email' => 'Por favor, introduce una dirección de correo válida.',
             'password.required' => 'El campo de contraseña es obligatorio.',
         ]);
 

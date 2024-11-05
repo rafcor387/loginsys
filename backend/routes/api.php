@@ -10,8 +10,8 @@ use App\Http\Controllers\RepuestoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Cargo;
-
 use App\Http\Controllers\Auth\VerifyEmailController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +28,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('users/check/{idEmpleado}', [UserController::class, 'checkEmployee']);
 Route::get('users/show/{idEmpleado}', [UserController::class, 'showUser']);
+Route::get('/generar-usuario/{idEmpleado}', [EmpleadoController::class, 'generarCodigo']);
+Route::get('/verificar-usuario/{idEmpleado}', [UserController::class, 'verificarUsuarioPorEmpleado']);
+Route::delete('/eliminar_usuario/{idEmpleado}', [EmpleadoController::class, 'eliminarUser']);
 
 
 /*
@@ -35,6 +38,7 @@ Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify']
     ->middleware(['signed'])
     ->name('verification.verify');
 */
+
 // Rutas protegidas por Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     // Obtener el usuario autenticado
@@ -45,22 +49,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/email', [AuthController::class, 'getUserEmail']);
     // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    /*
-    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
-        ->name('verification.send');
-*/
-
+    /*Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
+        ->name('verification.send');*/
     Route::apiResource('empleados', EmpleadoController::class);
-
     Route::apiResource('repuestos', RepuestoController::class);
-
     Route::apiResource('marcas', MarcaController::class);
-
     Route::apiResource('categorias', CategoriaController::class);
-
     Route::apiResource('cargos',CargoController::class);
-
-
-
 });

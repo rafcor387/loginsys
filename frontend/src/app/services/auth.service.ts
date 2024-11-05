@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
+  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
   
   //private userSubject = new BehaviorSubject<any>(null); // Crea un BehaviorSubject para el usuario
 
@@ -16,12 +17,19 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  checkEmpleado(idEmpleado: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/users/check/${idEmpleado}`);
+  eliminarUsuario(idEmpleado : number):Observable<any>{
+    return this.http.delete<any>(`${this.apiUrl}/eliminar_usuario/${idEmpleado}`);
+  }
+  verificarUsuarioPorEmpleado(idEmpleado: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/verificar-usuario/${idEmpleado}`);
   }
 
   getUserDetails(idEmpleado: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/users/show/${idEmpleado}`);
+  }
+
+  createUser(idEmpleado: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/generar-usuario/${idEmpleado}`);
   }
   
   

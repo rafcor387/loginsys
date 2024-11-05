@@ -38,12 +38,14 @@
     <ion-item>
       <ion-label>Cargo</ion-label>
       <ion-select [(ngModel)]="empleado.id_cargo" name="id_cargo" required>
-        <ion-select-option *ngFor="let cargo of cargos" [value]="cargo.id">{{ cargo.nombre }}</ion-select-option>
+        <ion-select-option *ngFor="let cargo of cargos" [value]="cargo.id">{{
+          cargo.nombre
+        }}</ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">telefono</ion-label>
+      <ion-label position="floating">celular</ion-label>
       <ion-input
         [(ngModel)]="empleado.telefono"
         name="telefono"
@@ -51,12 +53,8 @@
       ></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">email</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.email"
-        name="email"
-        required
-      ></ion-input>
+      <ion-label position="floating">email Personal</ion-label>
+      <ion-input [(ngModel)]="empleado.email" name="email" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">direccion</ion-label>
@@ -72,17 +70,17 @@
       <ion-input
         [(ngModel)]="empleado.fecha_contratacion"
         name="fecha_contratacion"
-        type = "date"
+        type="date"
         required
       ></ion-input>
     </ion-item>
-    
+
     <ion-item>
       <ion-label position="floating">salario</ion-label>
       <ion-input
         [(ngModel)]="empleado.salario"
         name="salario"
-        type = "number"
+        type="number"
         required
       ></ion-input>
     </ion-item>
