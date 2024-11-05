@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empleado;
+use App\Models\User;
 
 class EmpleadoController extends Controller
 {
     // Obtener todos los empleados
     public function index()
     {
-        $empleados = Empleado::with('cargo','users')->get(); // Carga empleados con su relación de cargo
+        $empleados = Empleado::with(['cargo', 'users'])->get(); // Carga empleados con sus relaciones de cargo y user
         return response()->json($empleados);
-        //return Empleado::all();
     }
 
     // Obtener un empleado específico
@@ -26,20 +26,15 @@ class EmpleadoController extends Controller
     {
         $request->validate([
             'ci' => 'required|digits_between:6,20', // Solo permite números, con longitud mínima de 6 y máxima de 20
-            'nombres' => 'required|string|max:100', // Solo letras y espacios
+            'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', // Solo letras y espacios
             'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', // Solo letras y espacios
             'id_cargo' => 'required|exists:cargos,id',
             'telefono' => 'required|string|max:15|regex:/^[0-9]{7,15}$/', // Validar formato de teléfono
-            'email' => [
-                'required',
-                'email',
-                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Only Gmail, Yahoo, or Outlook
-                'unique:empleados,email',
-                'not_regex:/^\s*$/'
-            ],
+            'email' => 'required|email|unique:empleados,email',
+            //'email' => 'required|email|unique:empleados,email',
             'direccion' => 'required|string|max:255',
             'fecha_contratacion' => 'required|date|before_or_equal:today', // No permitir fechas futuras
-            'salario' => 'required|numeric|min:350|max:1000000', // Salario con un límite razonable
+            'salario' => 'required|numeric|min:0|max:1000000', // Salario con un límite razonable
         ], [
             'ci.required' => 'El campo CI es obligatorio.',
             'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
@@ -50,25 +45,29 @@ class EmpleadoController extends Controller
             'apellidos.string' => 'El apellido debe contener solo letras.',
             'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
             'id_cargo.required' => 'Debes seleccionar un cargo válido.',
-            'telefono.required' => 'El teléfono es obligatorio.',
-            'telefono.regex' => 'El teléfono debe contener solo números y tener entre 7 y 15 dígitos.',
+            'telefono.required' => 'El celular es obligatorio.',
+            'telefono.regex' => 'El celular debe contener solo números y tener entre 7 y 15 dígitos.',
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico debe ser válido.',
-            'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
             'email.unique' => 'El correo electrónico ya está registrado.',
             'direccion.required' => 'La dirección es obligatoria.',
             'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
             'fecha_contratacion.before_or_equal' => 'La fecha de contratación no puede ser futura.',
             'salario.required' => 'El salario es obligatorio.',
             'salario.numeric' => 'El salario debe ser un número válido.',
-            'salario.min' => 'El salario no puede ser negativo o ser menor a 350',
+            'salario.min' => 'El salario no puede ser negativo.',
             'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
         ]);
 
 
         try {
             $empleado = Empleado::create($request->all());
-            return response()->json($empleado, 201);
+            return response()->json([
+                'nuevo empleado' => $empleado,
+                'message' => 'Empleado Creado Correctamente'
+            ]);
+
+
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => 'Error al crear el empleado', 'error' => $e->getMessage()], 400);
         } catch (\Exception $e) {
@@ -87,16 +86,10 @@ class EmpleadoController extends Controller
             'apellidos' => 'required|string|max:100',
             'id_cargo' => 'required|exists:cargos,id',
             'telefono' => 'required|string|max:15',
-            'email' => [
-                'required',
-                'email',
-                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Only Gmail, Yahoo, or Outlook
-                'unique:empleados,email,' . $id,
-                'not_regex:/^\s*$/'
-            ],
+            'email' => 'required|email',
             'direccion' => 'required|string|max:255',
             'fecha_contratacion' => 'required|date',
-            'salario' => 'required|numeric|min:350',
+            'salario' => 'required|numeric|min:0',
         ], [
             'nombres.required' => 'El campo de nombre es obligatorio.',
             // Puedes agregar más mensajes personalizados aquí
@@ -106,7 +99,11 @@ class EmpleadoController extends Controller
             $empleado = Empleado::findOrFail($id);
             $empleado->update($request->all());
 
+            
+
             return response()->json($empleado, 200);
+
+            
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al actualizar el empleado'], 500);
         }
@@ -125,7 +122,6 @@ class EmpleadoController extends Controller
             return response()->json(['message' => 'Empleado no encontrado'], 404);
         }
     }
-
 
     public function generarCodigo($idEmpleado)
     {
