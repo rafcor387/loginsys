@@ -25,16 +25,15 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ci' => 'required|digits_between:6,20', // Solo permite números, con longitud mínima de 6 y máxima de 20
-            'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', // Solo letras y espacios
-            'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', // Solo letras y espacios
+            'ci' => 'required|digits_between:6,11',
+            'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/', // Solo letras y espacios
+            'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
             'id_cargo' => 'required|exists:cargos,id',
-            'telefono' => 'required|string|max:15|regex:/^[0-9]{7,15}$/', // Validar formato de teléfono
-            'email' => 'required|email|unique:empleados,email',
-            //'email' => 'required|email|unique:empleados,email',
+            'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
+            'email' => ['required','email','regex:/(.*)@(gmail|yahoo|outlook)\.com$/i','unique:empleados,email','not_regex:/^\s*$/'],
             'direccion' => 'required|string|max:255',
-            'fecha_contratacion' => 'required|date|before_or_equal:today', // No permitir fechas futuras
-            'salario' => 'required|numeric|min:0|max:1000000', // Salario con un límite razonable
+            'fecha_contratacion' => 'required|date|before_or_equal:today|after_or_equal:today',
+            'salario' => 'required|numeric|min:1000|max:1000000',
         ], [
             'ci.required' => 'El campo CI es obligatorio.',
             'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
@@ -46,27 +45,26 @@ class EmpleadoController extends Controller
             'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
             'id_cargo.required' => 'Debes seleccionar un cargo válido.',
             'telefono.required' => 'El celular es obligatorio.',
-            'telefono.regex' => 'El celular debe contener solo números y tener entre 7 y 15 dígitos.',
+            'telefono.numeric' => 'Ingrese un celular valido',
+            'telefono.regex' => 'Ingrese un celular válido.',
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico debe ser válido.',
+            'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
             'email.unique' => 'El correo electrónico ya está registrado.',
             'direccion.required' => 'La dirección es obligatoria.',
             'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
-            'fecha_contratacion.before_or_equal' => 'La fecha de contratación no puede ser futura.',
+            'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
+            'fecha_contratacion.after_or_equal' => 'La fecha de contratación debe ser la de hoy.',
             'salario.required' => 'El salario es obligatorio.',
             'salario.numeric' => 'El salario debe ser un número válido.',
-            'salario.min' => 'El salario no puede ser negativo.',
+            'salario.min' => 'El salario no puede ser negativo o ser menor a 1000',
             'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
         ]);
 
 
         try {
             $empleado = Empleado::create($request->all());
-            return response()->json([
-                'nuevo empleado' => $empleado,
-                'message' => 'Empleado Creado Correctamente'
-            ]);
-
+            return response()->json($empleado, 201);
 
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => 'Error al crear el empleado', 'error' => $e->getMessage()], 400);
@@ -78,32 +76,53 @@ class EmpleadoController extends Controller
     // Actualizar un empleado existente
     public function update(Request $request, $id)
     {
-        // Validación de los campos para actualizar
-        // Validación de los campos
         $request->validate([
-            'ci' => 'required|integer',
-            'nombres' => 'required|string|max:100',
-            'apellidos' => 'required|string|max:100',
+            'ci' => 'required|digits_between:6,11',
+            'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/', // Solo letras y espacios
+            'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
             'id_cargo' => 'required|exists:cargos,id',
-            'telefono' => 'required|string|max:15',
-            'email' => 'required|email',
+            'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
+            'email' => [
+                'required',
+                'email',
+                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Only Gmail, Yahoo, or Outlook
+                'not_regex:/^\s*$/'
+            ],
             'direccion' => 'required|string|max:255',
-            'fecha_contratacion' => 'required|date',
-            'salario' => 'required|numeric|min:0',
+            'fecha_contratacion' => 'required|date|before_or_equal:today',
+            'salario' => 'required|numeric|min:1000|max:1000000',
         ], [
+            'ci.required' => 'El campo CI es obligatorio.',
+            'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
             'nombres.required' => 'El campo de nombre es obligatorio.',
-            // Puedes agregar más mensajes personalizados aquí
+            'nombres.string' => 'El nombre debe contener solo letras.',
+            'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+            'apellidos.required' => 'El campo de apellidos es obligatorio.',
+            'apellidos.string' => 'El apellido debe contener solo letras.',
+            'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
+            'id_cargo.required' => 'Debes seleccionar un cargo válido.',
+            'telefono.required' => 'El celular es obligatorio.',
+            'telefono.numeric' => 'Ingrese un celular valido',
+            'telefono.regex' => 'Ingrese un celular válido.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico debe ser válido.',
+            'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
+            'email.unique' => 'El correo electrónico ya está registrado.',
+            'direccion.required' => 'La dirección es obligatoria.',
+            'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
+            'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
+            'salario.required' => 'El salario es obligatorio.',
+            'salario.numeric' => 'El salario debe ser un número válido.',
+            'salario.min' => 'El salario no puede ser negativo o ser menor a 1000',
+            'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
         ]);
+
 
         try {
             $empleado = Empleado::findOrFail($id);
             $empleado->update($request->all());
-
-            
-
             return response()->json($empleado, 200);
 
-            
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al actualizar el empleado'], 500);
         }
