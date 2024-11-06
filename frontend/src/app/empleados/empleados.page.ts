@@ -20,6 +20,7 @@ export class EmpleadosPage implements OnInit {
   usuarios: { [key: number]: any } = {}; // Para almacenar el estado de existencia
   user: any[] = [];
   errorMessage: string = ''; // Variable para almacenar el mensaje de error
+  public Message: string = '';
 
   constructor(
     private authService: AuthService,
@@ -47,11 +48,11 @@ export class EmpleadosPage implements OnInit {
           handler: () => {
             this.LoadEmpleados();
             this.authService.eliminarUsuario(idEmpleado).subscribe(
-              response => {
+              (response) => {
                 console.log('Usuario eliminado con éxito:', response);
                 // Aquí podrías refrescar la lista de usuarios o mostrar una notificación
               },
-              error => {
+              (error) => {
                 console.error('Error al eliminar el usuario:', error);
               }
             );
@@ -84,8 +85,8 @@ export class EmpleadosPage implements OnInit {
               // Si el usuario confirma, proceder a eliminar
               this.authService.EliminarEmpleado(empleadoId).subscribe(
                 (response) => {
-                  console.log('Empleado eliminado:', response);
-                  this.LoadEmpleados(); // Cargar empleados después de eliminar
+                  this.LoadEmpleados();
+                  this.Message = response.message;
                 },
                 (error) => {
                   console.error('Error al eliminar el empleado:', error);
@@ -134,13 +135,12 @@ export class EmpleadosPage implements OnInit {
         });
     });
   }
-  
-  
 
   LoadEmpleados() {
     this.authService.ListarEmpleados().subscribe(
       (response) => {
-        this.empleados = response; // Guardar los datos en el array
+        this.empleados = response.empleados; // Guardar los datos en el array
+        //this.Message = response.message;
         this.verificarUsuarios();
         this.errorMessage = ''; // Limpiar cualquier error
       },
@@ -167,14 +167,15 @@ export class EmpleadosPage implements OnInit {
     });
     return await modal.present();
   }
-  
+
   async openRegisterModal() {
     const modal = await this.modalController.create({
       component: RegisterEmpleadoComponent,
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.empleados.push(data.data); // Agrega el nuevo empleado a la lista
+        this.LoadEmpleados();
+        this.Message = data.data.successMessage; 
       }
     });
     return await modal.present();

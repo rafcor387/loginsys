@@ -7,6 +7,7 @@
   <ion-button color="success" (click)="openRegisterModal()" expand="full">Registrar Empleado</ion-button>
   <div>
     <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
+    <ion-text color="success" *ngIf="Message"> {{ Message }} </ion-text>
   </div>
   <ion-list>
     <ion-item *ngFor="let empleado of empleados">
@@ -23,7 +24,6 @@
         <ion-button color="success" *ngIf="!usuariosExistentes[empleado.id]" (click)="Create_User(empleado.id)">Crear User</ion-button>
         <ion-button color="secondary" (click)="showEmpleadoDetails(empleado)">Detalle</ion-button>
       </div>
-      
     </ion-item>
   </ion-list>
 </ion-content>

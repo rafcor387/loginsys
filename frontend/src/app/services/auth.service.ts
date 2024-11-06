@@ -12,12 +12,29 @@ export class AuthService {
   private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
   //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
-  
-  //private userSubject = new BehaviorSubject<any>(null); // Crea un BehaviorSubject para el usuario
-
-  //private isLoggedIn = False
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  private handleError(error: any): Observable<never> {
+    let errorMsg = '';
+    let stg_error = true;
+
+    if (error.error && error.error.message) {
+      // Capturar el mensaje que envía Laravel en el campo 'message'
+      errorMsg = error.error.message;
+      stg_error = false;
+    }
+    if (error.error && error.error.errors) {
+      // Laravel envía los errores en un campo 'errors'
+      errorMsg = Object.values(error.error.errors).join(' ');
+      stg_error = false;
+    }
+    if (stg_error) {
+      errorMsg = 'Error inesperado. Intenta de nuevo.';
+    }
+    return throwError(() => errorMsg);
+    //return throwError(errorMsg);
+  }
 
   eliminarUsuario(idEmpleado : number):Observable<any>{
     return this.http.delete<any>(`${this.apiUrl}/eliminar_usuario/${idEmpleado}`);
@@ -72,38 +89,18 @@ export class AuthService {
     window.location.reload();
     this.router.navigate(['/login']); // Redirige a la página de inicio de sesión
   }
-
-  private handleError(error: any): Observable<never> {
-    let errorMsg = '';
-    let stg_error = true;
-
-    if (error.error && error.error.message) {
-      // Capturar el mensaje que envía Laravel en el campo 'message'
-      errorMsg = error.error.message;
-      stg_error = false;
-    }
-    if (error.error && error.error.errors) {
-      // Laravel envía los errores en un campo 'errors'
-      errorMsg = Object.values(error.error.errors).join(' ');
-      stg_error = false;
-    }
-    if (stg_error) {
-      errorMsg = 'Error inesperado. Intenta de nuevo.';
-    }
-    return throwError(() => errorMsg);
-    //return throwError(errorMsg);
-  }
+  
 
   //crud empleados
-  AgregarEmpleado(credentials: any): Observable<any> {
+  AgregarEmpleado(nuevoEmpleado: any): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
     });
     return this.http
-      .post<any[]>(`${this.apiUrl}/empleados`, credentials, { headers }) // Asegúrate de pasar los headers aquí
+      .post<any>(`${this.apiUrl}/empleados`, nuevoEmpleado, { headers }) // Asegúrate de pasar los headers aquí
       .pipe(catchError(this.handleError));
-  }
+    }
   ListarEmpleados(): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
