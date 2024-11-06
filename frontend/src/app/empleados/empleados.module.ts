@@ -9,7 +9,6 @@ import { EmpleadosPageRoutingModule } from './empleados-routing.module';
 import { EmpleadosPage } from './empleados.page';
 import { UpdateEmpleadoComponent } from './update-empleado/update-empleado.component';
 import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component';
-import { ShowUserComponent } from './show-user/show-user.component';
 
 @NgModule({
   imports: [
@@ -18,6 +17,6 @@ import { ShowUserComponent } from './show-user/show-user.component';
     IonicModule,
     EmpleadosPageRoutingModule
   ],
-  declarations: [EmpleadosPage, UpdateEmpleadoComponent, RegisterEmpleadoComponent, ShowUserComponent]
+  declarations: [EmpleadosPage, UpdateEmpleadoComponent, RegisterEmpleadoComponent]
 })
 export class EmpleadosPageModule {}

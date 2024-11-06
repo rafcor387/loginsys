@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { EmailValidator } from '@angular/forms';
-import { ShowUserComponent } from './show-user/show-user.component';
 
 @Component({
   selector: 'app-empleados',
@@ -46,10 +45,11 @@ export class EmpleadosPage implements OnInit {
         {
           text: 'Eliminar',
           handler: () => {
-            this.LoadEmpleados();
             this.authService.eliminarUsuario(idEmpleado).subscribe(
               (response) => {
+                this.LoadEmpleados();
                 console.log('Usuario eliminado con éxito:', response);
+                this.Message = response.message;
                 // Aquí podrías refrescar la lista de usuarios o mostrar una notificación
               },
               (error) => {
@@ -106,6 +106,7 @@ export class EmpleadosPage implements OnInit {
         console.log('Usuario creado:', response);
         await this.CreateUserAlert(response);
         this.LoadEmpleados();
+        this.Message = response.message;
       },
       (error) => {
         console.error('Error al crear usuario:', error);
@@ -142,7 +143,8 @@ export class EmpleadosPage implements OnInit {
         this.empleados = response.empleados; // Guardar los datos en el array
         //this.Message = response.message;
         this.verificarUsuarios();
-        this.errorMessage = ''; // Limpiar cualquier error
+        //this.errorMessage = ''; // Limpiar cualquier error
+        //this.Message = '';
       },
       (error) => {
         console.error('Error al obtener los empleados:', error);
@@ -154,15 +156,12 @@ export class EmpleadosPage implements OnInit {
   async openUpdateModal(empleado: any) {
     const modal = await this.modalController.create({
       component: UpdateEmpleadoComponent,
-      componentProps: { empleado: { ...empleado } }, // Pass a copy of the repuesto
+      componentProps: { empleado: { ...empleado } },
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        // Update the empleados array with the updated empleado
-        const index = this.empleados.findIndex((r) => r.id === data.data.id);
-        if (index !== -1) {
-          this.empleados[index] = data.data;
-        }
+        this.LoadEmpleados();
+        this.Message = data.data.message; 
       }
     });
     return await modal.present();
@@ -182,6 +181,7 @@ export class EmpleadosPage implements OnInit {
   }
 
   async showEmpleadoDetails(empleado: any) {
+    this.Message = '';
     const actionSheet = await this.actionSheetController.create({
       header: 'Detalles del Empleado',
       buttons: [

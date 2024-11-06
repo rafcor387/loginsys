@@ -67,20 +67,14 @@ class EmpleadoController extends Controller
                 'salario.min' => 'El salario no puede ser negativo o ser menor a 1000',
                 'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
             ]);
-
-            // Convertir los campos 'nombres' y 'apellidos' a minúsculas
-            $validatedData['nombres'] = strtolower($validatedData['nombres']);
-            $validatedData['apellidos'] = strtolower($validatedData['apellidos']);
-            $validatedData['email'] = strtolower($validatedData['email']);
-            $validatedData['direccion'] = strtolower($validatedData['direccion']);
-
+            $validatedData['nombres'] = strtoupper($validatedData['nombres']);
+            $validatedData['apellidos'] = strtoupper($validatedData['apellidos']);
+            $validatedData['direccion'] = strtoupper($validatedData['direccion']);
             $empleado = Empleado::create($validatedData);
-
             return response()->json([
                 'message' => 'Empleado creado con éxito',
                 'nuevo empleado' => $empleado
             ], 201);
-
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'errors' => $e->errors()], 422);
         } catch (QueryException $e) {
@@ -93,56 +87,61 @@ class EmpleadoController extends Controller
     // Actualizar un empleado existente
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'ci' => 'required|digits_between:6,11',
-            'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/', // Solo letras y espacios
-            'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
-            'id_cargo' => 'required|exists:cargos,id',
-            'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
-            'email' => [
-                'required',
-                'email',
-                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Only Gmail, Yahoo, or Outlook
-                'not_regex:/^\s*$/'
-            ],
-            'direccion' => 'required|string|max:255',
-            'fecha_contratacion' => 'required|date|before_or_equal:today',
-            'salario' => 'required|numeric|min:1000|max:1000000',
-        ], [
-            'ci.required' => 'El campo CI es obligatorio.',
-            'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
-            'nombres.required' => 'El campo de nombre es obligatorio.',
-            'nombres.string' => 'El nombre debe contener solo letras.',
-            'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
-            'apellidos.required' => 'El campo de apellidos es obligatorio.',
-            'apellidos.string' => 'El apellido debe contener solo letras.',
-            'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
-            'id_cargo.required' => 'Debes seleccionar un cargo válido.',
-            'telefono.required' => 'El celular es obligatorio.',
-            'telefono.numeric' => 'Ingrese un celular valido',
-            'telefono.regex' => 'Ingrese un celular válido.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico debe ser válido.',
-            'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
-            'email.unique' => 'El correo electrónico ya está registrado.',
-            'direccion.required' => 'La dirección es obligatoria.',
-            'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
-            'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
-            'salario.required' => 'El salario es obligatorio.',
-            'salario.numeric' => 'El salario debe ser un número válido.',
-            'salario.min' => 'El salario no puede ser negativo o ser menor a 1000',
-            'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
-        ]);
         try {
-            $empleado = Empleado::findOrFail($id);
-            $empleado->update($request->all());
-            return response()->json($empleado, 200);
+            $validatedData = $request->validate([
+                'ci' => 'required|digits_between:6,11',
+                'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
+                'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
+                'id_cargo' => 'required|exists:cargos,id',
+                'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
+                'email' => ['required', 'email', 'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', 'not_regex:/^\s*$/'],
+                'direccion' => 'required|string|max:255',
+                'fecha_contratacion' => 'required|date|before_or_equal:today',
+                'salario' => 'required|numeric|min:1000|max:1000000',
+            ], [
+                'ci.required' => 'El campo CI es obligatorio.',
+                'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
+                'nombres.required' => 'El campo de nombre es obligatorio.',
+                'nombres.string' => 'El nombre debe contener solo letras.',
+                'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+                'apellidos.required' => 'El campo de apellidos es obligatorio.',
+                'apellidos.string' => 'El apellido debe contener solo letras.',
+                'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
+                'id_cargo.required' => 'Debes seleccionar un cargo válido.',
+                'telefono.required' => 'El celular es obligatorio.',
+                'telefono.numeric' => 'Ingrese un celular valido',
+                'telefono.regex' => 'Ingrese un celular válido.',
+                'email.required' => 'El correo electrónico es obligatorio.',
+                'email.email' => 'El correo electrónico debe ser válido.',
+                'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                'direccion.required' => 'La dirección es obligatoria.',
+                'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
+                'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
+                'salario.required' => 'El salario es obligatorio.',
+                'salario.numeric' => 'El salario debe ser un número válido.',
+                'salario.min' => 'El salario no puede ser negativo o ser menor a 1000',
+                'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
+            ]);
 
+            $validatedData['nombres'] = strtoupper($validatedData['nombres']);
+            $validatedData['apellidos'] = strtoupper($validatedData['apellidos']);
+            $validatedData['direccion'] = strtoupper($validatedData['direccion']);
+
+            $empleado = Empleado::findOrFail($id);
+            $empleado->update($validatedData);
+            return response()->json([
+                'message' => 'Empleado actualizado con éxito',
+                'empleado actualizado' => $empleado
+            ], 201);
+        }
+        catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'errors' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'error' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al actualizar el empleado'], 500);
+            return response()->json(['messageError' => 'Error al editar el empleado'], 500);
         }
     }
-
 
     // Eliminar un empleado
     public function destroy($id)
@@ -160,10 +159,10 @@ class EmpleadoController extends Controller
     {
         $usuario = User::where('id_empleado', $idEmpleado)->first();
         if (!$usuario) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
+            return response()->json(['messageError' => 'Usuario no encontrado'], 404);
         }
         $usuario->delete();
-        return response()->json(['messageError' => 'Usuario eliminado con éxito'], 200);
+        return response()->json(['message' => 'Usuario eliminado con éxito'], 200);
     }
 
     public function generarCodigo($idEmpleado)
@@ -185,7 +184,7 @@ class EmpleadoController extends Controller
 
         $user->save();
         return response()->json([
-            'message' => 'Usuario creado correctamente',
+            'message' => 'Usuario creado con éxito',
             'codigo' => $codigo,
             'password' => $passwordRandom
         ]);
