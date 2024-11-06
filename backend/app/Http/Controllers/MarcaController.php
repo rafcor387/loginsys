@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Marca;
+use \Illuminate\Validation\ValidationException;
+use \Illuminate\Database\QueryException;
 
 class MarcaController extends Controller
 {
@@ -23,68 +25,76 @@ class MarcaController extends Controller
     // Crear una nueva marca
     public function store(Request $request)
     {
-        // Validación de los campos
-        $request->validate([
-            'nombre' => [
-                'required',
-                'regex:/^[a-zA-Z0-9 ]+$/', // Solo letras y números
-                'max:30',
-                'not_regex:/^\s*$/' // No permite solo espacios en blanco
-            ],
-            'pais' => [
-                'required',
-                'regex:/^[a-zA-Z\s]+$/', // Solo letras
-                'max:30',
-                'not_regex:/^\s*$/' // No permite solo espacios en blanco
-            ],
-            'email' => [
-                'required',
-                'email',
-                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
-                'unique:marcas,email',
-                'not_regex:/^\s*$/'
-            ],
-            'direccion' => [
-                'required',
-                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
-                'max:60',
-                'not_regex:/^\s*$/'
-            ],
-            'telefono' => [
-                'required',
-                'regex:/^[0-9]{7,15}$/', // Only digits, between 7 and 15 digits
-                'not_regex:/^\s*$/'
-            ],
-            'sitio_web' => [
-                'nullable',
-                'string',
-                'max:30'
-            ],
-            'descripcion' => [
-                'nullable',
-                'string',
-                'max:200',
-                'not_regex:/^\s*$/'
-            ]
-        ], [
-            'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo debe contener letras y números.',
-            'pais.regex' => 'El país solo debe contener letras.',
-            'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
-            'direccion.regex' => 'La dirección solo debe contener letras y números.',
-            'telefono.required' => 'El teléfono es obligatorio.',
-            'telefono.regex' => 'El teléfono debe contener entre 7 y 15 dígitos.',
-            'not_regex' => 'El campo no debe contener solo espacios en blanco.',
-            'descripcion.max' => 'La descripcion no puede ser mas de 200 caracteres'
-        ]);
-
         try {
-            $marca = Marca::create($request->all()); // Crea una nueva marca
-            return response()->json($marca, 201); // Devuelve la marca creada con código 201
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => 'Error al crear la marca', 'error' => $e->getMessage()], 400);
+            $validatedData = $request->validate([
+                'nombre' => [
+                    'required',
+                    'regex:/^[a-zA-Z0-9 ]+$/', // Solo letras y números
+                    'max:30',
+                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                ],
+                'pais' => [
+                    'required',
+                    'regex:/^[a-zA-Z\s]+$/', // Solo letras
+                    'max:30',
+                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                ],
+                'email' => [
+                    'required',
+                    'email',
+                    'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
+                    'unique:marcas,email',
+                    'not_regex:/^\s*$/'
+                ],
+                'direccion' => [
+                    'required',
+                    'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
+                    'max:60',
+                    'not_regex:/^\s*$/'
+                ],
+                'telefono' => [
+                    'required',
+                    'regex:/^[0-9]{7,15}$/', // Only digits, between 7 and 15 digits
+                    'not_regex:/^\s*$/'
+                ],
+                'sitio_web' => [
+                    'nullable',
+                    'string',
+                    'max:30'
+                ],
+                'descripcion' => [
+                    'nullable',
+                    'string',
+                    'max:200',
+                    'not_regex:/^\s*$/'
+                ]
+            ], [
+                'nombre.required' => 'El campo de nombre es obligatorio.',
+                'nombre.regex' => 'El nombre solo debe contener letras y números.',
+                'pais.required' => 'El país es obligatorio.',
+                'pais.regex' => 'El país solo debe contener letras.',
+                'email.required' => 'El email es obligatorio.',
+                'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                'direccion.required' => 'La dirección es obligatorio.',
+                'direccion.regex' => 'La dirección solo debe contener letras y números.',
+                'telefono.required' => 'El teléfono es obligatorio.',
+                'telefono.regex' => 'El teléfono debe contener entre 7 y 15 dígitos.',
+                'not_regex' => 'El campo no debe contener solo espacios en blanco.',
+                'descripcion.max' => 'La descripcion no puede ser mas de 200 caracteres'
+            ]);
+
+            $marca = Marca::create($validatedData);
+
+            return response()->json([
+                'message' => 'Marca creada con éxito',
+                'nuevo empleado' => $marca
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'error' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al crear la marca'], 500);
+            return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
         }
     }
 

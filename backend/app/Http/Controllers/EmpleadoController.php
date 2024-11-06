@@ -13,20 +13,20 @@ class EmpleadoController extends Controller
     // Obtener todos los empleados
     public function index()
     {
-        $empleados = Empleado::with(['cargo', 'users'])->get(); // Carga empleados con sus relaciones de cargo y user
-        return response()->json([
-            'empleados' => $empleados
-            //'message' => 'listado correcto'
-        ]);
+        try {
+            $empleados = Empleado::with(['cargo', 'users'])->get(); // Carga empleados con sus relaciones de cargo y user
+            return response()->json([
+                'empleados' => $empleados,
+                'message' => 'listado correcto'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messageError' => 'Ocurrió un error al obtener el listado de empleados.',
+                'detailsError' => $e->getMessage() // Mensaje de error detallado (opcional)
+            ], 500);
+        }
     }
 
-    // Obtener un empleado específico
-    public function show($id)
-    {
-        return Empleado::findOrFail($id);
-    }
-
-    // Crear un nuevo repuesto
     public function store(Request $request)
     {
         try {
@@ -37,7 +37,7 @@ class EmpleadoController extends Controller
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
                 'email' => ['required', 'email', 'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', 'unique:empleados,email', 'not_regex:/^\s*$/'],
-                'direccion' => 'required|string|max:255',
+                'direccion' => 'required|string|max:255|regex:/^[A-Za-z0-9. ]+$/',
                 'fecha_contratacion' => 'required|date|before_or_equal:today|after_or_equal:today',
                 'salario' => 'required|numeric|min:1000|max:1000000',
             ], [
@@ -59,6 +59,7 @@ class EmpleadoController extends Controller
                 'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
                 'email.unique' => 'El correo electrónico ya está registrado.',
                 'direccion.required' => 'La dirección es obligatoria.',
+                'direccion.regex' => 'La direccion debe contener letras, numeros o puntos',
                 'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
                 'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
                 'fecha_contratacion.after_or_equal' => 'La fecha de contratación debe ser la de hoy.',
@@ -69,18 +70,18 @@ class EmpleadoController extends Controller
             ]);
             $validatedData['nombres'] = strtoupper($validatedData['nombres']);
             $validatedData['apellidos'] = strtoupper($validatedData['apellidos']);
-            $validatedData['direccion'] = strtoupper($validatedData['direccion']);
+
             $empleado = Empleado::create($validatedData);
             return response()->json([
                 'message' => 'Empleado creado con éxito',
                 'nuevo empleado' => $empleado
             ], 201);
         } catch (ValidationException $e) {
-            return response()->json(['messageError' => 'Error de validación', 'errors' => $e->errors()], 422);
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'Error con la base de datos', 'error' => $e->getMessage()], 400);
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['messageError' => 'Error al crear el empleado'], 500);
+            return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
         }
     }
 
@@ -95,7 +96,7 @@ class EmpleadoController extends Controller
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
                 'email' => ['required', 'email', 'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', 'not_regex:/^\s*$/'],
-                'direccion' => 'required|string|max:255',
+                'direccion' => 'required|string|max:255|regex:/^[A-Za-z0-9. ]+$/',
                 'fecha_contratacion' => 'required|date|before_or_equal:today',
                 'salario' => 'required|numeric|min:1000|max:1000000',
             ], [
@@ -115,6 +116,7 @@ class EmpleadoController extends Controller
                 'email.email' => 'El correo electrónico debe ser válido.',
                 'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
                 'direccion.required' => 'La dirección es obligatoria.',
+                'direccion.regex' => 'La direccion debe contener letras, numeros o puntos',
                 'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
                 'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
                 'salario.required' => 'El salario es obligatorio.',
@@ -125,7 +127,6 @@ class EmpleadoController extends Controller
 
             $validatedData['nombres'] = strtoupper($validatedData['nombres']);
             $validatedData['apellidos'] = strtoupper($validatedData['apellidos']);
-            $validatedData['direccion'] = strtoupper($validatedData['direccion']);
 
             $empleado = Empleado::findOrFail($id);
             $empleado->update($validatedData);
@@ -133,13 +134,12 @@ class EmpleadoController extends Controller
                 'message' => 'Empleado actualizado con éxito',
                 'empleado actualizado' => $empleado
             ], 201);
-        }
-        catch (ValidationException $e) {
-            return response()->json(['messageError' => 'Error de validación', 'errors' => $e->errors()], 422);
+        } catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'Error con la base de datos', 'error' => $e->getMessage()], 400);
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['messageError' => 'Error al editar el empleado'], 500);
+            return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
         }
     }
 

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Marca</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (submit)="AddMarca()">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.nombre" name="nombre" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Pais</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.pais" name="pais" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email de contacto</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.email" name="email"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Direccion</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.direccion" name="direccion" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Celular</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.telefono" name="telefono" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Sitio_web</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.sitio_web" name="sitio_web" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripcion</ion-label>
+      <ion-input [(ngModel)]="nuevaMarca.descripcion" name="descripcion" required></ion-input>
+    </ion-item>
+    <ion-button expand="full" type="submit">Agregar Marca</ion-button>
+    <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+  </form>
+</ion-content>

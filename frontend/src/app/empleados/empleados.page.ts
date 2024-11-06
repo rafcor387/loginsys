@@ -3,10 +3,8 @@ import { ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { UpdateEmpleadoComponent } from './update-empleado/update-empleado.component';
 import { RegisterEmpleadoComponent } from './register-empleado/register-empleado.component';
-import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
-import { EmailValidator } from '@angular/forms';
 
 @Component({
   selector: 'app-empleados',
@@ -16,15 +14,14 @@ import { EmailValidator } from '@angular/forms';
 export class EmpleadosPage implements OnInit {
   empleados: any[] = []; // Array para almacenar los empleados
   usuariosExistentes: { [key: number]: boolean } = {}; // Para almacenar el estado de existencia
-  usuarios: { [key: number]: any } = {}; // Para almacenar el estado de existencia
+  //usuarios: { [key: number]: any } = {}; // Para almacenar el estado de existencia
   user: any[] = [];
   errorMessage: string = ''; // Variable para almacenar el mensaje de error
-  public Message: string = '';
+  Message: string = '';
 
   constructor(
     private authService: AuthService,
     private modalController: ModalController,
-    private router: Router,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController
   ) {}
@@ -33,7 +30,41 @@ export class EmpleadosPage implements OnInit {
     this.LoadEmpleados();
   }
 
+  async openRegisterModal() {
+    this.Message = '';
+    this.errorMessage='';
+    const modal = await this.modalController.create({
+      component: RegisterEmpleadoComponent,
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.LoadEmpleados();
+        this.Message = data.data.successMessage;
+      }
+    });
+    return await modal.present();
+  }
+
+  async openUpdateModal(empleado: any) {
+    this.Message = '';
+    this.errorMessage='';
+    const modal = await this.modalController.create({
+      component: UpdateEmpleadoComponent,
+      componentProps: { empleado: { ...empleado } },
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.LoadEmpleados();
+        this.Message = data.data.message;
+      }
+    });
+    return await modal.present();
+  }
+
   async eliminarUsuario(idEmpleado: number) {
+    this.Message = '';
+    this.errorMessage='';
     const alert = await this.alertController.create({
       header: 'Confirmación',
       message: '¿Estás seguro de que deseas eliminar este usuario?',
@@ -65,6 +96,8 @@ export class EmpleadosPage implements OnInit {
   }
 
   DeleteEmpleado(empleadoId: number) {
+    this.Message = '';
+    this.errorMessage='';
     this.alertController
       .create({
         header: 'Confirmar Eliminación',
@@ -101,6 +134,8 @@ export class EmpleadosPage implements OnInit {
   }
 
   async Create_User(idEmpleado: number) {
+    this.Message = '';
+    this.errorMessage='';
     this.authService.createUser(idEmpleado).subscribe(
       async (response) => {
         console.log('Usuario creado:', response);
@@ -132,7 +167,7 @@ export class EmpleadosPage implements OnInit {
         .verificarUsuarioPorEmpleado(empleado.id)
         .subscribe((res) => {
           this.usuariosExistentes[empleado.id] = res.exists; //exists es false o true
-          this.usuarios[empleado.id] = res.user;
+          //this.usuarios[empleado.id] = res.user;
         });
     });
   }
@@ -141,10 +176,7 @@ export class EmpleadosPage implements OnInit {
     this.authService.ListarEmpleados().subscribe(
       (response) => {
         this.empleados = response.empleados; // Guardar los datos en el array
-        //this.Message = response.message;
         this.verificarUsuarios();
-        //this.errorMessage = ''; // Limpiar cualquier error
-        //this.Message = '';
       },
       (error) => {
         console.error('Error al obtener los empleados:', error);
@@ -153,35 +185,9 @@ export class EmpleadosPage implements OnInit {
     );
   }
 
-  async openUpdateModal(empleado: any) {
-    const modal = await this.modalController.create({
-      component: UpdateEmpleadoComponent,
-      componentProps: { empleado: { ...empleado } },
-    });
-    modal.onDidDismiss().then((data) => {
-      if (data.data) {
-        this.LoadEmpleados();
-        this.Message = data.data.message; 
-      }
-    });
-    return await modal.present();
-  }
-
-  async openRegisterModal() {
-    const modal = await this.modalController.create({
-      component: RegisterEmpleadoComponent,
-    });
-    modal.onDidDismiss().then((data) => {
-      if (data.data) {
-        this.LoadEmpleados();
-        this.Message = data.data.successMessage; 
-      }
-    });
-    return await modal.present();
-  }
-
   async showEmpleadoDetails(empleado: any) {
     this.Message = '';
+    this.errorMessage='';
     const actionSheet = await this.actionSheetController.create({
       header: 'Detalles del Empleado',
       buttons: [

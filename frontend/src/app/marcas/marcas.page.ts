@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { RegisterMarcaComponent } from './register-marca/register-marca.component';
+import { UpdateMarcaComponent } from './update-marca/update-marca.component';
+import { AlertController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-marcas',
@@ -9,21 +13,14 @@ import { Router } from '@angular/router';
 })
 export class MarcasPage implements OnInit {
   marcas: any[] = []; // Lista de marcas
-  marcaForm = {
-    id: null,
-    nombre: '',
-    pais: '',
-    email: '',
-    direccion: '',
-    telefono: '',
-    sitio_web: '',
-    descripcion: '',
-  }; // Formulario compartido para agregar o actualizar marca
   errorMessage: string = ''; // Mensaje de error
+  Message: string = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private modalController: ModalController,
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {}
 
   ngOnInit() {
@@ -44,19 +41,31 @@ export class MarcasPage implements OnInit {
     );
   }
 
-  // Agregar una nueva marca
-  AddMarca() {
-    this.authService.AgregarMarca(this.marcaForm).subscribe(
-      (response) => {
-        this.marcas.push(response); // Agregar la nueva marca a la lista
-        this.resetForm(); // Limpiar el formulario
-        this.errorMessage = '';
-      },
-      (error) => {
-        console.error('Error al agregar la marca:', error);
-        this.errorMessage = error;
+  async openRegisterModal() {
+    const modal = await this.modalController.create({
+      component: RegisterMarcaComponent,
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.LoadMarcas();
+        this.Message = data.data.successMessage; 
       }
-    );
+    });
+    return await modal.present();
+  }
+
+  async openUpdateModal(marca: any) {
+    const modal = await this.modalController.create({
+      component: UpdateMarcaComponent,
+      componentProps: { marca: { ...marca } },
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.LoadMarcas();
+        this.Message = data.data.message; 
+      }
+    });
+    return await modal.present();
   }
 
   // Eliminar una marca
@@ -73,45 +82,4 @@ export class MarcasPage implements OnInit {
     );
   }
 
-  // Seleccionar una marca para editar (reutilizando el mismo formulario)
-  selectMarca(marca: any) {
-    this.marcaForm = { ...marca }; // Copiar los datos de la marca seleccionada al formulario
-  }
-
-  // Actualizar la marca seleccionada
-  UpdateMarca() {
-    if (this.marcaForm.id) {
-      this.authService.actualizarMarca(this.marcaForm.id, this.marcaForm).subscribe(
-        (response) => {
-          console.log('Marca actualizada:', response);
-          this.LoadMarcas(); // Recargar la lista de marcas
-          this.resetForm(); // Limpiar el formulario
-          this.errorMessage = '';
-        },
-        (error) => {
-          console.error('Error al actualizar la marca:', error);
-          this.errorMessage = error;
-        }
-      );
-    }
-  }
-
-  // Cancelar la edición
-  cancelEdit() {
-    this.resetForm(); // Limpiar el formulario de edición
-  }
-
-  // Limpiar el formulario de marca
-  resetForm() {
-    this.marcaForm = {
-      id: null,
-      nombre: '',
-      pais: '',
-      email: '',
-      direccion: '',
-      telefono: '',
-      sitio_web: '',
-      descripcion: '',
-    };
-  }
 }

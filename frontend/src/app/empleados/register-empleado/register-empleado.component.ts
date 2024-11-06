@@ -20,7 +20,6 @@ export class RegisterEmpleadoComponent implements OnInit {
     salario: 1000.0,
   };
   errorMessage: string = '';
-  essage: string = '';
   cargos: any[] = []; // Array para almacenar cargos
 
   constructor(
@@ -35,14 +34,13 @@ export class RegisterEmpleadoComponent implements OnInit {
   AddEmpleado() {
     this.authService.AgregarEmpleado(this.nuevoEmpleado).subscribe(
       (response) => {
-        // Cierra el modal y pasa tanto el nuevo empleado como el mensaje de éxito
         this.modalController.dismiss({
           successMessage: response.message, // Asumiendo que response.message contiene el mensaje de éxito
         });
       },
       (error) => {
         console.error('Error al agregar el empleado:', error);
-        this.errorMessage = error; // Almacenar el mensaje de error
+        this.errorMessage = error;
       }
     );
   }
@@ -62,6 +60,6 @@ export class RegisterEmpleadoComponent implements OnInit {
   }
 
   close() {
-    this.modalController.dismiss(); // Cierra el modal sin enviar datos
+    this.modalController.dismiss();
   }
 }
