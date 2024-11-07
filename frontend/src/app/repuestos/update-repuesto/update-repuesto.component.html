@@ -72,7 +72,7 @@
       ></ion-input>
     </ion-item>
 
-    <ion-item>
+    <!-- <ion-item>
       <ion-label position="stacked">Seleccionar Imagen</ion-label>
       <ion-input
         [(ngModel)]="repuesto.imagen"
@@ -81,7 +81,8 @@
         (change)="onImageSelected($event)" accept="image/*"
         required
       ></ion-input>
-    </ion-item>
+    </ion-item> -->
+    
 
     <ion-button expand="full" type="submit">Actualizar Repuesto</ion-button>
     <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
