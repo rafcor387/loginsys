@@ -33,6 +33,7 @@ Route::get('/verificar-usuario/{idEmpleado}', [UserController::class, 'verificar
 Route::delete('/eliminar_usuario/{idEmpleado}', [EmpleadoController::class, 'eliminarUser']);
 
 
+
 /*
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
     ->middleware(['signed'])
@@ -52,6 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /*Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
         ->name('verification.send');*/
     Route::apiResource('empleados', EmpleadoController::class);
+    Route::get('/empleados/filter/{cargo}', [EmpleadoController::class, 'filterByCargo']);
     Route::apiResource('repuestos', RepuestoController::class);
     Route::apiResource('marcas', MarcaController::class);
     Route::apiResource('categorias', CategoriaController::class);

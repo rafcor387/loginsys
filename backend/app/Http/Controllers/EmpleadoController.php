@@ -27,6 +27,12 @@ class EmpleadoController extends Controller
         }
     }
 
+    // Obtener un empleado específico
+    public function show($id)
+    {
+        return Empleado::findOrFail($id);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -96,7 +102,7 @@ class EmpleadoController extends Controller
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
                 'email' => ['required', 'email', 'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', 'not_regex:/^\s*$/'],
-                'direccion' => 'required|string|max:255|regex:/^[A-Za-z0-9. ]+$/',
+                'direccion' => 'required|string|max:100|regex:/^[A-Za-z0-9. ]+$/',
                 'fecha_contratacion' => 'required|date|before_or_equal:today',
                 'salario' => 'required|numeric|min:1000|max:1000000',
             ], [
@@ -188,5 +194,28 @@ class EmpleadoController extends Controller
             'codigo' => $codigo,
             'password' => $passwordRandom
         ]);
+    }
+    public function filterByCargo($cargo)
+    {
+        try {
+
+            //$cargo = $request->query('cargo');
+
+            if ($cargo === '1') {
+                $empleados = Empleado::where('id_cargo', 1)->with('cargo','users')->get();
+            } elseif ($cargo === '2') {
+                $empleados = Empleado::where('id_cargo', 2)->with('cargo','users')->get();
+            } else {
+                $empleados = Empleado::whereIn('id_cargo', [1, 2])->with('cargo','users')->get();
+            }
+
+            return response()->json([
+                'empleados' => $empleados,
+                'message' => 'Empleados filtrados correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
+        }
+
     }
 }

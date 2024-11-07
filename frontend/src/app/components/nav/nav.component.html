@@ -9,7 +9,7 @@
 
     <ion-buttons slot="end">
       <div *ngIf="usuario" class="custom-margin">
-        <h6>Bienvenido, {{usuario.email}}</h6>
+        <h6>Usuario: {{usuario.email}}</h6>
       </div>
       
       <ion-button *ngIf="isAuthenticated" color="danger" (click)="logout()">

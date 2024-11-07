@@ -8,8 +8,19 @@
   <div>
     <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
     <ion-text color="success" *ngIf="Message"> {{ Message }} </ion-text>
-    <br>
+    <br><br>
   </div>
+
+
+  <ion-item class="custom-select">
+    <ion-label>Filtrar por Cargo</ion-label>
+    <ion-select [(ngModel)]="selectedCargo" (ionChange)="filterEmpleados()" >
+      <ion-select-option value="1">Administrador</ion-select-option>
+      <ion-select-option value="2">Empleado</ion-select-option>
+      <ion-select-option value="all">Todos</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
   <ion-list>
     <ion-item *ngFor="let empleado of empleados">
       <ion-label>

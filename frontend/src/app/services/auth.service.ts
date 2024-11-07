@@ -15,6 +15,20 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  getEmpleadosByCargo(cargo: string): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+  
+    // Aquí hacemos la solicitud GET, pasando los headers y el endpoint correcto
+    return this.http.get<any>(`${this.apiUrl}/empleados/filter/${cargo}`, { headers })
+      .pipe(
+        catchError(this.handleError) // Asegúrate de que `handleError` esté implementado
+      );
+  }
+  
+
   private handleError(error: any): Observable<never> {
     let errorMsg = '';
     let stg_error = true;

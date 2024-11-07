@@ -14,10 +14,10 @@ import { ActionSheetController } from '@ionic/angular';
 export class EmpleadosPage implements OnInit {
   empleados: any[] = []; // Array para almacenar los empleados
   usuariosExistentes: { [key: number]: boolean } = {}; // Para almacenar el estado de existencia
-  //usuarios: { [key: number]: any } = {}; // Para almacenar el estado de existencia
   user: any[] = [];
-  errorMessage: string = ''; // Variable para almacenar el mensaje de error
+  errorMessage: string = ''; 
   Message: string = '';
+  selectedCargo: string = 'Ambos';
 
   constructor(
     private authService: AuthService,
@@ -27,8 +27,46 @@ export class EmpleadosPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.LoadEmpleados();
+    //this.LoadEmpleados();
+    this.filterEmpleados(); // Carga inicial
   }
+
+  filterEmpleados() {
+    this.authService.getEmpleadosByCargo(this.selectedCargo).subscribe(
+      (response) => {
+        this.empleados = response.empleados;
+        this.verificarUsuarios();
+      },
+      (error) => {
+        console.error('Error al cargar empleados:', error);
+      }
+    );
+  }
+
+  verificarUsuarios() {
+    this.empleados.forEach((empleado) => {
+      this.authService
+        .verificarUsuarioPorEmpleado(empleado.id)
+        .subscribe((res) => {
+          this.usuariosExistentes[empleado.id] = res.exists; //exists es false o true
+        });
+    });
+  }
+
+  /*
+  LoadEmpleados() {
+    this.authService.ListarEmpleados().subscribe(
+      (response) => {
+        this.empleados = response.empleados; // Guardar los datos en el array
+        this.verificarUsuarios();
+      },
+      (error) => {
+        console.error('Error al obtener los empleados:', error);
+        this.errorMessage = error; // Almacenar el mensaje de error
+      }
+    );
+  }
+    */
 
   async openRegisterModal() {
     this.Message = '';
@@ -38,7 +76,8 @@ export class EmpleadosPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.LoadEmpleados();
+        //this.LoadEmpleados();
+        this.filterEmpleados();
         this.Message = data.data.successMessage;
       }
     });
@@ -55,7 +94,8 @@ export class EmpleadosPage implements OnInit {
 
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.LoadEmpleados();
+        //this.LoadEmpleados();
+        this.filterEmpleados();
         this.Message = data.data.message;
       }
     });
@@ -78,10 +118,10 @@ export class EmpleadosPage implements OnInit {
           handler: () => {
             this.authService.eliminarUsuario(idEmpleado).subscribe(
               (response) => {
-                this.LoadEmpleados();
+                //this.LoadEmpleados();
+                this.filterEmpleados();
                 console.log('Usuario eliminado con éxito:', response);
                 this.Message = response.message;
-                // Aquí podrías refrescar la lista de usuarios o mostrar una notificación
               },
               (error) => {
                 console.error('Error al eliminar el usuario:', error);
@@ -108,17 +148,16 @@ export class EmpleadosPage implements OnInit {
             role: 'cancel',
             cssClass: 'secondary',
             handler: () => {
-              // Aquí no se hace nada, se cierra la alerta
               console.log('Eliminación cancelada');
             },
           },
           {
             text: 'Sí',
             handler: () => {
-              // Si el usuario confirma, proceder a eliminar
               this.authService.EliminarEmpleado(empleadoId).subscribe(
                 (response) => {
-                  this.LoadEmpleados();
+                  //this.LoadEmpleados();
+                  this.filterEmpleados();
                   this.Message = response.message;
                 },
                 (error) => {
@@ -140,7 +179,8 @@ export class EmpleadosPage implements OnInit {
       async (response) => {
         console.log('Usuario creado:', response);
         await this.CreateUserAlert(response);
-        this.LoadEmpleados();
+        //this.LoadEmpleados();
+        this.filterEmpleados();
         this.Message = response.message;
       },
       (error) => {
@@ -161,29 +201,7 @@ export class EmpleadosPage implements OnInit {
     await alert.present();
   }
 
-  verificarUsuarios() {
-    this.empleados.forEach((empleado) => {
-      this.authService
-        .verificarUsuarioPorEmpleado(empleado.id)
-        .subscribe((res) => {
-          this.usuariosExistentes[empleado.id] = res.exists; //exists es false o true
-          //this.usuarios[empleado.id] = res.user;
-        });
-    });
-  }
-
-  LoadEmpleados() {
-    this.authService.ListarEmpleados().subscribe(
-      (response) => {
-        this.empleados = response.empleados; // Guardar los datos en el array
-        this.verificarUsuarios();
-      },
-      (error) => {
-        console.error('Error al obtener los empleados:', error);
-        this.errorMessage = error; // Almacenar el mensaje de error
-      }
-    );
-  }
+  
 
   async showEmpleadoDetails(empleado: any) {
     this.Message = '';
@@ -228,7 +246,7 @@ export class EmpleadosPage implements OnInit {
           role: 'default',
         },
         {
-          text: 'Salario: ' + empleado.salario,
+          text: 'Salario: ' + empleado.salario + 'bs',
           role: 'default',
         },
       ],
