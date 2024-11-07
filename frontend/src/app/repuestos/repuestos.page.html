@@ -5,57 +5,15 @@
 </ion-header>
 
 <ion-content>
-  <div class="form-wrapper">
-  <form (submit)="agregarRepuesto()">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input [(ngModel)]="nuevoRepuesto.nombre" name="nombre" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-input [(ngModel)]="nuevoRepuesto.descripcion" name="descripcion"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Cantidad en stock</ion-label>
-      <ion-input [(ngModel)]="nuevoRepuesto.cantidad_stock" name="cantidad_stock" type="number" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Categoría</ion-label>
-      <ion-select [(ngModel)]="nuevoRepuesto.categoria" name="categoria" required>
-        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Marca</ion-label>
-      <ion-select [(ngModel)]="nuevoRepuesto.marca" name="marca" required>
-        <ion-select-option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Costo Unitario</ion-label>
-      <ion-input [(ngModel)]="nuevoRepuesto.costo_unitario" name="costo_unitario" type="number" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Precio Unitario</ion-label>
-      <ion-input [(ngModel)]="nuevoRepuesto.precio_unitario" name="precio_unitario" type="number" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Seleccionar Imagen</ion-label>
-      <input type="file" (change)="onImageSelected($event)" accept="image/*">
-    </ion-item>
-
-    <ion-button expand="full" type="submit">Agregar Repuesto</ion-button>
-  </form>
-
+  <ion-button color="success" (click)="openRegisterModal()" expand="full"
+    >Registrar Repuesto</ion-button
+  >
   <div>
-    <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+    <ion-text color="danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </ion-text>
+    <ion-text color="success" *ngIf="Message"> {{ Message }} </ion-text>
+    <br />
   </div>
 
   <ion-list>
@@ -66,12 +24,16 @@
         <p>Cantidad en stock: {{ repuesto.cantidad_stock }}</p>
         <p>Precio unitario: {{ repuesto.precio_unitario }}</p>
         <!-- Asegúrate de que la propiedad imagen_url exista en el objeto repuesto -->
-      <!-- <img [src]="'http://project.test/backend/public/storage/imagenes/342bwi6XVa6KPl9zzLKSip72X9HHTndWxppDpiit.png'" style="width: 100px; height: auto;"> -->
-      <img [src]="'http://project.test/backend/public/storage/'  + repuesto.imagen" style="width: 100px; height: auto;">
+        <!-- <img [src]="'http://project.test/backend/public/storage/imagenes/342bwi6XVa6KPl9zzLKSip72X9HHTndWxppDpiit.png'" style="width: 100px; height: auto;"> -->
+        <img
+          [src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
+          style="width: 100px; height: auto"
+        />
       </ion-label>
-      <ion-button color="danger" (click)="eliminarRepuesto(repuesto.id)">Eliminar</ion-button>
-      <ion-button color="primary" (click)="openUpdateModal(repuesto)">Actualizar</ion-button>
+      <div class="button-container">
+        <ion-button color="danger" (click)="eliminarRepuesto(repuesto.id)">Eliminar</ion-button>
+        <ion-button color="primary" (click)="openUpdateModal(repuesto)">Editar</ion-button>
+      </div>
     </ion-item>
   </ion-list>
-</div>
 </ion-content>

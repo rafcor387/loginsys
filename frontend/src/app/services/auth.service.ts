@@ -146,7 +146,7 @@ export class AuthService {
   }
 
   //crud repuestos
-  Agregarepuestos(credentials: any): Observable<any> {
+  AgregarRepuesto(credentials: any): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
@@ -182,7 +182,7 @@ export class AuthService {
   }
 
   // Método para actualizar un repuesto
-  updateRepuesto(repuestoId: number, repuestoData: any): Observable<any> {
+  actualizarRepuesto(repuestoId: number, repuestoData: any): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Establecer el token en los headers

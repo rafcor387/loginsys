@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Repuesto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="form-wrapper">
+    <form (submit)="AddRepuesto()">
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="nuevoRepuesto.nombre" name="nombre" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input [(ngModel)]="nuevoRepuesto.descripcion" name="descripcion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Cantidad en stock</ion-label>
+        <ion-input [(ngModel)]="nuevoRepuesto.cantidad_stock" name="cantidad_stock" type="number" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Categoría</ion-label>
+        <ion-select [(ngModel)]="nuevoRepuesto.id_categoria" name="id_categoria" required>
+          <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Marca</ion-label>
+        <ion-select [(ngModel)]="nuevoRepuesto.id_marca" name="id_marca" required>
+          <ion-select-option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Costo Unitario</ion-label>
+        <ion-input [(ngModel)]="nuevoRepuesto.costo_unitario" name="costo_unitario" type="number" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Precio Unitario</ion-label>
+        <ion-input [(ngModel)]="nuevoRepuesto.precio_unitario" name="precio_unitario" type="number" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Seleccionar Imagen</ion-label>
+        <input type="file" (change)="onImageSelected($event)" accept="image/*">
+      </ion-item>
+
+      <ion-button expand="full" type="submit">Agregar Repuesto</ion-button>
+      <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+    </form>
+  </div>
+</ion-content>

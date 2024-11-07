@@ -16,19 +16,6 @@ export class UpdateRepuestoModalComponent {
     private authService: AuthService // Inyectamos el AuthService
   ) {}
 
-  // Método para actualizar el repuesto
-  updateRepuesto() {
-    this.authService.updateRepuesto(this.repuesto.id, this.repuesto).subscribe(
-      (response) => {
-        console.log('Repuesto actualizado:', response);
-        this.modalController.dismiss(response); // Cierra el modal y devuelve el repuesto actualizado
-      },
-      (error) => {
-        console.error('Error al actualizar el repuesto:', error);
-        this.errorMessage = error; // Mostrar el error en el template
-      }
-    );
-  }
 
   // Método para cerrar el modal
   closeModal() {
