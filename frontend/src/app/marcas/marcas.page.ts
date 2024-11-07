@@ -32,7 +32,6 @@ export class MarcasPage implements OnInit {
     this.authService.listarMarcas().subscribe(
       (response) => {
         this.marcas = response;
-        this.errorMessage = '';
       },
       (error) => {
         console.error('Error al obtener las marcas:', error);
@@ -42,19 +41,23 @@ export class MarcasPage implements OnInit {
   }
 
   async openRegisterModal() {
+    this.Message = '';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: RegisterMarcaComponent,
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.LoadMarcas();
-        this.Message = data.data.successMessage; 
+        this.Message = data.data.successMessage;
       }
     });
     return await modal.present();
   }
 
   async openUpdateModal(marca: any) {
+    this.Message = '';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: UpdateMarcaComponent,
       componentProps: { marca: { ...marca } },
@@ -62,12 +65,13 @@ export class MarcasPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.LoadMarcas();
-        this.Message = data.data.message; 
+        this.Message = data.data.message;
       }
     });
     return await modal.present();
   }
 
+  /*
   // Eliminar una marca
   DeleteMarca(marcaId: number) {
     this.authService.eliminarMarca(marcaId).subscribe(
@@ -80,6 +84,42 @@ export class MarcasPage implements OnInit {
         this.errorMessage = error;
       }
     );
-  }
+  }*/
 
+  DeleteMarca(marcaId: number) {
+    this.Message = '';
+    this.errorMessage = '';
+    this.alertController
+      .create({
+        header: 'Confirmar Eliminación',
+        message: '¿Está seguro de que desea eliminar?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Eliminación cancelada');
+            },
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.authService.eliminarMarca(marcaId).subscribe(
+                (response) => {
+                  //this.LoadEmpleados();
+                  this.LoadMarcas();
+                  this.Message = response.message;
+                },
+                (error) => {
+                  console.error('Error al eliminar el empleado:', error);
+                  this.errorMessage = error; // Manejar el error
+                }
+              );
+            },
+          },
+        ],
+      })
+      .then((alert) => alert.present());
+  }
 }

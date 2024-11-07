@@ -17,7 +17,6 @@ export class CategoriasPage implements OnInit {
   errorMessage: string = '';
   Message: string = '';
 
-
   constructor(
     private authService: AuthService,
     private modalController: ModalController,
@@ -31,10 +30,11 @@ export class CategoriasPage implements OnInit {
 
   // Cargar todas las categorías
   LoadCategorias() {
+    this.Message = '';
+    this.errorMessage = '';
     this.authService.listarCategorias().subscribe(
       (response) => {
         this.categorias = response;
-        this.errorMessage = '';
       },
       (error) => {
         console.error('Error al obtener las categorías:', error);
@@ -44,19 +44,23 @@ export class CategoriasPage implements OnInit {
   }
 
   async openRegisterModal() {
+    this.Message = '';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: RegisterCategoriaComponent,
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.LoadCategorias();
-        this.Message = data.data.successMessage; 
+        this.Message = data.data.successMessage;
       }
     });
     return await modal.present();
   }
 
   async openUpdateModal(categoria: any) {
+    this.Message = '';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: UpdateCategoriaComponent,
       componentProps: { categoria: { ...categoria } },
@@ -64,7 +68,7 @@ export class CategoriasPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.LoadCategorias();
-        this.Message = data.data.message; 
+        this.Message = data.data.message;
       }
     });
     return await modal.present();
@@ -72,15 +76,38 @@ export class CategoriasPage implements OnInit {
 
   // Eliminar una categoría
   DeleteCategoria(categoriaId: number) {
-    this.authService.eliminarCategoria(categoriaId).subscribe(
-      (response) => {
-        console.log('Categoría eliminada:', response);
-        this.LoadCategorias(); // Recargar la lista de categorías
-      },
-      (error) => {
-        console.error('Error al eliminar la categoría:', error);
-        this.errorMessage = error;
-      }
-    );
+    this.Message = '';
+    this.errorMessage = '';
+    this.alertController
+      .create({
+        header: 'Confirmar Eliminación',
+        message: '¿Está seguro de que desea eliminar?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Eliminación cancelada');
+            },
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.authService.eliminarCategoria(categoriaId).subscribe(
+                (response) => {
+                  this.LoadCategorias();
+                  this.Message = response.message;
+                },
+                (error) => {
+                  console.error('Error al eliminar el empleado:', error);
+                  this.errorMessage = error; // Manejar el error
+                }
+              );
+            },
+          },
+        ],
+      })
+      .then((alert) => alert.present());
   }
 }

@@ -101,66 +101,71 @@ class MarcaController extends Controller
     // Actualizar una marca existente
     public function update(Request $request, $id)
     {
-        // Validación de los campos para actualizar
-        $request->validate([
-            'nombre' => [
-                'required',
-                'regex:/^[a-zA-Z0-9 ]+$/', // Solo letras y números
-                'max:30',
-                'not_regex:/^\s*$/' // No permite solo espacios en blanco
-            ],
-            'pais' => [
-                'required',
-                'regex:/^[a-zA-Z\s]+$/', // Solo letras
-                'max:30',
-                'not_regex:/^\s*$/' // No permite solo espacios en blanco
-            ],
-            'email' => [
-                'required',
-                'email',
-                'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
-                'unique:marcas,email',
-                'not_regex:/^\s*$/'
-            ],
-            'direccion' => [
-                'required',
-                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
-                'max:60',
-                'not_regex:/^\s*$/'
-            ],
-            'telefono' => [
-                'required',
-                'regex:/^[0-9]{7,15}$/', // Only digits, between 7 and 15 digits
-                'not_regex:/^\s*$/'
-            ],
-            'sitio_web' => [
-                'nullable',
-                'string',
-                'max:30'
-            ],
-            'descripcion' => [
-                'nullable',
-                'string',
-                'max:200',
-                'not_regex:/^\s*$/'
-            ]
-        ], [
-            'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo debe contener letras y números.',
-            'pais.regex' => 'El país solo debe contener letras.',
-            'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
-            'direccion.regex' => 'La dirección solo debe contener letras y números.',
-            'telefono.required' => 'El teléfono es obligatorio.',
-            'telefono.regex' => 'El teléfono debe contener entre 7 y 15 dígitos.',
-            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
-        ]);
-
         try {
+            $validatedData = $request->validate([
+                'nombre' => [
+                    'required',
+                    'regex:/^[a-zA-Z0-9 ]+$/', // Solo letras y números
+                    'max:30',
+                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                ],
+                'pais' => [
+                    'required',
+                    'regex:/^[a-zA-Z\s]+$/', // Solo letras
+                    'max:30',
+                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                ],
+                'email' => [
+                    'required',
+                    'email',
+                    'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
+                    'not_regex:/^\s*$/'
+                ],
+                'direccion' => [
+                    'required',
+                    'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
+                    'max:60',
+                    'not_regex:/^\s*$/'
+                ],
+                'telefono' => [
+                    'required',
+                    'regex:/^[0-9]{7,15}$/', // Only digits, between 7 and 15 digits
+                    'not_regex:/^\s*$/'
+                ],
+                'sitio_web' => [
+                    'nullable',
+                    'string',
+                    'max:30'
+                ],
+                'descripcion' => [
+                    'nullable',
+                    'string',
+                    'max:200',
+                    'not_regex:/^\s*$/'
+                ]
+            ], [
+                'nombre.required' => 'El campo de nombre es obligatorio.',
+                'nombre.regex' => 'El nombre solo debe contener letras y números.',
+                'pais.regex' => 'El país solo debe contener letras.',
+                'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                'direccion.regex' => 'La dirección solo debe contener letras y números.',
+                'telefono.required' => 'El teléfono es obligatorio.',
+                'telefono.regex' => 'El teléfono debe contener entre 7 y 15 dígitos.',
+                'not_regex' => 'El campo no debe contener solo espacios en blanco.'
+            ]);
+
             $marca = Marca::findOrFail($id); // Busca la marca o lanza un error 404
-            $marca->update($request->all()); // Actualiza la marca
-            return response()->json($marca, 200); // Devuelve la marca actualizada
+            $marca->update($validatedData); // Actualiza la marca
+            return response()->json([
+                'message' => 'Marca actualizada con éxito',
+                'marca actualizada' => $marca
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al actualizar la marca'], 500);
+            return response()->json(['messageError' => 'Error al editar la marca', 'detailsError' => $e], 500);
         }
     }
 

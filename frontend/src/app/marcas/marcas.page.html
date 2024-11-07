@@ -24,7 +24,7 @@
         <p class="pa">Descripcion: {{ marca.descripcion }}</p>
       </ion-label>
       <div class="button-container">
-        <ion-button color="danger" >Eliminar</ion-button>
+        <ion-button color="danger" (click)="DeleteMarca(marca.id)">Eliminar</ion-button>
         <ion-button color="primary" (click)="openUpdateModal(marca)">Editar</ion-button>
       </div>
     </ion-item>

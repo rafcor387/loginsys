@@ -66,7 +66,8 @@
         <p>Cantidad en stock: {{ repuesto.cantidad_stock }}</p>
         <p>Precio unitario: {{ repuesto.precio_unitario }}</p>
         <!-- Asegúrate de que la propiedad imagen_url exista en el objeto repuesto -->
-        <img *ngIf="repuesto.imagen_url" [src]="repuesto.imagen_url" alt="Imagen del repuesto" style="width: 100px; height: auto;">
+      <!-- <img [src]="'http://project.test/backend/public/storage/imagenes/342bwi6XVa6KPl9zzLKSip72X9HHTndWxppDpiit.png'" style="width: 100px; height: auto;"> -->
+      <img [src]="'http://project.test/backend/public/storage/'  + repuesto.imagen" style="width: 100px; height: auto;">
       </ion-label>
       <ion-button color="danger" (click)="eliminarRepuesto(repuesto.id)">Eliminar</ion-button>
       <ion-button color="primary" (click)="openUpdateModal(repuesto)">Actualizar</ion-button>

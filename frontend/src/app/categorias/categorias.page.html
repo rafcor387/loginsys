@@ -19,7 +19,7 @@
         <p class="pa">Descripcion: {{ categoria.descripcion }}</p>
       </ion-label>
       <div class="button-container">
-        <ion-button color="danger" >Eliminar</ion-button>
+        <ion-button color="danger" (click)="DeleteCategoria(categoria.id)">Eliminar</ion-button>
         <ion-button color="primary" (click)="openUpdateModal(categoria)">Editar</ion-button>
       </div>
     </ion-item>

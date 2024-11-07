@@ -202,9 +202,7 @@ export class EmpleadosPage implements OnInit {
 
     await alert.present();
   }
-
   
-
   async showEmpleadoDetails(empleado: any) {
     this.Message = '';
     this.errorMessage='';
