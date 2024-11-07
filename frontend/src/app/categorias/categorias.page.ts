@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
+import { RegisterCategoriaComponent } from './register-categoria/register-categoria.component';
+import { UpdateCategoriaComponent } from './update-categoria/update-categoria.component';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-categorias',
@@ -9,17 +14,15 @@ import { Router } from '@angular/router';
 })
 export class CategoriasPage implements OnInit {
   categorias: any[] = []; // Lista de categorías
-  categoriaForm = {
-    id: null,
-    nombre: '',
-    descripcion: '',
-  }; // Formulario compartido para agregar o actualizar categoría
-  errorMessage: string = ''; // Mensaje de error
-  isEditMode: boolean = false; // Indica si estamos en modo de edición
+  errorMessage: string = '';
+  Message: string = '';
+
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private modalController: ModalController,
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {}
 
   ngOnInit() {
@@ -40,19 +43,31 @@ export class CategoriasPage implements OnInit {
     );
   }
 
-  // Agregar una nueva categoría
-  AddCategoria() {
-    this.authService.AgregarCategoria(this.categoriaForm).subscribe(
-      (response) => {
-        this.categorias.push(response); // Agregar la nueva categoría a la lista
-        this.resetForm(); // Limpiar el formulario
-        this.errorMessage = '';
-      },
-      (error) => {
-        console.error('Error al agregar la categoría:', error);
-        this.errorMessage = error;
+  async openRegisterModal() {
+    const modal = await this.modalController.create({
+      component: RegisterCategoriaComponent,
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.LoadCategorias();
+        this.Message = data.data.successMessage; 
       }
-    );
+    });
+    return await modal.present();
+  }
+
+  async openUpdateModal(categoria: any) {
+    const modal = await this.modalController.create({
+      component: UpdateCategoriaComponent,
+      componentProps: { categoria: { ...categoria } },
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.LoadCategorias();
+        this.Message = data.data.message; 
+      }
+    });
+    return await modal.present();
   }
 
   // Eliminar una categoría
@@ -67,45 +82,5 @@ export class CategoriasPage implements OnInit {
         this.errorMessage = error;
       }
     );
-  }
-
-  // Seleccionar una categoría para editar (reutilizando el mismo formulario)
-  selectCategoria(categoria: any) {
-    this.categoriaForm = { ...categoria }; // Copiar los datos de la categoría seleccionada al formulario
-    this.isEditMode = true; // Activar modo de edición
-  }
-
-  // Actualizar la categoría seleccionada
-  UpdateCategoria() {
-    if (this.categoriaForm.id) {
-      this.authService.actualizarCategoria(this.categoriaForm.id, this.categoriaForm).subscribe(
-        (response) => {
-          console.log('Categoría actualizada:', response);
-          this.LoadCategorias(); // Recargar la lista de categorías
-          this.resetForm(); // Limpiar el formulario
-          this.errorMessage = '';
-          this.isEditMode = false; // Desactivar modo de edición
-        },
-        (error) => {
-          console.error('Error al actualizar la categoría:', error);
-          this.errorMessage = error;
-        }
-      );
-    }
-  }
-
-  // Cancelar la edición
-  cancelEdit() {
-    this.resetForm(); // Limpiar el formulario de edición
-    this.isEditMode = false; // Desactivar modo de edición
-  }
-
-  // Limpiar el formulario de categoría
-  resetForm() {
-    this.categoriaForm = {
-      id: null,
-      nombre: '',
-      descripcion: '',
-    };
   }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use \Illuminate\Validation\ValidationException;
+use \Illuminate\Database\QueryException;
 
 class CategoriaController extends Controller
 {
@@ -23,67 +25,80 @@ class CategoriaController extends Controller
     // Crear una nueva categoría
     public function store(Request $request)
     {
-        // Validación de los campos
-        $request->validate([
-            'nombre' => [
-                'required',
-                'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
-                'max:30',
-                'not_regex:/^\s*$/' // No permite solo espacios en blanco
-            ],
-            'descripcion' => [
-                'nullable',
-                'string',
-                'max:200',
-                'not_regex:/^\s*$/' // No permite solo espacios en blanco
-            ]
-        ], [
-            'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
-            'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
-            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
-        ]);
-
         try {
-            $categoria = Categoria::create($request->all()); // Crea una nueva categoría
-            return response()->json($categoria, 201); // Devuelve la categoría creada con código 201
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => 'Error al crear la categoría', 'error' => $e->getMessage()], 400);
+            $validatedData = $request->validate([
+                'nombre' => [
+                    'required',
+                    'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
+                    'max:30',
+                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                ],
+                'descripcion' => [
+                    'nullable',
+                    'string',
+                    'max:200',
+                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                ]
+            ], [
+                'nombre.required' => 'El campo de nombre es obligatorio.',
+                'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
+                'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
+                'not_regex' => 'El campo no debe contener solo espacios en blanco.'
+            ]);
+
+            $validatedData['nombre'] = strtoupper($validatedData['nombre']);
+
+            $categoria = Categoria::create($validatedData); // Crea una nueva categoría
+            return response()->json([
+                'message' => 'Categoria creada con éxito',
+                'nuevaCategoria' => $categoria
+            ], 201); // Devuelve la categoría creada con código 201
+        } catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al crear la categoría'], 500);
+            return response()->json(['messageError' => 'Error al crear la categoria', 'detailsError' => $e], 500);
         }
     }
 
     // Actualizar una categoría existente
     public function update(Request $request, $id)
     {
-        // Validación de los campos para actualizar
-        $request->validate([
-            'nombre' => [
-                'required',
-                'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
-                'max:30',
-                'not_regex:/^\s*$/'
-            ],
-            'descripcion' => [
-                'nullable',
-                'string',
-                'max:200',
-                'not_regex:/^\s*$/'
-            ]
-        ], [
-            'nombre.required' => 'El campo de nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
-            'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
-            'not_regex' => 'El campo no debe contener solo espacios en blanco.'
-        ]);
-
         try {
-            $categoria = Categoria::findOrFail($id); // Busca la categoría o lanza un error 404
-            $categoria->update($request->all()); // Actualiza la categoría
-            return response()->json($categoria, 200); // Devuelve la categoría actualizada
+            $validatedData = $request->validate([
+                'nombre' => [
+                    'required',
+                    'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
+                    'max:30',
+                    'not_regex:/^\s*$/'
+                ],
+                'descripcion' => [
+                    'nullable',
+                    'string',
+                    'max:200',
+                    'not_regex:/^\s*$/'
+                ]
+            ], [
+                'nombre.required' => 'El campo de nombre es obligatorio.',
+                'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
+                'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
+                'not_regex' => 'El campo no debe contener solo espacios en blanco.'
+            ]);
+            $validatedData['nombre'] = strtoupper($validatedData['nombre']);
+
+            $categoria = Categoria::findOrFail($id);
+            $categoria->update($validatedData);
+            return response()->json([
+                'message' => 'Categoria actualizada con éxito',
+                'categoria actualizado' => $categoria
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al actualizar la categoría'], 500);
+            return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
         }
     }
 

@@ -27,11 +27,12 @@ class EmpleadoController extends Controller
         }
     }
 
+    /*
     // Obtener un empleado específico
     public function show($id)
     {
         return Empleado::findOrFail($id);
-    }
+    }*/
 
     public function store(Request $request)
     {

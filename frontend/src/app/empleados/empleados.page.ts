@@ -32,6 +32,8 @@ export class EmpleadosPage implements OnInit {
   }
 
   filterEmpleados() {
+    this.errorMessage = ''; 
+    this.Message = '';
     this.authService.getEmpleadosByCargo(this.selectedCargo).subscribe(
       (response) => {
         this.empleados = response.empleados;
