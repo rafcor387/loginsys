@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register-empleado',
@@ -20,11 +21,13 @@ export class RegisterEmpleadoComponent implements OnInit {
     salario: 1000.0,
   };
   errorMessage: string = '';
-  cargos: any[] = []; // Array para almacenar cargos
+  errorMessages: { [key: string]: string } = {};
+  cargos: any[] = [];
 
   constructor(
     private modalController: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -35,16 +38,21 @@ export class RegisterEmpleadoComponent implements OnInit {
     this.authService.AgregarEmpleado(this.nuevoEmpleado).subscribe(
       (response) => {
         this.modalController.dismiss({
-          successMessage: response.message, // Asumiendo que response.message contiene el mensaje de éxito
+          successMessage: response.message,
         });
       },
       (error) => {
         console.error('Error al agregar el empleado:', error);
-        this.errorMessage = error;
+  
+        if (typeof error === 'string') {
+          this.presentAlert(error);
+          this.errorMessages = {}; // Limpia los mensajes de error de campo
+        } else {
+          this.errorMessages = error;
+        }
       }
     );
   }
-  
 
   LoadCargos() {
     this.authService.listarCargos().subscribe(
@@ -57,6 +65,15 @@ export class RegisterEmpleadoComponent implements OnInit {
         this.errorMessage = error;
       }
     );
+  }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   close() {

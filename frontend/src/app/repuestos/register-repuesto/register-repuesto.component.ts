@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register-repuesto',
@@ -18,15 +19,19 @@ export class RegisterRepuestoComponent  implements OnInit {
     costo_unitario: 0,
     precio_unitario: 0,
     imagen: null,
+    codigo_oem:'',
+    numero_serie:''
   };
   errorMessage: string = '';
+  errorMessages: { [key: string]: string } = {};
   imagenSeleccionada: File | null = null;
   categorias: any[] = []; // Array para almacenar categorías
   marcas: any[] = []; // Array para almacenar marcas
 
   constructor(
     private modalController: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -37,6 +42,8 @@ export class RegisterRepuestoComponent  implements OnInit {
   AddRepuesto() {
     const formData = new FormData();
     formData.append('nombre', this.nuevoRepuesto.nombre);
+    formData.append('codigo_oem', this.nuevoRepuesto.codigo_oem);
+    formData.append('numero_serie', this.nuevoRepuesto.numero_serie);
     formData.append('descripcion', this.nuevoRepuesto.descripcion);
     formData.append('cantidad_stock', this.nuevoRepuesto.cantidad_stock.toString());
     formData.append('fabricante', this.nuevoRepuesto.fabricante);
@@ -59,9 +66,23 @@ export class RegisterRepuestoComponent  implements OnInit {
       },
       (error) => {
         console.error('Error al agregar el repuesto:', error);
-        this.errorMessage = error;
+        if (typeof error === 'string') {
+          this.presentAlert(error);
+          this.errorMessages = {}; 
+        } else {
+          this.errorMessages = error;
+        }
       }
     );
+  }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
   
   LoadCategorias() {

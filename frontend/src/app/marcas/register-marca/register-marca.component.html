@@ -13,32 +13,58 @@
       <ion-label position="floating">Nombre</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.nombre" name="nombre" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['nombre']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['nombre'] }}
+    </div>
+
     <ion-item>
       <ion-label position="floating">Pais</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.pais" name="pais" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['pais']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['pais'] }}
+    </div>
+
     <ion-item>
       <ion-label position="floating">Email de contacto</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.email" name="email"></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['email']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['email'] }}
+    </div>
     
     <ion-item>
       <ion-label position="floating">Direccion</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.direccion" name="direccion" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['direccion']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['direccion'] }}
+    </div>
+
     <ion-item>
-      <ion-label position="floating">Celular</ion-label>
+      <ion-label position="floating">Celular de contacto</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.telefono" name="telefono" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['telefono'] }}
+    </div>
+
     <ion-item>
       <ion-label position="floating">Sitio_web</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.sitio_web" name="sitio_web" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['sitio_web']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['sitio_web'] }}
+    </div>
+
     <ion-item>
       <ion-label position="floating">Descripcion</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.descripcion" name="descripcion" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['descripcion']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['descripcion'] }}
+    </div>
+
     <ion-button expand="full" type="submit">Agregar Marca</ion-button>
-    <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
   </form>
 </ion-content>

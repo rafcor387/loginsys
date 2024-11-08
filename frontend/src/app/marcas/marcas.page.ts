@@ -112,7 +112,7 @@ export class MarcasPage implements OnInit {
                   this.Message = response.message;
                 },
                 (error) => {
-                  console.error('Error al eliminar el empleado:', error);
+                  console.error('Error al eliminar la marca:', error);
                   this.errorMessage = error; // Manejar el error
                 }
               );

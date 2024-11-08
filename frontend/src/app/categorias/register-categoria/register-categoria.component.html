@@ -13,12 +13,17 @@
       <ion-label position="floating">Nombre</ion-label>
       <ion-input [(ngModel)]="nuevacategoria.nombre" name="nombre" required></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['nombre']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['nombre'] }}
+    </div>
     <ion-item>
       <ion-label position="floating">Descripcion</ion-label>
       <ion-input [(ngModel)]="nuevacategoria.descripcion" name="descripcion"></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['descripcion']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['descripcion'] }}
+    </div>
     
     <ion-button expand="full" type="submit">Agregar Categoria</ion-button>
-    <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
   </form>
 </ion-content>

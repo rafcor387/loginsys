@@ -20,15 +20,40 @@ export class AuthService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
     });
-  
+
     // Aquí hacemos la solicitud GET, pasando los headers y el endpoint correcto
-    return this.http.get<any>(`${this.apiUrl}/empleados/filter/${cargo}`, { headers })
+    return this.http
+      .get<any>(`${this.apiUrl}/empleados/filter/${cargo}`, { headers })
       .pipe(
         catchError(this.handleError) // Asegúrate de que `handleError` esté implementado
       );
   }
-  
 
+  private handleError(error: any): Observable<never> {
+    let errorMsgs: { [key: string]: string } = {};
+    let errorMsg = '';
+
+    if (error.error && error.error.validationError) {
+      // Errores de validación específicos de cada campo
+      for (let field in error.error.validationError) {
+        errorMsgs[field] = error.error.validationError[field][0];
+      }
+      return throwError(() => errorMsgs);
+    } else if (error.error && error.error.errordb) {
+      // Error de base de datos
+      errorMsg = error.error.messageError;
+    } else if (error.error && error.error.detailsError) {
+      // Otro error general
+      errorMsg = error.error.messageError;
+    } else {
+      // Error inesperado
+      errorMsg = 'Error inesperado. Intenta de nuevo.';
+    }
+
+    return throwError(() => errorMsg);
+  }
+
+  /*
   private handleError(error: any): Observable<never> {
     let errorMsg = '';
     let stg_error = true;
@@ -37,7 +62,8 @@ export class AuthService {
       errorMsg = error.error.errordb;
       stg_error = false;
     } else if (error.error && error.error.validationError) {
-      errorMsg = Object.values(error.error.validationError).join(' ');
+      //errorMsg = Object.values(error.error.validationError).join(' ');
+      errorMsg = error.error.validationError;
       stg_error = false;
     } else if (error.error && error.error.detailsError) {
       errorMsg = error.error.detailsError;
@@ -49,7 +75,7 @@ export class AuthService {
     }
 
     return throwError(() => errorMsg);
-  }
+  }*/
 
   eliminarUsuario(idEmpleado: number): Observable<any> {
     return this.http.delete<any>(

@@ -8,89 +8,165 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="updateEmpleado()">
-    <ion-item>
-      <ion-label position="floating">CI</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.ci"
-        name="ci"
-        type="number"
-        required
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Nombres</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.nombres"
-        name="nombres"
-        required
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Apellidos</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.apellidos"
-        name="apellidos"
-        required
-      ></ion-input>
-    </ion-item>
+  <form (submit)="updateEmpleado()">
+    <ion-grid>
+      <!-- Fila para CI-->
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">CI</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.ci"
+              name="ci"
+              type="number"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['ci']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['ci'] }}
+          </div>
+        </ion-col>
+      </ion-row>
 
-    <ion-item>
-      <ion-label>Cargo</ion-label>
-      <ion-select [(ngModel)]="empleado.id_cargo" name="id_cargo" required>
-        <ion-select-option *ngFor="let cargo of cargos" [value]="cargo.id">{{
-          cargo.nombre
-        }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <!-- Fila para Apellidos y Nombres -->
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">Nombres</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.nombres"
+              name="nombres"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['nombres']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['nombres'] }}
+          </div>
+        </ion-col>
 
-    <ion-item>
-      <ion-label position="floating">celular</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.telefono"
-        name="telefono"
-        required
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">email Personal</ion-label>
-      <ion-input [(ngModel)]="empleado.email" name="email" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">direccion</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.direccion"
-        name="direccion"
-        required
-      ></ion-input>
-    </ion-item>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">Apellidos</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.apellidos"
+              name="apellidos"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['apellidos']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['apellidos'] }}
+          </div>
+        </ion-col>
+      </ion-row>
 
-    <ion-item>
-      <ion-label position="floating">fecha_contratacion</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.fecha_contratacion"
-        name="fecha_contratacion"
-        type="date"
-        required
-        readonly
-      ></ion-input>
-    </ion-item>
+        <!-- Resto de los campos en filas individuales -->
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Cargo</ion-label>
+              <ion-select
+                [(ngModel)]="empleado.id_cargo"
+                name="id_cargo"
+                required>
+                <ion-select-option
+                  *ngFor="let cargo of cargos"
+                  [value]="cargo.id"
+                  >{{ cargo.nombre }}</ion-select-option
+                >
+              </ion-select>
+            </ion-item>
+            <div *ngIf="errorMessages?.['id_cargo']" style="color: red; margin-bottom: 10px; text-align: center">
+              {{ errorMessages['id_cargo'] }}
+            </div>
+          </ion-col>
+        </ion-row>
 
-    <ion-item>
-      <ion-label position="floating">salario</ion-label>
-      <ion-input
-        [(ngModel)]="empleado.salario"
-        name="salario"
-        type="number"
-        required
-      ></ion-input>
-    </ion-item>
 
-    <div>
-      <ion-text color="danger" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </ion-text>
-    </div>
-    <ion-button expand="full" type="submit">Actualizar Empleado</ion-button>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Celular</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.telefono"
+              name="telefono"
+              type="number"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['telefono'] }}
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Email Personal</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.email"
+              name="email"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['email']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['email'] }}
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Dirección</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.direccion"
+              name="direccion"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['direccion']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['direccion'] }}
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Fecha Contratación</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.fecha_contratacion"
+              name="fecha_contratacion"
+              type="date"
+              required
+              readonly
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['fecha_contratacion']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['fecha_contratacion'] }}
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Salario</ion-label>
+            <ion-input
+              [(ngModel)]="empleado.salario"
+              name="salario"
+              type="number"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="errorMessages?.['salario']" style="color: red; margin-bottom: 10px; text-align: center">
+            {{ errorMessages['salario'] }}
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button expand="full" type="submit">Actualizar Empleado</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </form>
 </ion-content>

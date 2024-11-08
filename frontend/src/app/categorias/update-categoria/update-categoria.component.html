@@ -17,6 +17,9 @@
         required
       ></ion-input>
     </ion-item>
+    <div *ngIf="errorMessages?.['nombre']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['nombre'] }}
+    </div>
 
     <ion-item>
       <ion-label position="floating">Descripcion</ion-label>
@@ -26,11 +29,10 @@
         required
       ></ion-input>
     </ion-item>
-    <div>
-      <ion-text color="danger" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </ion-text>
+    <div *ngIf="errorMessages?.['descripcion']" style="color: red; margin-bottom: 10px; text-align: center">
+      {{ errorMessages['descripcion'] }}
     </div>
+
     <ion-button expand="full" type="submit">Actualizar Categoria</ion-button>
   </form>
 </ion-content>

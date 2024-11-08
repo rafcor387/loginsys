@@ -100,7 +100,7 @@ export class CategoriasPage implements OnInit {
                   this.Message = response.message;
                 },
                 (error) => {
-                  console.error('Error al eliminar el empleado:', error);
+                  console.error('Error al eliminar la categoria:', error);
                   this.errorMessage = error; // Manejar el error
                 }
               );

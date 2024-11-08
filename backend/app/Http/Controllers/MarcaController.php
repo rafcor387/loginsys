@@ -29,59 +29,60 @@ class MarcaController extends Controller
             $validatedData = $request->validate([
                 'nombre' => [
                     'required',
-                    'regex:/^[a-zA-Z0-9 ]+$/', // Solo letras y números
+                    'regex:/^[a-zA-Z0-9. ]+$/',
                     'max:30',
-                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
                 ],
                 'pais' => [
                     'required',
                     'regex:/^[a-zA-Z\s]+$/', // Solo letras
                     'max:30',
-                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
                 ],
                 'email' => [
-                    'required',
+                    'nullable',
                     'email',
                     'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
                     'unique:marcas,email',
-                    'not_regex:/^\s*$/'
                 ],
                 'direccion' => [
-                    'required',
-                    'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
+                    'nullable',
+                    'regex:/^[a-zA-Z0-9. ]+$/',
                     'max:60',
-                    'not_regex:/^\s*$/'
                 ],
                 'telefono' => [
-                    'required',
-                    'regex:/^[0-9]{7,15}$/', // Only digits, between 7 and 15 digits
-                    'not_regex:/^\s*$/'
+                    'nullable',
+                    'regex:/^\+\d{1,3}\s\d{6,10}$/'
                 ],
                 'sitio_web' => [
                     'nullable',
                     'string',
-                    'max:30'
+                    'max:30',
+                    'url'
                 ],
                 'descripcion' => [
                     'nullable',
                     'string',
                     'max:200',
-                    'not_regex:/^\s*$/'
                 ]
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
-                'nombre.regex' => 'El nombre solo debe contener letras y números.',
+                'nombre.regex' => 'El nombre solo debe contener letras, números, puntos y espacios.',
+                'nombre.max' => 'Solo se permite hasta maximo 30 caracteres en el campo nombre.',
                 'pais.required' => 'El país es obligatorio.',
                 'pais.regex' => 'El país solo debe contener letras.',
-                'email.required' => 'El email es obligatorio.',
+                'pais.max' => 'Solo se permite hasta maximo 30 caracteres en el campo pais.',
                 'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
-                'direccion.required' => 'La dirección es obligatorio.',
+                'email.email' => 'Introduzca un email valido',
+                'email.unique' => 'No puede repetir el email',
                 'direccion.regex' => 'La dirección solo debe contener letras y números.',
-                'telefono.required' => 'El teléfono es obligatorio.',
-                'telefono.regex' => 'El teléfono debe contener entre 7 y 15 dígitos.',
-                'not_regex' => 'El campo no debe contener solo espacios en blanco.',
+                'direccion.max' => 'Solo se permite hasta maximo 60 caracteres en el campo nombre.',
+                'telefono.regex' => 'El celular de contacto debe ser válido',
+                'sitio_web.max' => 'El sitio web no puede ser mas de 30 caracteres',
+                'sitio_web.url' => 'Error con la url de sitio web.',
                 'descripcion.max' => 'La descripcion no puede ser mas de 200 caracteres'
             ]);
+
+            $validatedData['nombre'] = strtoupper($validatedData['nombre']);
+            $validatedData['pais'] = strtoupper($validatedData['pais']);
 
             $marca = Marca::create($validatedData);
 
@@ -105,56 +106,63 @@ class MarcaController extends Controller
             $validatedData = $request->validate([
                 'nombre' => [
                     'required',
-                    'regex:/^[a-zA-Z0-9 ]+$/', // Solo letras y números
-                    'max:30',
-                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                    'regex:/^[a-zA-Z0-9. ]+$/',
+                    'max:30'
                 ],
                 'pais' => [
                     'required',
                     'regex:/^[a-zA-Z\s]+$/', // Solo letras
-                    'max:30',
-                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                    'max:30'
                 ],
                 'email' => [
-                    'required',
+                    'nullable',
                     'email',
                     'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
-                    'not_regex:/^\s*$/'
                 ],
                 'direccion' => [
-                    'required',
-                    'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras y números
+                    'nullable',
+                    'regex:/^[a-zA-Z0-9. ]+$/',
                     'max:60',
-                    'not_regex:/^\s*$/'
                 ],
                 'telefono' => [
-                    'required',
-                    'regex:/^[0-9]{7,15}$/', // Only digits, between 7 and 15 digits
-                    'not_regex:/^\s*$/'
+                    'nullable',
+                    'regex:/^\+\d{1,3}\s\d{6,10}$/',
                 ],
                 'sitio_web' => [
                     'nullable',
                     'string',
-                    'max:30'
+                    'max:30',
+                    'url'
                 ],
                 'descripcion' => [
                     'nullable',
                     'string',
-                    'max:200',
-                    'not_regex:/^\s*$/'
+                    'max:200'
                 ]
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
-                'nombre.regex' => 'El nombre solo debe contener letras y números.',
+                'nombre.regex' => 'El nombre solo debe contener letras, números, puntos y espacios.',
+                'nombre.max' => 'Solo se permite hasta maximo 30 caracteres en el campo nombre.',
+                'pais.required' => 'El país es obligatorio.',
                 'pais.regex' => 'El país solo debe contener letras.',
+                'pais.max' => 'Solo se permite hasta maximo 30 caracteres en el campo pais.',
                 'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                'email.email' => 'Introduzca un email valido',
+                'email.unique' => 'No puede repetir el email',
                 'direccion.regex' => 'La dirección solo debe contener letras y números.',
                 'telefono.required' => 'El teléfono es obligatorio.',
-                'telefono.regex' => 'El teléfono debe contener entre 7 y 15 dígitos.',
-                'not_regex' => 'El campo no debe contener solo espacios en blanco.'
+                'direccion.max' => 'Solo se permite hasta maximo 60 caracteres en el campo nombre.',
+                'telefono.regex' => 'El celular de contacto debe ser válido',
+                'sitio_web.max' => 'El sitio web no puede ser mas de 30 caracteres',
+                'sitio_web.url' => 'Error con la url de sitio web.',
+                'descripcion.max' => 'La descripcion no puede ser mas de 200 caracteres'
             ]);
 
             $marca = Marca::findOrFail($id); // Busca la marca o lanza un error 404
+
+            $validatedData['nombre'] = strtoupper($validatedData['nombre']);
+            $validatedData['pais'] = strtoupper($validatedData['pais']);
+
             $marca->update($validatedData); // Actualiza la marca
             return response()->json([
                 'message' => 'Marca actualizada con éxito',
@@ -175,8 +183,15 @@ class MarcaController extends Controller
         $marca = Marca::find($id); // Busca la marca
 
         if ($marca) {
-            $marca->delete(); // Elimina la marca
-            return response()->json(['message' => 'Marca eliminada correctamente'], 200);
+            try {
+                $marca->delete(); // Elimina la marca
+                return response()->json(['message' => 'Marca eliminada correctamente'], 200);
+            } catch (QueryException $e) {
+                return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+            } catch (\Exception $e) {
+                return response()->json(['messageError' => 'Error al editar la marca', 'detailsError' => $e], 500);
+            }
+
         } else {
             return response()->json(['message' => 'Marca no encontrada'], 404);
         }

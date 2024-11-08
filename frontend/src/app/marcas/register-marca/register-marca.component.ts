@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register-marca',
@@ -18,10 +19,12 @@ export class RegisterMarcaComponent implements OnInit {
     descripcion: '',
   };
   errorMessage: string = '';
+  errorMessages: { [key: string]: string } = {};
 
   constructor(
     private modalController: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {}
@@ -35,9 +38,23 @@ export class RegisterMarcaComponent implements OnInit {
       },
       (error) => {
         console.error('Error al agregar la marca:', error);
-        this.errorMessage = error;
+        if (typeof error === 'string') {
+          this.presentAlert(error);
+          this.errorMessages = {};
+        } else {
+          this.errorMessages = error;
+        }
       }
     );
+  }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   close() {

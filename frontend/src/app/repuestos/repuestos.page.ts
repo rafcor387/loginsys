@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { RegisterRepuestoComponent } from './register-repuesto/register-repuesto.component';
 import { UpdateRepuestoComponent } from './update-repuesto/update-repuesto.component';
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-repuestos',
@@ -17,7 +17,8 @@ export class RepuestosPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private alertController: AlertController,
   ) {}
 
   ngOnInit() {
@@ -41,7 +42,7 @@ export class RepuestosPage implements OnInit {
 
   async openUpdateModal(repuesto: any) {
     this.Message = '';
-    this.errorMessage='';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: UpdateRepuestoComponent,
       componentProps: { repuesto: { ...repuesto } },
@@ -61,7 +62,7 @@ export class RepuestosPage implements OnInit {
       (response) => {
         this.repuestos = response;
         console.log('Repuestos:', this.repuestos); // Agrega este log
-        this.errorMessage = '';
+        //this.errorMessage = '';
       },
       (error) => {
         console.error('Error al obtener los repuestos:', error);
@@ -70,20 +71,39 @@ export class RepuestosPage implements OnInit {
     );
   }
 
-  
-
-
-  eliminarRepuesto(repuestoId: number) {
-    this.authService.eliminarRepuesto(repuestoId).subscribe(
-      (response) => {
-        console.log('Repuesto eliminado:', response);
-        this.LoadRepuestos(); // Vuelve a listar los repuestos
-      },
-      (error) => {
-        console.error('Error al eliminar el repuesto:', error);
-        this.errorMessage = error; // Manejo de errores
-      }
-    );
+  DeleteRepuesto(repuestoId: number) {
+    this.Message = '';
+    this.errorMessage = '';
+    this.alertController
+      .create({
+        header: 'Confirmar Eliminación',
+        message: '¿Está seguro de que desea eliminar este repuesto?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Eliminación cancelada');
+            },
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.authService.eliminarRepuesto(repuestoId).subscribe(
+                (response) => {
+                  this.LoadRepuestos();
+                  this.Message = response.message;
+                },
+                (error) => {
+                  console.error('Error al eliminar el repuesto:', error);
+                  this.errorMessage = error; // Manejar el error
+                }
+              );
+            },
+          },
+        ],
+      })
+      .then((alert) => alert.present());
   }
-
 }

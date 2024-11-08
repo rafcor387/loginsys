@@ -66,14 +66,14 @@ class EmpleadoController extends Controller
                 'email.regex' => 'El correo electrónico solo debe ser de dominio Gmail, Yahoo o Outlook.',
                 'email.unique' => 'El correo electrónico ya está registrado.',
                 'direccion.required' => 'La dirección es obligatoria.',
-                'direccion.regex' => 'La direccion debe contener letras, numeros o puntos',
+                'direccion.regex' => 'La direccion debe contener letras, numeros o puntos.',
                 'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
                 'fecha_contratacion.before_or_equal' => 'La fecha de contratación debe ser la de hoy.',
                 'fecha_contratacion.after_or_equal' => 'La fecha de contratación debe ser la de hoy.',
                 'salario.required' => 'El salario es obligatorio.',
                 'salario.numeric' => 'El salario debe ser un número válido.',
-                'salario.min' => 'El salario no puede ser negativo o ser menor a 1000',
-                'salario.max' => 'El salario no puede ser mayor a 1,000,000.',
+                'salario.min' => 'El salario no puede ser negativo o ser menor a 1000bs.',
+                'salario.max' => 'El salario no puede ser mayor a 1,000,000bs.',
             ]);
             $validatedData['nombres'] = strtoupper($validatedData['nombres']);
             $validatedData['apellidos'] = strtoupper($validatedData['apellidos']);

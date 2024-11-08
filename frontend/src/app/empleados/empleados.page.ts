@@ -55,21 +55,6 @@ export class EmpleadosPage implements OnInit {
     });
   }
 
-  /*
-  LoadEmpleados() {
-    this.authService.ListarEmpleados().subscribe(
-      (response) => {
-        this.empleados = response.empleados; // Guardar los datos en el array
-        this.verificarUsuarios();
-      },
-      (error) => {
-        console.error('Error al obtener los empleados:', error);
-        this.errorMessage = error; // Almacenar el mensaje de error
-      }
-    );
-  }
-    */
-
   async openRegisterModal() {
     this.Message = '';
     this.errorMessage='';

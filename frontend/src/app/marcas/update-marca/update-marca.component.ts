@@ -1,6 +1,7 @@
 import { Component,Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-update-marca',
@@ -10,10 +11,12 @@ import { AuthService } from '../../services/auth.service';
 export class UpdateMarcaComponent  implements OnInit {
   @Input() marca: any; 
   errorMessage: string = ''; 
+  errorMessages: { [key: string]: string } = {};
 
   constructor(
     private modalController: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {}
@@ -22,15 +25,29 @@ export class UpdateMarcaComponent  implements OnInit {
     this.authService.actualizarMarca(this.marca.id, this.marca).subscribe(
       (response) => {
         console.log('Marca actualizado:', response);
-        this.modalController.dismiss(response); // Cierra el modal y devuelve el json de exito
-        //window.location.reload();
+        this.modalController.dismiss(response); 
       },
       (error) => {
         console.error('Error al actualizar la marca:', error);
-        this.errorMessage = error; // Mostrar el error en el template
+        if (typeof error === 'string') {
+          this.presentAlert(error);
+          this.errorMessages = {}; 
+        } else {
+          this.errorMessages = error;
+        }
       }
     );
   }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
 
   closeModal() {
     this.modalController.dismiss();

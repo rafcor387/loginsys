@@ -29,19 +29,20 @@ class RepuestoController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'required|max:100',
-                'descripcion' => 'max:100',
+                'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9. ]+$/',
+                'descripcion' => 'max:100|nullable',
                 'cantidad_stock' => 'required|integer|min:1',
                 'imagen' => 'nullable|image', // Validación para imagen
                 'id_marca' => 'required|integer|exists:marcas,id',
                 'id_categoria' => 'required|integer|exists:categorias,id',
                 'costo_unitario' => 'required|numeric|min:1',
                 'precio_unitario' => 'required|numeric|min:1',
-                'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem',
-                'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie',
+                'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem|regex:/^[A-Za-z0-9.-]{6,12}$/',
+                'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie|regex:/^[A-Za-z0-9.-]{8,20}$/',
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.max' => 'El nombre excede el número de caracteres.',
+                'nombre.regex' => 'El nombre solo debe contener letras, números, puntos y espacios.',
                 'descripcion.max' => 'La descripción excede el número de caracteres.',
                 'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
                 'cantidad_stock.integer' => 'La cantidad en stock debe ser un número.',
@@ -58,7 +59,9 @@ class RepuestoController extends Controller
                 'precio_unitario.numeric' => 'El campo de precio unitario debe contener solo números.',
                 'precio_unitario.min' => 'El precio unitario debe ser positivo.',
                 'codigo_oem.unique' => 'El código OEM ya existe.',
-                'numero_serie.unique' => 'El número de serie ya existe.',
+                'codigo_oem.regex' => 'El código OEM es invalido.',
+                'numero_serie.regex' => 'El número de serie es invalido.',
+                'numero_serie.uniqeu' => 'El número de serie ya existe.',
             ]);
 
             // Manejo de la imagen
@@ -90,24 +93,24 @@ class RepuestoController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'required|max:100',
-                'descripcion' => 'max:100',
+                'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9. ]+$/',
+                'descripcion' => 'max:100|nullable',
                 'cantidad_stock' => 'required|integer|min:0',
-                //'imagen' => 'nullable|image', // Validación para imagen
                 'id_marca' => 'required|integer|exists:marcas,id',
                 'id_categoria' => 'required|integer|exists:categorias,id',
                 'costo_unitario' => 'required|numeric|min:0',
                 'precio_unitario' => 'required|numeric|min:0',
-                'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem,' . $id . ',id',
-                'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie,' . $id . ',id',
+                'codigo_oem' => 'nullable|string|max:50|regex:/^[A-Za-z0-9.-]{6,12}$/',
+                'numero_serie' => 'nullable|string|max:100|regex:/^[A-Za-z0-9.-]{8,20}$/',
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.max' => 'El nombre excede el número de caracteres.',
+                'nombre.regex' => 'El nombre solo debe contener letras, números, puntos y espacios.',
                 'descripcion.max' => 'La descripción excede el número de caracteres.',
                 'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
                 'cantidad_stock.integer' => 'La cantidad en stock debe ser un número.',
                 'cantidad_stock.min' => 'La cantidad en stock debe ser un valor positivo.',
-                //'imagen.image' => 'El archivo debe ser una imagen válida1.',
+                'imagen.image' => 'El archivo debe ser una imagen válida.',
                 'id_marca.required' => 'El campo de marca es obligatorio.',
                 'id_marca.exists' => 'La marca seleccionada no es válida.',
                 'id_categoria.required' => 'El campo de categoría es obligatorio.',
@@ -118,17 +121,11 @@ class RepuestoController extends Controller
                 'precio_unitario.required' => 'El campo de precio unitario es obligatorio.',
                 'precio_unitario.numeric' => 'El campo de precio unitario debe contener solo números.',
                 'precio_unitario.min' => 'El precio unitario debe ser positivo.',
-                'codigo_oem.unique' => 'El código OEM ya existe.',
-                'numero_serie.unique' => 'El número de serie ya existe.',
+                'codigo_oem.regex' => 'El código OEM es invalido.',
+                'numero_serie.regex' => 'El número de serie es invalido.',
             ]);
             $repuesto = Repuesto::findOrFail($id);
 
-            /*
-            // Manejo de la imagen
-            if ($request->hasFile('imagen')) {
-                $path = $request->file('imagen')->store('imagenes', 'public');
-                $validatedData['imagen'] = $path;
-            }*/
             $repuesto->update($validatedData);
 
             return response()->json([
@@ -137,7 +134,7 @@ class RepuestoController extends Controller
             ], 201);
 
 
-        }catch (ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
             return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
@@ -149,22 +146,19 @@ class RepuestoController extends Controller
     // Eliminar un repuesto
     public function destroy($id)
     {
-        try {
-            $repuesto = Repuesto::findOrFail($id);
-            $repuesto->delete();
-            return response()->json(['message' => 'Repuesto eliminado correctamente'], 204); // 204 No Content
-        } catch (QueryException $e) {
-            Log::error('Error en la base de datos: ' . $e->getMessage(), [
-                'code' => $e->getCode(),
-                'sql' => $e->getSql(),
-                'bindings' => $e->getBindings(),
-            ]);
-            return response()->json(['message' => 'Error en la base de datos', 'details' => $e->getMessage()], 500);
-        } catch (\Exception $e) {
-            Log::error('Error inesperado: ' . $e->getMessage(), [
-                'exception' => $e,
-            ]);
-            return response()->json(['message' => 'Error inesperado', 'details' => $e->getMessage()], 500);
+        $repuesto = Repuesto::find($id);
+
+        if ($repuesto) {
+            try {
+                $repuesto->delete();
+                return response()->json(['message' => 'Repuesto eliminado correctamente'], 200); // 204 No Content
+            } catch (QueryException $e) {
+                return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+            } catch (\Exception $e) {
+                return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
+            }
+        } else {
+            return response()->json(['message' => 'Repuesto no encontrada'], 404);
         }
     }
 }

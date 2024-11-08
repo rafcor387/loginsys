@@ -27,23 +27,19 @@ class CategoriaController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => [
-                    'required',
-                    'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
-                    'max:30',
-                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
-                ],
+                'nombre' => 'required|string|max:30|regex:/^[a-zA-Z0-9. ]+$/|not_regex:/^\s*$/',
                 'descripcion' => [
                     'nullable',
                     'string',
                     'max:200',
-                    'not_regex:/^\s*$/' // No permite solo espacios en blanco
+                    //'not_regex:/^\s*$/' // No permite solo espacios en blanco
                 ]
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
+                'nombre.max' => 'Solo se permite hasta maximo 30 caracteres en el campo nombre.',
                 'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
-                'not_regex' => 'El campo no debe contener solo espacios en blanco.'
+                //'not_regex' => 'El campo no debe contener solo espacios en blanco.'
             ]);
 
             $validatedData['nombre'] = strtoupper($validatedData['nombre']);
@@ -67,23 +63,19 @@ class CategoriaController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => [
-                    'required',
-                    'regex:/^[a-zA-Z0-9. ]+$/', // Solo letras y números
-                    'max:30',
-                    'not_regex:/^\s*$/'
-                ],
+                'nombre' => 'required|string|max:30|regex:/^[a-zA-Z0-9. ]+$/|not_regex:/^\s*$/',
                 'descripcion' => [
                     'nullable',
                     'string',
                     'max:200',
-                    'not_regex:/^\s*$/'
+                    //'not_regex:/^\s*$/'
                 ]
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
+                'nombre.max' => 'Solo se permite hasta maximo 30 caracteres en el campo nombre.',
                 'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
-                'not_regex' => 'El campo no debe contener solo espacios en blanco.'
+                //'not_regex' => 'El campo no debe contener solo espacios en blanco.'
             ]);
             $validatedData['nombre'] = strtoupper($validatedData['nombre']);
 
@@ -108,8 +100,15 @@ class CategoriaController extends Controller
         $categoria = Categoria::find($id); // Busca la categoría
 
         if ($categoria) {
-            $categoria->delete(); // Elimina la categoría
-            return response()->json(['message' => 'Categoría eliminada correctamente'], 200);
+            try {
+                $categoria->delete(); // Elimina la categoría
+                return response()->json(['message' => 'Categoría eliminada correctamente'], 200);
+            } catch (QueryException $e) {
+                return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+            } catch (\Exception $e) {
+                return response()->json(['messageError' => 'Error al eliminar la categoria', 'detailsError' => $e], 500);
+            }
+
         } else {
             return response()->json(['message' => 'Categoría no encontrada'], 404);
         }
