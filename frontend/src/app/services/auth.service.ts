@@ -39,7 +39,7 @@ export class AuthService {
         errorMsgs[field] = error.error.validationError[field][0];
       }
       return throwError(() => errorMsgs);
-    } else if (error.error && error.error.errordb) {
+    } else if (error.error && error.error.messageError) {
       // Error de base de datos
       errorMsg = error.error.messageError;
     } else if (error.error && error.error.detailsError) {

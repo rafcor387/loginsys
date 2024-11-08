@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Repuesto;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Log;
 use \Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 
 class RepuestoController extends Controller

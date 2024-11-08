@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Services\AuthService;
 use App\Models\Empleado;
-
-use Illuminate\Validation\ValidationException;
+use Illuminate\Database\QueryException;
+use \Illuminate\Validation\ValidationException;
+use App\Exceptions\InvalidCredentialsException;
 
 class AuthController extends Controller
 {
@@ -39,56 +40,51 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'id_empleado' => $request->id_empleado,
         ]);
-
-
-
         //$user->sendEmailVerificationNotification();
-
-
         return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.']);
     }
 
     // Login de usuario
     public function login(Request $request)
     {
-        // Validación de los campos de email y password
-        $request->validate([
-            //'email' => 'required|email',
-            'email' => 'required',
-            'password' => 'required',
-        ], [
-            'email.required' => 'El campo de correo electrónico es obligatorio.',
-            //'email.email' => 'Por favor, introduce una dirección de correo válida.',
-            'password.required' => 'El campo de contraseña es obligatorio.',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'email' => 'required',
+                'password' => 'required',
+            ], [
+                'email.required' => 'El campo de codigo es obligatorio.',
+                'password.required' => 'El campo de contraseña es obligatorio.',
+            ]);
 
+            // Verifica si las credenciales son correctas
+            if (!Auth::attempt($request->only('email', 'password'))) {
+                throw new InvalidCredentialsException();
+            }
+            $user = Auth::user();
+            /*// Verifica si el usuario tiene el correo electrónico verificado
+            if (is_null($user->email_verified_at)) {
+                return response()->json(['message' => 'Debes verificar tu correo electrónico para iniciar sesión'], 403);
+            }*/
+            $token = $user->createToken('auth_token')->plainTextToken;
+            // Obtener el id_cargo
+            $empleado = Empleado::find($user->id_empleado);
+            $roleId = $empleado->id_cargo;
+            return response()->json([
+                'message' => 'Login exitoso',
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'role_id' => $roleId, // Incluir el id_cargo en la respuesta
+            ]);
 
-        // Verifica si las credenciales son correctas
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
+        } catch (InvalidCredentialsException $e) {
+            return $e->render($request);
+        } catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
         }
-
-        $user = Auth::user();
-
-        /*
-        // Verifica si el usuario tiene el correo electrónico verificado
-        if (is_null($user->email_verified_at)) {
-            return response()->json(['message' => 'Debes verificar tu correo electrónico para iniciar sesión'], 403);
-        }*/
-
-        // Crea y devuelve el token de autenticación si el correo está verificado
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        // Obtener el id_cargo
-        $empleado = Empleado::find($user->id_empleado);
-        $roleId = $empleado->id_cargo; // Obtener el id del cargo
-
-        return response()->json([
-            'message' => 'Login exitoso',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'role_id' => $roleId, // Incluir el id_cargo en la respuesta
-        ]);
     }
 
     //acceder al usuario logueado

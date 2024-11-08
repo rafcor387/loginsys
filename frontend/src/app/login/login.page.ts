@@ -11,6 +11,7 @@ export class LoginPage {
   email: string = '';
   password: string = '';
   errorMessage: string = ''; // Variable para almacenar el mensaje de error
+  errorMessages: { [key: string]: string } = {};
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -32,7 +33,13 @@ export class LoginPage {
         },
         (error) => {
           console.error('Error en el login', error);
-          this.errorMessage = error; // Almacenar el mensaje de error
+          if (typeof error === 'string') {
+            this.errorMessage = error;
+            this.errorMessages = {}; 
+          } else {
+            this.errorMessage = '';
+            this.errorMessages = error;
+          }
         }
       );
   }
