@@ -12,12 +12,11 @@ export class RegisterRepuestoComponent  implements OnInit {
   nuevoRepuesto = {
     nombre: '',
     descripcion: '',
-    cantidad_stock: 0,
-    fabricante: '',
+    cantidad_stock: 1,
     id_categoria: '', // Cambia null a un string vacío
     id_marca: '', // Cambia null a un string vacío
-    costo_unitario: 0,
-    precio_unitario: 0,
+    costo_unitario: 1,
+    precio_unitario: 1,
     imagen: null,
     codigo_oem:'',
     numero_serie:''
@@ -46,7 +45,6 @@ export class RegisterRepuestoComponent  implements OnInit {
     formData.append('numero_serie', this.nuevoRepuesto.numero_serie);
     formData.append('descripcion', this.nuevoRepuesto.descripcion);
     formData.append('cantidad_stock', this.nuevoRepuesto.cantidad_stock.toString());
-    formData.append('fabricante', this.nuevoRepuesto.fabricante);
     formData.append('id_marca', this.nuevoRepuesto.id_marca.toString());
     formData.append('id_categoria', this.nuevoRepuesto.id_categoria.toString());
     formData.append('costo_unitario', this.nuevoRepuesto.costo_unitario.toString());
@@ -58,6 +56,7 @@ export class RegisterRepuestoComponent  implements OnInit {
     // Llama al servicio para agregar el repuesto
     this.authService.AgregarRepuesto(formData).subscribe(
       (response) => {
+        console.log('Datos recibidos en create:', response.requestData);
         console.log('Repuesto agregado:', response.nuevoRepuesto);
         this.modalController.dismiss({
           successMessage: response.message, // Asumiendo que response.message contiene el mensaje de éxito

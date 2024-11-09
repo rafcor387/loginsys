@@ -15,7 +15,7 @@ class RepuestoController extends Controller
     public function index()
     {
         //return Repuesto::all();
-        $repuestos = Repuesto::all(); // Obtiene todas las marcas
+        $repuestos = Repuesto::with(['categoria','marca'])->get(); // Obtiene todas las marcas
         return response()->json($repuestos);
     }
 
@@ -27,6 +27,7 @@ class RepuestoController extends Controller
 
     public function store(Request $request)
     {
+        //return response()->json(['requestData' => $request->get('imagen')]);
         try {
             $validatedData = $request->validate([
                 'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9. ]+$/',
@@ -37,8 +38,8 @@ class RepuestoController extends Controller
                 'id_categoria' => 'required|integer|exists:categorias,id',
                 'costo_unitario' => 'required|numeric|min:1',
                 'precio_unitario' => 'required|numeric|min:1',
-                'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem|regex:/^[A-Za-z0-9.-]{6,12}$/',
-                'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie|regex:/^[A-Za-z0-9.-]{8,20}$/',
+                'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem|regex:/^[A-Za-z0-9-. ]{6,20}$/',
+                'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie|regex:/^[A-HJ-NPR-Z0-9a-hj-npr-z]{6,30}$/',
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.max' => 'El nombre excede el número de caracteres.',
@@ -71,6 +72,11 @@ class RepuestoController extends Controller
                 // Se guarda solo la ruta relativa de la imagen
                 $validatedData['imagen'] = $path;
             }
+ 
+            if($validatedData['codigo_oem'] != null)
+            $validatedData['codigo_oem'] = strtoupper($validatedData['codigo_oem']);
+            if($validatedData['numero_serie'] != null)
+            $validatedData['numero_serie'] = strtoupper($validatedData['numero_serie']);
 
             // Crear el repuesto
             $repuesto = Repuesto::create($validatedData);
@@ -82,7 +88,7 @@ class RepuestoController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+            return response()->json(['messageError' => $e->getMessage(), 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
             return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
         }
@@ -93,15 +99,16 @@ class RepuestoController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9. ]+$/',
+                'nombre' => 'max:100|regex:/^[a-zA-Z0-9. ]+$/',
                 'descripcion' => 'max:100|nullable',
-                'cantidad_stock' => 'required|integer|min:0',
-                'id_marca' => 'required|integer|exists:marcas,id',
-                'id_categoria' => 'required|integer|exists:categorias,id',
-                'costo_unitario' => 'required|numeric|min:0',
-                'precio_unitario' => 'required|numeric|min:0',
-                'codigo_oem' => 'nullable|string|max:50|regex:/^[A-Za-z0-9.-]{6,12}$/',
-                'numero_serie' => 'nullable|string|max:100|regex:/^[A-Za-z0-9.-]{8,20}$/',
+                'cantidad_stock' => 'integer|min:0',
+                //'imagen' => 'nullable|image', // Validación para imagen
+                'id_marca' => 'integer|exists:marcas,id',
+                'id_categoria' => 'integer|exists:categorias,id',
+                'costo_unitario' => 'numeric|min:0',
+                'precio_unitario' => 'numeric|min:0',
+                'codigo_oem' => 'nullable|string|max:50|regex:/^[A-Za-z0-9-. ]{6,20}$/',
+                'numero_serie' => 'nullable|string|max:100|regex:/^[A-HJ-NPR-Z0-9a-hj-npr-z]{6,30}$/',
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.max' => 'El nombre excede el número de caracteres.',
@@ -110,7 +117,7 @@ class RepuestoController extends Controller
                 'cantidad_stock.required' => 'El campo de cantidad de stock es obligatorio.',
                 'cantidad_stock.integer' => 'La cantidad en stock debe ser un número.',
                 'cantidad_stock.min' => 'La cantidad en stock debe ser un valor positivo.',
-                'imagen.image' => 'El archivo debe ser una imagen válida.',
+                //'imagen.image' => 'El archivo debe ser una imagen válida.',//validacon imagen
                 'id_marca.required' => 'El campo de marca es obligatorio.',
                 'id_marca.exists' => 'La marca seleccionada no es válida.',
                 'id_categoria.required' => 'El campo de categoría es obligatorio.',
@@ -124,22 +131,24 @@ class RepuestoController extends Controller
                 'codigo_oem.regex' => 'El código OEM es invalido.',
                 'numero_serie.regex' => 'El número de serie es invalido.',
             ]);
-            $repuesto = Repuesto::findOrFail($id);
+            $repuesto = Repuesto::find($id);
+
+            if($validatedData['codigo_oem'] != null)
+            $validatedData['codigo_oem'] = strtoupper($validatedData['codigo_oem']);
+            if($validatedData['numero_serie'] != null)
+            $validatedData['numero_serie'] = strtoupper($validatedData['numero_serie']);
 
             $repuesto->update($validatedData);
-
             return response()->json([
                 'message' => 'Repuesto actualizado con éxito',
                 'Repuesto actualizado' => $repuesto
             ], 201);
-
-
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
             return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
+            return response()->json(['messageError' => $e->getMessage(), 'detailsError' => $e->getMessage()], 500);
         }
     }
 

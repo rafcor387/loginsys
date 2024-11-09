@@ -13,7 +13,6 @@ export class UpdateRepuestoComponent implements OnInit {
   errorMessage: string = ''; // Para mostrar errores en el template
   categorias: any[] = []; // Array para almacenar categorías
   marcas: any[] = []; // Array para almacenar marcas
-  imagenSeleccionada: File | null = null;
   errorMessages: { [key: string]: string } = {};
 
   constructor(
@@ -80,13 +79,6 @@ export class UpdateRepuestoComponent implements OnInit {
         this.errorMessage = error;
       }
     );
-  }
-
-  onImageSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.imagenSeleccionada = file; // Asigna el archivo a imagenSeleccionada
-    }
   }
 
   closeModal() {

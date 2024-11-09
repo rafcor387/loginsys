@@ -172,16 +172,30 @@ export class AuthService {
   }
 
   //crud repuestos
-  AgregarRepuesto(credentials: any): Observable<any> {
+  AgregarRepuesto(repuestoData: any): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
     });
 
     return this.http
-      .post(`${this.apiUrl}/repuestos`, credentials, { headers }) // Pasar los headers aquí
+      .post(`${this.apiUrl}/repuestos`, repuestoData, { headers }) // Pasar los headers aquí
       .pipe(catchError(this.handleError));
   }
+
+   // Método para actualizar un repuesto
+  actualizarRepuesto(repuestoId: number, repuestoData: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+
+    return this.http
+      .put(`${this.apiUrl}/repuestos/${repuestoId}`, repuestoData, { headers }) // Pasar los headers aquí
+      .pipe(catchError(this.handleError)); // Manejo de errores
+  }
+
+
 
   // Método para listar repuestos
   repuestosListar(): Observable<any> {
@@ -205,18 +219,6 @@ export class AuthService {
     return this.http
       .delete(`${this.apiUrl}/repuestos/${repuestoId}`, { headers }) // Pasar los headers aquí
       .pipe(catchError(this.handleError));
-  }
-
-  // Método para actualizar un repuesto
-  actualizarRepuesto(repuestoId: number, repuestoData: any): Observable<any> {
-    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`, // Establecer el token en los headers
-    });
-
-    return this.http
-      .put(`${this.apiUrl}/repuestos/${repuestoId}`, repuestoData, { headers }) // Pasar los headers aquí
-      .pipe(catchError(this.handleError)); // Manejo de errores
   }
 
   // CRUD marcas

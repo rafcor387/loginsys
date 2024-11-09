@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { RegisterRepuestoComponent } from './register-repuesto/register-repuesto.component';
 import { UpdateRepuestoComponent } from './update-repuesto/update-repuesto.component';
 import { AlertController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-repuestos',
@@ -19,6 +20,7 @@ export class RepuestosPage implements OnInit {
     private authService: AuthService,
     private modalController: ModalController,
     private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {}
 
   ngOnInit() {
@@ -105,5 +107,56 @@ export class RepuestosPage implements OnInit {
         ],
       })
       .then((alert) => alert.present());
+  }
+
+  async showRepuestoDetails(repuesto: any) {
+    this.Message = '';
+    this.errorMessage='';
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Detalles del Repuesto',
+      buttons: [
+        {
+          text: 'Cerrar',
+          role: 'cancel',
+        },
+        {
+          text: 'Nombre: ' + repuesto.nombre,
+          role: 'default',
+        },
+        {
+          text: 'codigo_oem: ' + repuesto.codigo_oem,
+          role: 'default',
+        },
+        {
+          text: 'numero_serie: ' + repuesto.numero_serie,
+          role: 'default',
+        },
+        {
+          text: 'Descripcion: ' + repuesto.descripcion,
+          role: 'default',
+        },
+        {
+          text: 'Cantidad en stock: ' + repuesto.cantidad_stock,
+          role: 'default',
+        },
+        {
+          text: 'Marca: ' + repuesto.marca?.nombre,
+          role: 'default',
+        },
+        {
+          text: 'Categoria: ' + repuesto.categoria?.nombre,
+          role: 'default',
+        },
+        {
+          text: 'costo_unitario: ' + repuesto.costo_unitario,
+          role: 'default',
+        },
+        {
+          text: 'precio_unitario: ' + repuesto.precio_unitario,
+          role: 'default',
+        },
+      ],
+    });
+    await actionSheet.present();
   }
 }

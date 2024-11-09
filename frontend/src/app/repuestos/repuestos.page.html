@@ -20,19 +20,17 @@
     <ion-item *ngFor="let repuesto of repuestos">
       <ion-label>
         <h2>{{ repuesto.nombre }}</h2>
-        <p>Descripción: {{ repuesto.descripcion }}</p>
-        <p>Cantidad en stock: {{ repuesto.cantidad_stock }}</p>
-        <p>Precio unitario: {{ repuesto.precio_unitario }}</p>
-        <!-- Asegúrate de que la propiedad imagen_url exista en el objeto repuesto -->
-        <!-- <img [src]="'http://project.test/backend/public/storage/imagenes/342bwi6XVa6KPl9zzLKSip72X9HHTndWxppDpiit.png'" style="width: 100px; height: auto;"> -->
+        <p>Codigo OEM: {{ repuesto.codigo_oem }}</p>
+        <p>Numero de Serie: {{ repuesto.numero_serie }}</p>
         <img
           [src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
-          style="width: 100px; height: auto"
+          style="width: 200px; height: 200px"
         />
       </ion-label>
       <div class="button-container">
         <ion-button color="danger" (click)="DeleteRepuesto(repuesto.id)">Eliminar</ion-button>
         <ion-button color="primary" (click)="openUpdateModal(repuesto)">Editar</ion-button>
+        <ion-button color="secondary" (click)="showRepuestoDetails(repuesto)">Detalle</ion-button>
       </div>
     </ion-item>
   </ion-list>
