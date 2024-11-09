@@ -13,7 +13,14 @@ export class LoginPage {
   errorMessage: string = ''; // Variable para almacenar el mensaje de error
   errorMessages: { [key: string]: string } = {};
 
+  passwordVisible: boolean = false; // Variable para controlar la visibilidad de la contraseña
+
   constructor(private authService: AuthService, private router: Router) {}
+
+  // Función para alternar la visibilidad de la contraseña
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
 
   login() {
     this.authService
@@ -35,7 +42,7 @@ export class LoginPage {
           console.error('Error en el login', error);
           if (typeof error === 'string') {
             this.errorMessage = error;
-            this.errorMessages = {}; 
+            this.errorMessages = {};
           } else {
             this.errorMessage = '';
             this.errorMessages = error;

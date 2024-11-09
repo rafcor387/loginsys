@@ -6,12 +6,7 @@
     <ion-title>
       <ng-content></ng-content>
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/about">
-        <ion-icon name="information-circle"></ion-icon>
-      </ion-button>
-      <ion-button routerLink="/login">Go to Login</ion-button>
-    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
@@ -38,9 +33,17 @@
           [(ngModel)]="password"
           name="password"
           required
-          type="password"
+          [type]="passwordVisible ? 'text' : 'password'"
         ></ion-input>
+        <ion-icon 
+          [name]="passwordVisible ? 'eye-off' : 'eye'" 
+          slot="end" 
+          (click)="togglePasswordVisibility()" 
+          style="cursor: pointer;">
+        </ion-icon>
       </ion-item>
+      
+      
       <div *ngIf="errorMessages?.['password']" style="color: red; margin-bottom: 10px; text-align: center">
         {{ errorMessages['password'] }}
       </div>
