@@ -31,7 +31,7 @@ export class RoleGuard implements CanActivate {
       return true; // Permitir el acceso si tiene el rol correcto
     }
 
-    this.router.navigate(['/login']); // Redirigir si no tiene el rol adecuado
+    this.router.navigate(['/home']); // Redirigir si no tiene el rol adecuado
     return false; // Denegar acceso
   }
 }

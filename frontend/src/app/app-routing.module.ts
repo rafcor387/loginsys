@@ -57,10 +57,15 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { allowedRoles: [1,2] }
   },
-
-
-  
-
+  {
+    path: '**',
+    redirectTo: 'not-found', // O redirige a la página principal
+    pathMatch: 'full',
+  },
+  {
+    path: 'not-found',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
 
 ];
 

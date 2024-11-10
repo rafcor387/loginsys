@@ -13,6 +13,9 @@ export class AuthService {
   //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
 
+  private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
+  public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
+
   constructor(private http: HttpClient, private router: Router) {}
 
   getEmpleadosByCargo(cargo: string): Observable<any> {
@@ -20,7 +23,6 @@ export class AuthService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Establecer el token en los headers
     });
-
     // Aquí hacemos la solicitud GET, pasando los headers y el endpoint correcto
     return this.http
       .get<any>(`${this.apiUrl}/empleados/filter/${cargo}`, { headers })
@@ -61,10 +63,6 @@ export class AuthService {
     return this.http.get<any>(`${this.apiUrl}/verificar-usuario/${idEmpleado}`);
   }
 
-  getUserDetails(idEmpleado: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/users/show/${idEmpleado}`);
-  }
-
   createUser(idEmpleado: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/generar-usuario/${idEmpleado}`);
   }
@@ -72,7 +70,14 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/login`, credentials)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError),
+      tap((response: any) => {
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('role_id', response.role_id);
+        localStorage.setItem('empleado_id', response.empleado_id);
+        this.authStatusSubject.next(true); // Cambia el estado a autenticado
+      })
+    );
   }
 
   // Verificar si el usuario está autenticado
@@ -96,16 +101,14 @@ export class AuthService {
     });
   }
 
-  getCurrentUser() {
-    return this.http.get(`${this.apiUrl}/user`); // Asegúrate de que esta ruta existe en tu API
-  }
-
   logout() {
     localStorage.removeItem('token');
-    //this.isLoggedIn = false;
-    window.location.reload();
+    localStorage.removeItem('role_id');
+    localStorage.removeItem('empleado_id');
+    this.authStatusSubject.next(false); // Cambia el estado a no autenticado
     this.router.navigate(['/login']); // Redirige a la página de inicio de sesión
   }
+
 
   //crud empleados
   AgregarEmpleado(nuevoEmpleado: any): Observable<any> {

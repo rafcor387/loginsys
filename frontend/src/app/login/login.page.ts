@@ -31,12 +31,10 @@ export class LoginPage {
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('role_id', response.role_id);
           localStorage.setItem('empleado_id', response.empleado_id);
-          //this.router.navigate(['/empleados']); // Cambia esto según tu estructura
-
           // Redirige primero a la página de empleados
           this.router.navigate(['/home']).then(() => {
             // Luego recarga la página después de que la navegación se complete
-            window.location.reload();
+            //window.location.reload();
           });
         },
         (error) => {

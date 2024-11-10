@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <!-- Menú de inicio -->
-    <ion-buttons slot="start">
+    <ion-buttons slot="start" *ngIf="isAuthenticated">
       <ion-menu-button class="buttons-men"></ion-menu-button>
     </ion-buttons>
 
@@ -11,7 +11,7 @@
 
     <!-- Email del usuario alineado a la derecha y en tamaño pequeño -->
     <ion-buttons slot="end">
-      <div *ngIf="usuario" class="user-info">
+      <div *ngIf="isAuthenticated" class="user-info">
         <h6 class="email-text">Usuario: {{ usuario.email }}</h6>
       </div>
 
