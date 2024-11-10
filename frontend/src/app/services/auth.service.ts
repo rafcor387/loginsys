@@ -49,33 +49,8 @@ export class AuthService {
       // Error inesperado
       errorMsg = 'Error inesperado. Intenta de nuevo.';
     }
-
     return throwError(() => errorMsg);
   }
-
-  /*
-  private handleError(error: any): Observable<never> {
-    let errorMsg = '';
-    let stg_error = true;
-
-    if (error.error && error.error.errordb) {
-      errorMsg = error.error.errordb;
-      stg_error = false;
-    } else if (error.error && error.error.validationError) {
-      //errorMsg = Object.values(error.error.validationError).join(' ');
-      errorMsg = error.error.validationError;
-      stg_error = false;
-    } else if (error.error && error.error.detailsError) {
-      errorMsg = error.error.detailsError;
-      stg_error = false;
-    }
-
-    if (stg_error) {
-      errorMsg = 'Error inesperado. Intenta de nuevo.';
-    }
-
-    return throwError(() => errorMsg);
-  }*/
 
   eliminarUsuario(idEmpleado: number): Observable<any> {
     return this.http.delete<any>(

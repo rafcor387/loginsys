@@ -1,21 +1,25 @@
 <ion-header>
   <ion-toolbar>
+    <!-- Menú de inicio -->
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button> <!-- This button opens the menu -->
+      <ion-menu-button class="buttons-men"></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      <ng-content></ng-content> <!-- This allows you to pass the title dynamically -->
-    </ion-title>
 
+    <div class="container">
+      <div class="left-item">Nueva Era</div>
+    </div>
+
+    <!-- Email del usuario alineado a la derecha y en tamaño pequeño -->
     <ion-buttons slot="end">
-      <div *ngIf="usuario" class="custom-margin">
-        <h6>Usuario: {{usuario.email}}</h6>
+      <div *ngIf="usuario" class="user-info">
+        <h6 class="email-text">Usuario: {{ usuario.email }}</h6>
       </div>
-      
-      <ion-button *ngIf="isAuthenticated" color="danger" (click)="logout()">
-        Cerrar Sesión
-      </ion-button>
 
+      <!-- Botón de cerrar sesión -->
+      <ion-button *ngIf="isAuthenticated" color="danger" (click)="logout()">
+        <span *ngIf="!isMobile">Cerrar Sesión</span>
+        <ion-icon *ngIf="isMobile" name="log-out-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

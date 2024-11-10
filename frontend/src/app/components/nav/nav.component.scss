@@ -1,4 +1,50 @@
-.custom-margin {
-    margin-right: 50px; /* Ajusta este valor según el espacio que necesites */
+.container {
+  display: flex;
+}
+
+.left-item {
+  /* Opciones como justify-content: flex-start o float:left */
+  display: flex;
+  justify-content: flex-start;
+  font-size: 1.7rem;
+  @media (max-width: 600px) {
+    //text-align: left;
+    //margin-right: 80%;
+    font-size: 1rem;
   }
-  
+}
+
+.right-item {
+  margin-left: auto; /* Esto empuja el elemento de la derecha hacia la derecha y el de la izquierda queda alineado a la izquierda */
+}
+
+
+/* Alinea el título más a la izquierda */
+.title-left {
+  //margin-right: 10%;
+  //text-align: left;
+  font-size: 2rem;
+
+  @media (max-width: 600px) {
+    //text-align: left;
+    //margin-right: 80%;
+    font-size: 1rem;
+  }
+}
+
+/* Estilo para el email del usuario */
+.user-info {
+  margin-right: 1rem;
+  margin-top: 10px;
+}
+
+.email-text {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #666; /* Color más suave para el email */
+
+  @media (max-width: 600px) {
+    font-size: 0.8rem; /* Reduce el tamaño en dispositivos pequeños */
+    text-align: left;
+  }
+}

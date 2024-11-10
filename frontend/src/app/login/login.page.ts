@@ -30,6 +30,7 @@ export class LoginPage {
           console.log('Login exitoso', response);
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('role_id', response.role_id);
+          localStorage.setItem('empleado_id', response.empleado_id);
           //this.router.navigate(['/empleados']); // Cambia esto según tu estructura
 
           // Redirige primero a la página de empleados

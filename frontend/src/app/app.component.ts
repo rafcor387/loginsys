@@ -9,15 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private authService: AuthService, private router: Router) {
-    //this.checkAuthentication();
-  }
+  constructor() {}
 
-  /*
-  checkAuthentication() {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']); // Redirige a la página de inicio de sesión si no está autenticado
-    }
-  }
-    */
+
 }

@@ -18,6 +18,7 @@ export class EmpleadosPage implements OnInit {
   errorMessage: string = ''; 
   Message: string = '';
   selectedCargo: string = 'Ambos';
+  empleadoIdLocalStorage = localStorage.getItem('empleado_id');
 
   constructor(
     private authService: AuthService,
@@ -31,6 +32,39 @@ export class EmpleadosPage implements OnInit {
     this.filterEmpleados(); // Carga inicial
   }
 
+  async eliminarUsuario(idEmpleado: number) {
+    this.Message = '';
+    this.errorMessage = '';
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: '¿Estás seguro de que deseas eliminar este usuario?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.authService.eliminarUsuario(idEmpleado).subscribe(
+              (response) => {
+                this.filterEmpleados();
+                console.log('Usuario eliminado con éxito:', response);
+                this.Message = response.message;
+              },
+              (error) => {
+                console.error('Error al eliminar el usuario:', error);
+              }
+            );
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
+
   filterEmpleados() {
     this.errorMessage = ''; 
     this.Message = '';
@@ -41,6 +75,7 @@ export class EmpleadosPage implements OnInit {
       },
       (error) => {
         console.error('Error al cargar empleados:', error);
+        this.errorMessage = error;
       }
     );
   }
@@ -89,42 +124,13 @@ export class EmpleadosPage implements OnInit {
     return await modal.present();
   }
 
-  async eliminarUsuario(idEmpleado: number) {
-    this.Message = '';
-    this.errorMessage='';
-    const alert = await this.alertController.create({
-      header: 'Confirmación',
-      message: '¿Estás seguro de que deseas eliminar este usuario?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            this.authService.eliminarUsuario(idEmpleado).subscribe(
-              (response) => {
-                //this.LoadEmpleados();
-                this.filterEmpleados();
-                console.log('Usuario eliminado con éxito:', response);
-                this.Message = response.message;
-              },
-              (error) => {
-                console.error('Error al eliminar el usuario:', error);
-              }
-            );
-          },
-        },
-      ],
-    });
 
-    await alert.present();
-  }
 
   DeleteEmpleado(empleadoId: number) {
     this.Message = '';
     this.errorMessage='';
+    console.log('id del empleado es', Number(this.empleadoIdLocalStorage));
+
     this.alertController
       .create({
         header: 'Confirmar Eliminación',
@@ -141,9 +147,13 @@ export class EmpleadosPage implements OnInit {
           {
             text: 'Sí',
             handler: () => {
+              if (Number(this.empleadoIdLocalStorage) === empleadoId) {
+                this.filterEmpleados();
+                this.errorMessage = 'No puedes eliminar al empleado';
+                return; // Detiene la ejecución sin lanzar una excepción
+              }
               this.authService.EliminarEmpleado(empleadoId).subscribe(
                 (response) => {
-                  //this.LoadEmpleados();
                   this.filterEmpleados();
                   this.Message = response.message;
                 },

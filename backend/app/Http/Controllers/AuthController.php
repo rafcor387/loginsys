@@ -60,20 +60,28 @@ class AuthController extends Controller
             if (!Auth::attempt($request->only('email', 'password'))) {
                 throw new InvalidCredentialsException();
             }
+            
             $user = Auth::user();
-            /*// Verifica si el usuario tiene el correo electrónico verificado
+
+            /*
+            // Verifica si el usuario tiene el correo electrónico verificado
             if (is_null($user->email_verified_at)) {
                 return response()->json(['message' => 'Debes verificar tu correo electrónico para iniciar sesión'], 403);
             }*/
+
             $token = $user->createToken('auth_token')->plainTextToken;
-            // Obtener el id_cargo
+            // Obtener el empleado en base al id_empleado del user
             $empleado = Empleado::find($user->id_empleado);
+            //obtener el cargo
             $roleId = $empleado->id_cargo;
+            //obtener el id del empleado
+            $idempleado = $empleado->id;
             return response()->json([
                 'message' => 'Login exitoso',
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'role_id' => $roleId, // Incluir el id_cargo en la respuesta
+                'role_id' => $roleId,
+                'empleado_id' => $idempleado,
             ]);
 
         } catch (InvalidCredentialsException $e) {

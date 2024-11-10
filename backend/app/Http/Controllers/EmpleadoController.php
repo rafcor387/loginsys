@@ -39,7 +39,7 @@ class EmpleadoController extends Controller
         try {
             $validatedData = $request->validate([
                 'ci' => 'required|digits_between:6,11|unique:empleados,ci',
-                'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
+                'nombres' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñs. ]+$/',
                 'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
@@ -53,10 +53,10 @@ class EmpleadoController extends Controller
                 'ci.digits_between' => 'El CI debe tener entre 6 y 20 dígitos.',
                 'nombres.required' => 'El campo de nombre es obligatorio.',
                 'nombres.string' => 'El nombre debe contener solo letras.',
-                'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+                'nombres.regex' => 'El nombre solo puede contener letras y espacios y puntos.',
                 'apellidos.required' => 'El campo de apellidos es obligatorio.',
                 'apellidos.string' => 'El apellido debe contener solo letras.',
-                'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
+                'apellidos.regex' => 'El apellido solo puede contener letras y espacios y puntos.',
                 'id_cargo.required' => 'Debes seleccionar un cargo válido.',
                 'telefono.required' => 'El celular es obligatorio.',
                 'telefono.numeric' => 'Ingrese un celular valido',
@@ -77,6 +77,8 @@ class EmpleadoController extends Controller
             ]);
             $validatedData['nombres'] = strtoupper($validatedData['nombres']);
             $validatedData['apellidos'] = strtoupper($validatedData['apellidos']);
+
+            //throw new \Exception();
 
             $empleado = Empleado::create($validatedData);
             return response()->json([
