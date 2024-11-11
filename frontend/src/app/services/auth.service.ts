@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
-  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
-  //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
+  private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
 
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial

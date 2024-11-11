@@ -11,6 +11,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Cargo;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\regresionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ Route::get('users/show/{idEmpleado}', [UserController::class, 'showUser']);
 Route::get('/generar-usuario/{idEmpleado}', [EmpleadoController::class, 'generarCodigo']);
 Route::get('/verificar-usuario/{idEmpleado}', [UserController::class, 'verificarUsuarioPorEmpleado']);
 Route::delete('/eliminar_usuario/{idEmpleado}', [EmpleadoController::class, 'eliminarUser']);
+Route::get('/predict-sales/{producto_id}', [regresionController::class, 'predictSales']);
 
 
 
