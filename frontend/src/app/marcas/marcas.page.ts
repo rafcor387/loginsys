@@ -24,6 +24,8 @@ export class MarcasPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.Message = '';
+    this.errorMessage = '';
     this.LoadMarcas(); // Cargar marcas al iniciar
   }
 

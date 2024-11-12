@@ -30,7 +30,7 @@ class RepuestoController extends Controller
         //return response()->json(['requestData' => $request->get('imagen')]);
         try {
             $validatedData = $request->validate([
-                'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9. ]+$/',
+                'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ. ]+$/',
                 'descripcion' => 'max:100|nullable',
                 'cantidad_stock' => 'required|integer|min:1',
                 'imagen' => 'nullable|image', // Validación para imagen
@@ -61,8 +61,10 @@ class RepuestoController extends Controller
                 'precio_unitario.min' => 'El precio unitario debe ser positivo.',
                 'codigo_oem.unique' => 'El código OEM ya existe.',
                 'codigo_oem.regex' => 'El código OEM es invalido.',
+                'codig_oem.max' => 'La codigo oem excede el número de caracteres.',
                 'numero_serie.regex' => 'El número de serie es invalido.',
                 'numero_serie.uniqeu' => 'El número de serie ya existe.',
+                'numero_serie.max' => 'El numero de serie excede el número de caracteres.',
             ]);
 
             // Manejo de la imagen
@@ -99,7 +101,7 @@ class RepuestoController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'max:100|regex:/^[a-zA-Z0-9. ]+$/',
+                'nombre' => 'max:100|regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ. ]+$/',
                 'descripcion' => 'max:100|nullable',
                 'cantidad_stock' => 'integer|min:0',
                 //'imagen' => 'nullable|image', // Validación para imagen

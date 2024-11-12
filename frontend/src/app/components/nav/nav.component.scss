@@ -6,7 +6,7 @@
   /* Opciones como justify-content: flex-start o float:left */
   display: flex;
   justify-content: flex-start;
-  font-size: 1.7rem;
+  font-size: 1.9rem;
   @media (max-width: 600px) {
     //text-align: left;
     //margin-right: 80%;
@@ -41,7 +41,7 @@
 .email-text {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #666; /* Color más suave para el email */
+  color: #ffff; /* Color más suave para el email */
 
   @media (max-width: 600px) {
     font-size: 0.8rem; /* Reduce el tamaño en dispositivos pequeños */

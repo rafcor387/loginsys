@@ -10,7 +10,7 @@
 <ion-content>
   <form (submit)="AddMarca()">
     <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
+      <ion-label position="floating">Nombre *</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.nombre" name="nombre" required></ion-input>
     </ion-item>
     <div *ngIf="errorMessages?.['nombre']" style="color: red; margin-bottom: 10px; text-align: center">
@@ -18,12 +18,17 @@
     </div>
 
     <ion-item>
-      <ion-label position="floating">Pais</ion-label>
-      <ion-input [(ngModel)]="nuevaMarca.pais" name="pais" required></ion-input>
+      <ion-label position="floating">País *</ion-label>
+      <ion-select [(ngModel)]="nuevaMarca.pais" name="pais" required>
+        <ion-select-option *ngFor="let country of countries" [value]="country">
+          {{ country }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
     <div *ngIf="errorMessages?.['pais']" style="color: red; margin-bottom: 10px; text-align: center">
       {{ errorMessages['pais'] }}
     </div>
+         
 
     <ion-item>
       <ion-label position="floating">Email de contacto</ion-label>
@@ -41,13 +46,16 @@
       {{ errorMessages['direccion'] }}
     </div>
 
+    <!-- 
     <ion-item>
-      <ion-label position="floating">Celular de contacto</ion-label>
+      <ion-label position="floating">Celular de contacto (+[Código de País]    [Número de Celular])</ion-label>
       <ion-input [(ngModel)]="nuevaMarca.telefono" name="telefono" required></ion-input>
     </ion-item>
     <div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
       {{ errorMessages['telefono'] }}
     </div>
+    -->
+    
 
     <ion-item>
       <ion-label position="floating">Sitio_web</ion-label>

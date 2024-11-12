@@ -11,7 +11,7 @@
   <div class="form-wrapper">
     <form (submit)="AddRepuesto()">
       <ion-item>
-        <ion-label position="floating">Codigo OEM</ion-label>
+        <ion-label position="floating">Codigo OEM *</ion-label>
         <ion-input [(ngModel)]="nuevoRepuesto.codigo_oem" name="codigo_oem" required></ion-input>
       </ion-item>
       <div *ngIf="errorMessages?.['codigo_oem']" style="color: red; margin-bottom: 10px; text-align: center">
@@ -19,7 +19,7 @@
       </div>
 
       <ion-item>
-        <ion-label position="floating">Nombre</ion-label>
+        <ion-label position="floating">Nombre *</ion-label>
         <ion-input [(ngModel)]="nuevoRepuesto.nombre" name="nombre" required></ion-input>
       </ion-item>
       <div *ngIf="errorMessages?.['nombre']" style="color: red; margin-bottom: 10px; text-align: center">
@@ -51,7 +51,7 @@
       </div>
 
       <ion-item>
-        <ion-label>Categoría</ion-label>
+        <ion-label>Categoría *</ion-label>
         <ion-select [(ngModel)]="nuevoRepuesto.id_categoria" name="id_categoria" required>
           <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</ion-select-option>
         </ion-select>
@@ -61,7 +61,7 @@
       </div>
 
       <ion-item>
-        <ion-label>Marca</ion-label>
+        <ion-label>Marca *</ion-label>
         <ion-select [(ngModel)]="nuevoRepuesto.id_marca" name="id_marca" required>
           <ion-select-option *ngFor="let marca of marcas" [value]="marca.id">{{ marca.nombre }}</ion-select-option>
         </ion-select>

@@ -5,33 +5,37 @@
 </ion-header>
 
 <ion-content>
-  <ion-button color="success" (click)="openRegisterModal()" expand="full"
-    >Registrar Repuesto</ion-button
-  >
   <div>
-    <ion-text color="danger" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </ion-text>
+    <ion-button color="success" (click)="openRegisterModal()" expand="full" class="btnregistrar"
+    >Registrar Repuesto</ion-button>
+  </div>
+  
+  <div style="padding-left: 1%">
+    <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
     <ion-text color="success" *ngIf="Message"> {{ Message }} </ion-text>
-    <br />
+    <br><br>
   </div>
 
-  <ion-list>
-    <ion-item *ngFor="let repuesto of repuestos">
-      <ion-label>
-        <h2>{{ repuesto.nombre }}</h2>
-        <p>Codigo OEM: {{ repuesto.codigo_oem }}</p>
-        <p>Numero de Serie: {{ repuesto.numero_serie }}</p>
-        <img
-          [src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
-          style="width: 200px; height: 200px"
-        />
-      </ion-label>
-      <div class="button-container">
-        <ion-button color="danger" (click)="DeleteRepuesto(repuesto.id)">Eliminar</ion-button>
-        <ion-button color="primary" (click)="openUpdateModal(repuesto)">Editar</ion-button>
-        <ion-button color="secondary" (click)="showRepuestoDetails(repuesto)">Detalle</ion-button>
-      </div>
-    </ion-item>
-  </ion-list>
-</ion-content>
+
+  <div>
+    <ion-list>
+      <ion-item *ngFor="let repuesto of repuestos">
+        <ion-label>
+          <h2>{{ repuesto.nombre }}</h2>
+          <p>Codigo OEM: {{ repuesto.codigo_oem }}</p>
+          <p>Numero de Serie: {{ repuesto.numero_serie }}</p>
+          <img
+            [src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
+            style="width: 200px; height: 200px"
+          />
+        </ion-label>
+        <div class="button-container">
+          <ion-button color="danger" (click)="DeleteRepuesto(repuesto.id)" class="bottones">Eliminar</ion-button>
+          <ion-button color="primary" (click)="openUpdateModal(repuesto)" class="bottones">Editar</ion-button>
+          <ion-button color="secondary" (click)="showRepuestoDetails(repuesto)" class="bottones">Detalle</ion-button>
+        </div>
+      </ion-item>
+    </ion-list>
+  
+  </div>
+  </ion-content>

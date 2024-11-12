@@ -9,9 +9,18 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./update-marca.component.scss'],
 })
 export class UpdateMarcaComponent  implements OnInit {
-  @Input() marca: any; 
+  @Input() marca: any;
   errorMessage: string = ''; 
   errorMessages: { [key: string]: string } = {};
+
+  // Lista de países
+  countries: string[] = [
+    'Argentina', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
+    'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra'
+    // Agrega más países según sea necesario
+  ];
+
+  isSelectVisible: boolean = false; // Controla la visibilidad del select
 
   constructor(
     private modalController: ModalController,
@@ -20,6 +29,18 @@ export class UpdateMarcaComponent  implements OnInit {
   ) { }
 
   ngOnInit() {}
+
+  toggleSelect() {
+    this.isSelectVisible = true; // Cambia a `ion-select` cuando el input recibe foco
+  }
+
+  onCountryChange() {
+    // Si el usuario selecciona "Otro", regresa al input
+    if (this.marca.pais === 'Otro') {
+      this.isSelectVisible = false;
+      this.marca.pais = ''; // Limpia el campo para ingresar un país nuevo
+    }
+  }
 
   updateMarca() {
     this.authService.actualizarMarca(this.marca.id, this.marca).subscribe(

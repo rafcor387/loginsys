@@ -29,7 +29,7 @@ class MarcaController extends Controller
             $validatedData = $request->validate([
                 'nombre' => [
                     'required',
-                    'regex:/^[a-zA-Z0-9. ]+$/',
+                    'regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ. ]+$/',
                     'max:30',
                 ],
                 'pais' => [
@@ -40,7 +40,9 @@ class MarcaController extends Controller
                 'email' => [
                     'nullable',
                     'email',
-                    'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
+                    //'regex:/(.*)@([a-zA-Z0-9.-]+)\.com$/i',
+                    'regex:/(.*)@([a-zA-Z0-9.-]+)\.[a-zA-Z]{2,}$/i',
+                    //'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
                     'unique:marcas,email',
                 ],
                 'direccion' => [
@@ -70,7 +72,8 @@ class MarcaController extends Controller
                 'pais.required' => 'El país es obligatorio.',
                 'pais.regex' => 'El país solo debe contener letras.',
                 'pais.max' => 'Solo se permite hasta maximo 30 caracteres en el campo pais.',
-                'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                //'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                'email.regex' => 'Introduzca un email valido',
                 'email.email' => 'Introduzca un email valido',
                 'email.unique' => 'No puede repetir el email',
                 'direccion.regex' => 'La dirección solo debe contener letras y números.',
@@ -106,7 +109,7 @@ class MarcaController extends Controller
             $validatedData = $request->validate([
                 'nombre' => [
                     'required',
-                    'regex:/^[a-zA-Z0-9. ]+$/',
+                    'regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ. ]+$/',
                     'max:30'
                 ],
                 'pais' => [

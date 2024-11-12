@@ -10,7 +10,7 @@
 <ion-content>
   <form (submit)="AddCategoria()">
     <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
+      <ion-label position="floating">Nombre *</ion-label>
       <ion-input [(ngModel)]="nuevacategoria.nombre" name="nombre" required></ion-input>
     </ion-item>
     <div *ngIf="errorMessages?.['nombre']" style="color: red; margin-bottom: 10px; text-align: center">

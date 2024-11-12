@@ -5,11 +5,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-button color="success" (click)="openRegisterModal()" expand="full">Registrar Marca</ion-button>
   <div>
+    <ion-button color="success" (click)="openRegisterModal()" expand="full">Registrar Marca</ion-button>
+  </div>
+  
+  <div style="padding-left: 1%">
     <ion-text color="danger" *ngIf="errorMessage"> {{ errorMessage }} </ion-text>
     <ion-text color="success" *ngIf="Message"> {{ Message }} </ion-text>
-    <br>
+    <br><br>
   </div>
 
   <ion-list>
@@ -24,8 +27,8 @@
         <p class="pa">Descripcion: {{ marca.descripcion }}</p>
       </ion-label>
       <div class="button-container">
-        <ion-button color="danger" (click)="DeleteMarca(marca.id)">Eliminar</ion-button>
-        <ion-button color="primary" (click)="openUpdateModal(marca)">Editar</ion-button>
+        <ion-button color="danger" (click)="DeleteMarca(marca.id)" class="bottones">Eliminar</ion-button>
+        <ion-button color="primary" (click)="openUpdateModal(marca)" class="bottones">Editar</ion-button>
       </div>
     </ion-item>
   </ion-list>

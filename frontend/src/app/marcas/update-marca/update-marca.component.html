@@ -18,12 +18,20 @@
     </div>
 
     <ion-item>
-      <ion-label position="floating">Pais</ion-label>
-      <ion-input [(ngModel)]="marca.pais" name="pais" required></ion-input>
+      <ion-label position="floating">País *</ion-label>
+      <ion-input [(ngModel)]="marca.pais" name="pais"></ion-input>
+      <ion-select [(ngModel)]="marca.pais" name="pais">
+        <ion-select-option *ngFor="let country of countries" [value]="country">
+          {{ country }}
+        </ion-select-option>
+      </ion-select>
+      
     </ion-item>
     <div *ngIf="errorMessages?.['pais']" style="color: red; margin-bottom: 10px; text-align: center">
       {{ errorMessages['pais'] }}
     </div>
+    
+
 
     <ion-item>
       <ion-label position="floating">Email de contacto</ion-label>
@@ -41,6 +49,7 @@
       {{ errorMessages['direccion'] }}
     </div>
 
+    <!--
     <ion-item>
       <ion-label position="floating">Celular de contacto</ion-label>
       <ion-input [(ngModel)]="marca.telefono" name="telefono" required></ion-input>
@@ -48,6 +57,7 @@
     <div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
       {{ errorMessages['telefono'] }}
     </div>
+    -->
 
     <ion-item>
       <ion-label position="floating">Sitio_web</ion-label>
