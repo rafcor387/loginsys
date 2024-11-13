@@ -11,6 +11,9 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Cargo;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,4 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('marcas', MarcaController::class);
     Route::apiResource('categorias', CategoriaController::class);
     Route::apiResource('cargos',CargoController::class);
+    Route::apiResource('ventas',VentaController::class);
+    Route::apiResource('clientes',ClienteController::class);
+    Route::apiResource('detalles_venta',DetalleVentaController::class);
 });
