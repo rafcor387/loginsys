@@ -58,6 +58,18 @@ const routes: Routes = [
     data: { allowedRoles: [1,2] }
   },
   {
+    path: 'solicitud-grafico',
+    loadChildren: () => import('./solicitud-grafico/solicitud-grafico.module').then( m => m.SolicitudGraficoPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] }
+  },
+  {
+    path: 'sales-prediction/:producto_id',
+    loadChildren: () => import('./sales-prediction/sales-prediction.module').then(m => m.SalesPredictionPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] }
+  }, 
+  {
     path: '**',
     redirectTo: 'not-found', // O redirige a la página principal
     pathMatch: 'full',
