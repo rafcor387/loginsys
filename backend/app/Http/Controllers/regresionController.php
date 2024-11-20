@@ -11,9 +11,9 @@ class regresionController extends Controller
     public function predictSales($producto_id)
     {
         // Obtener datos de la base de datos
-        $datos = DB::table('testreg')
+        $datos = DB::table('test')
             ->select('ventas', 'cantidad', 'mes')
-            ->where('id', $producto_id)
+            ->where('id_repuesto', $producto_id)
             ->get();
 
         if ($datos->isEmpty()) {

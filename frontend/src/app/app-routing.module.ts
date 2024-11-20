@@ -59,9 +59,7 @@ const routes: Routes = [
   },
   {
     path: 'solicitud-grafico',
-    loadChildren: () => import('./solicitud-grafico/solicitud-grafico.module').then( m => m.SolicitudGraficoPageModule),
-    canActivate: [RoleGuard],
-    data: { allowedRoles: [1,2] }
+    loadChildren: () => import('./solicitud-grafico/solicitud-grafico.module').then( m => m.SolicitudGraficoPageModule)
   },
   {
     path: 'sales-prediction/:producto_id',

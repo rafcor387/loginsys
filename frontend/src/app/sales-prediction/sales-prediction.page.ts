@@ -36,7 +36,7 @@ export class SalesPredictionPage implements OnInit {
     this.chart = new Chart(this.salesChart.nativeElement, {
       type: 'line',
       data: {
-        labels: ventasReales.map((_, index) => `Punto ${index + 1}`),
+        labels: ventasReales.map((_, index) => `Dato ${index + 1}`),
         datasets: [
           {
             label: 'Ventas Reales',
@@ -64,7 +64,7 @@ export class SalesPredictionPage implements OnInit {
             display: true,
             title: {
               display: true,
-              text: 'Puntos de Datos',
+              text: 'Datos procesados',
             },
           },
           y: {
