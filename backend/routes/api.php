@@ -34,7 +34,7 @@ Route::get('users/show/{idEmpleado}', [UserController::class, 'showUser']);
 Route::get('/generar-usuario/{idEmpleado}', [EmpleadoController::class, 'generarCodigo']);
 Route::get('/verificar-usuario/{idEmpleado}', [UserController::class, 'verificarUsuarioPorEmpleado']);
 Route::delete('/eliminar_usuario/{idEmpleado}', [EmpleadoController::class, 'eliminarUser']);
-
+Route::apiResource('categorias', CategoriaController::class);
 
 
 /*
@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/empleados/filter/{cargo}', [EmpleadoController::class, 'filterByCargo']);
     Route::apiResource('repuestos', RepuestoController::class);
     Route::apiResource('marcas', MarcaController::class);
-    Route::apiResource('categorias', CategoriaController::class);
+    //Route::apiResource('categorias', CategoriaController::class);
     Route::apiResource('cargos',CargoController::class);
     Route::apiResource('ventas',VentaController::class);
     Route::apiResource('clientes',ClienteController::class);
