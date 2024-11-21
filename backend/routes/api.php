@@ -36,6 +36,8 @@ Route::get('/verificar-usuario/{idEmpleado}', [UserController::class, 'verificar
 Route::delete('/eliminar_usuario/{idEmpleado}', [EmpleadoController::class, 'eliminarUser']);
 Route::apiResource('categorias', CategoriaController::class);
 
+Route::apiResource('empleados', EmpleadoController::class);
+Route::get('/empleados/filter/{cargo}', [EmpleadoController::class, 'filterByCargo']);
 
 /*
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
@@ -55,13 +57,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     /*Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
         ->name('verification.send');*/
-    Route::apiResource('empleados', EmpleadoController::class);
-    Route::get('/empleados/filter/{cargo}', [EmpleadoController::class, 'filterByCargo']);
+
     Route::apiResource('repuestos', RepuestoController::class);
     Route::apiResource('marcas', MarcaController::class);
     //Route::apiResource('categorias', CategoriaController::class);
-    Route::apiResource('cargos',CargoController::class);
-    Route::apiResource('ventas',VentaController::class);
-    Route::apiResource('clientes',ClienteController::class);
-    Route::apiResource('detalles_venta',DetalleVentaController::class);
+    Route::apiResource('cargos', CargoController::class);
+    Route::apiResource('ventas', VentaController::class);
+    Route::apiResource('clientes', ClienteController::class);
+    Route::apiResource('detalles_venta', DetalleVentaController::class);
 });
