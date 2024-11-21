@@ -97,3 +97,18 @@ form {
     padding: 20px; /* Padding inside forms */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow for forms */
 }
+
+:root {
+    /* Modo claro */
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000000;
+    /* Otros colores para modo claro */
+  }
+  
+  .dark-theme {
+    /* Modo oscuro */
+    --ion-background-color: #000000;
+    --ion-text-color: #ffffff;
+    /* Otros colores para modo oscuro */
+  }
+  

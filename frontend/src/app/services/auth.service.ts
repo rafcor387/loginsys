@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
-  private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; // Cambia esto si es necesario
+  //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
+  private apiUrl = 'https://izzicode-production.up.railway.app/public/api'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; // Cambia esto si es necesario
   //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
 
@@ -76,6 +77,7 @@ export class AuthService {
         localStorage.setItem('role_id', response.role_id);
         localStorage.setItem('empleado_id', response.empleado_id);
         this.authStatusSubject.next(true); // Cambia el estado a autenticado
+        this.router.navigate(['/home']);
       })
     );
   }
@@ -107,6 +109,7 @@ export class AuthService {
     localStorage.removeItem('empleado_id');
     this.authStatusSubject.next(false); // Cambia el estado a no autenticado
     this.router.navigate(['/login']); // Redirige a la página de inicio de sesión
+    console.log('La sesion se cerró');
   }
 
 

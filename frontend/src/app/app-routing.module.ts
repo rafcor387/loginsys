@@ -2,8 +2,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RoleGuard} from './auth.guard';
+import { AuthService } from './services/auth.service';
 //import { AuthGuard } from './auth.guard';
-
 
 const routes: Routes = [
   {
@@ -17,11 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
     canActivate: [RoleGuard],
     data: { allowedRoles: [1,2] } 
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
   },
   {
     path: 'register',
