@@ -20,6 +20,16 @@ class LlenadoDatosController extends Controller
             $id_repuesto = $validated['id_repuesto'];
             $anio = $validated['anio'];
 
+            // verificamos que existan los datos en la tabla
+            $existingData = DB::table('regresion')
+                ->where('id_repuesto', $id_repuesto)
+                ->where('anio', $anio)
+                ->first();
+
+            if ($existingData) {
+                return response()->json(['message' => 'Los datos ya han sido procesados. Por favor, haga clic en "Ver Gráfico" para ver el gráfico.'], 200);
+            }
+
             // Definir el rango de fechas para el año solicitado
             $fechaInicio = Carbon::createFromDate($anio, 1, 1);
             $fechaFin = Carbon::createFromDate($anio, 12, 31);
@@ -59,6 +69,7 @@ class LlenadoDatosController extends Controller
                         'ventas' => $ventaTemporal,
                         'cantidad' => $cantidadTemporal,
                         'mes' => $fechaInicioPeriodo->month, // Mes del inicio del período
+                        'anio' => $anio,
                     ];
 
                     // Reiniciar para el siguiente período
@@ -79,13 +90,14 @@ class LlenadoDatosController extends Controller
                     'ventas' => $ventaTemporal,
                     'cantidad' => $cantidadTemporal,
                     'mes' => $fechaInicioPeriodo->month,
+                    'anio' => $anio,
                 ];
             }
 
             // Insertar datos en testreg dentro de una transacción
             DB::transaction(function () use ($ventasPorMes) {
                 foreach ($ventasPorMes as $registro) {
-                    DB::table('test')->insert($registro);
+                    DB::table('regresion')->insert($registro);
                 }
             });
 

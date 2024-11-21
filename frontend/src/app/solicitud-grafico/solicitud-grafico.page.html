@@ -5,17 +5,41 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="submitForm()">
+  <form (ngSubmit)="submitForm()" #form="ngForm">
     <ion-item>
       <ion-label position="floating">ID del Producto</ion-label>
-      <ion-input [(ngModel)]="idRepuesto" name="idRepuesto" required></ion-input>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="idRepuesto" 
+        name="idRepuesto" 
+        required 
+        min="1" 
+        #idRepuestoInput="ngModel">
+      </ion-input>
+      <ion-note *ngIf="idRepuestoInput.invalid && (idRepuestoInput.dirty || idRepuestoInput.touched)" color="danger">
+        Debe ingresar un ID válido.
+      </ion-note>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Año</ion-label>
-      <ion-input [(ngModel)]="anio" name="anio" required></ion-input>
+      <ion-label>Año</ion-label>
+      <ion-select [(ngModel)]="anio" name="anio" required #anioSelect="ngModel">
+        <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+      </ion-select>
+      <ion-note *ngIf="anioSelect.invalid && (anioSelect.dirty || anioSelect.touched)" color="danger">
+        Debe seleccionar un año.
+      </ion-note>
     </ion-item>
 
-    <ion-button expand="full" type="submit">Enviar</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="form.invalid">Enviar</ion-button>
+    <!-- Button to view graph if data has been processed -->
+    <ion-button *ngIf="dataProcessed" expand="full" routerLink="/sales-prediction/{{ idRepuesto }}">
+      Ver Gráfico
+    </ion-button>
+
+    <!-- Display error message -->
+    <ion-note *ngIf="errorMessage" color="danger" style="margin-top: 16px;">
+      {{ errorMessage }}
+    </ion-note>
   </form>
 </ion-content>

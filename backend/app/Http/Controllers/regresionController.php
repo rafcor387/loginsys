@@ -11,7 +11,7 @@ class regresionController extends Controller
     public function predictSales($producto_id)
     {
         // Obtener datos de la base de datos
-        $datos = DB::table('test')
+        $datos = DB::table('regresion')
             ->select('ventas', 'cantidad', 'mes')
             ->where('id_repuesto', $producto_id)
             ->get();

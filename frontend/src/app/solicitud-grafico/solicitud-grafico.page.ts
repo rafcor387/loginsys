@@ -11,33 +11,45 @@ export class SolicitudGraficoPage {
   idRepuesto: number = 0;
   anio: number = 0;
   errorMessage: string = ''; // Variable para mostrar el mensaje de error
+  years: number[] = []; // Array para almacenar los años
 
-  constructor(private http: HttpClient, private router: Router) {}
+  dataProcessed: boolean = false; // para verificar si los datos ya existen en la tabla de regresion
+
+  constructor(private http: HttpClient, private router: Router) {
+    this.generateYears(); // Generate years on component initialization
+  }
+
+  // Generate years from 2000 to the current year
+  generateYears() {
+    const currentYear = new Date().getFullYear();
+    for (let year = 2000; year <= currentYear; year++) {
+      this.years.push(year);
+    }
+  }
 
   // Función para enviar los datos al backend
   submitForm() {
+    this.errorMessage = ''; // Reset error message before submission
+    this.dataProcessed = false; // Reset data processed flag
     if (!this.idRepuesto || !this.anio) {
-      this.errorMessage = 'Por favor complete todos los campos antes de enviar.';
-      return;
+        this.errorMessage = 'Por favor complete todos los campos antes de enviar.';
+        return;
     }
 
     const data = { id_repuesto: this.idRepuesto, anio: this.anio };
 
     this.http.post('http://127.0.0.1:8000/api/llenar-test-reg', data).subscribe(
       (response: any) => {
-        // Si el proceso fue exitoso, redirigimos al usuario a la página de predicción
-        this.router.navigate([`/sales-prediction/${this.idRepuesto}`]);
+          // Check if the response indicates data has been processed
+          if (response.message) {
+              this.dataProcessed = true; // Set flag to true
+              this.errorMessage = response.message; // Show the message
+          }
       },
       (error) => {
-        // Si ocurre un error, mostramos un mensaje de error
-        console.error('Error al procesar los datos:', error);
-
-        // Aquí verificamos si el error tiene un mensaje específico del backend
-        if (error.error && error.error.error) {
-          this.errorMessage = error.error.error; // Mensaje personalizado del backend
-        } else {
-          this.errorMessage = 'Hubo un error al procesar los datos. Intente de nuevo.';
-        }
+          // Handle error as before
+          console.error('Error al procesar los datos:', error);
+          this.errorMessage = error.error.message || 'Hubo un error al procesar los datos. Intente de nuevo.';
       }
     );
   }

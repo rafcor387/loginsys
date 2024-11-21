@@ -1,0 +1,14 @@
+form {
+    padding: 16px; // Add padding for better spacing
+}
+
+ion-item {
+  margin-bottom: 16px; // Space between items
+}
+
+// Media query for smaller devices
+@media (max-width: 768px) {
+  ion-item {
+    font-size: 0.9rem; // Adjust font size for mobile
+  }
+}

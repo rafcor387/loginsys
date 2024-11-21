@@ -1,9 +1,18 @@
 .chart-container {
-    width: 100%;
-    max-width: 600px;
-    margin: auto;
-  }
-  
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 16px; // Add padding for better spacing
+}
+
 h1 {
   text-align: center;
+  font-size: 1.5rem; // Responsive font size
+}
+
+// Media query for smaller devices
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.2rem; // Smaller font size for mobile
+  }
 }
