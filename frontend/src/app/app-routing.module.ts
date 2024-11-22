@@ -49,12 +49,12 @@ const routes: Routes = [
   {
     path: 'categorias',
     loadChildren: () => import('./categorias/categorias.module').then( m => m.CategoriasPageModule),
-    //canActivate: [RoleGuard],
-    //data: { allowedRoles: [1,2] }
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] }
   },
   {
     path: '**',
-    redirectTo: 'categorias', // O redirige a la página principal
+    redirectTo: 'not-found', // O redirige a la página principal
     pathMatch: 'full',
   },
   {

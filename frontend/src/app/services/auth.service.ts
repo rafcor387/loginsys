@@ -20,6 +20,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+
   getEmpleadosByCargo(cargo: string): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
