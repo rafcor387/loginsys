@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-//import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Http } from '@capacitor-community/http';
 import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
@@ -70,7 +69,6 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/generar-usuario/${idEmpleado}`);
   }
 
-  /*
   login(credentials: any): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/login`, credentials)
@@ -83,33 +81,9 @@ export class AuthService {
         this.router.navigate(['/home']);
       })
     );
-  }*/
-
-  async login(credentials: any): Promise<void> {
-    try {
-      // Hacer la solicitud POST para el login
-      const response: any = await Http.post({
-        url: `${this.apiUrl}/login`,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: credentials,
-      });
-
-      // Procesar la respuesta y guardar los datos necesarios
-      if (response && response.access_token) {
-        localStorage.setItem('token', response.access_token);
-        localStorage.setItem('role_id', response.role_id);
-        localStorage.setItem('empleado_id', response.empleado_id);
-        this.authStatusSubject.next(true); // Cambiar el estado a autenticado
-        this.router.navigate(['/home']); // Redirigir a la página de inicio
-      }
-    } catch (error) {
-      // Manejar errores (ejemplo, mostrar un mensaje de error)
-      console.error('Error al intentar hacer login:', error);
-      this.authStatusSubject.next(false); // Cambiar el estado a no autenticado
-    }
   }
+
+  
 
   // Verificar si el usuario está autenticado
   isAuthenticated(): boolean {

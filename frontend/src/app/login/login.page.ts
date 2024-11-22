@@ -23,32 +23,6 @@ export class LoginPage {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  async login() {
-  try {
-    // Llamar al servicio de login y esperar la respuesta
-    await this.authService.login({ email: this.email, password: this.password });
-    console.log('Login exitoso');
-  } catch (error: unknown) {
-    // Verificar si el error es un objeto que tiene una propiedad "message"
-    if (error instanceof Error) {
-      console.error('Error en el login', error.message);
-      this.errorMessage = error.message;
-      this.errorMessages = {}; // Resetea los mensajes de error
-    } else if (typeof error === 'string') {
-      console.error('Error en el login', error);
-      this.errorMessage = error;
-      this.errorMessages = {};
-    } else {
-      // Si el error es un objeto que no es una instancia de Error, lo manejamos de otra forma
-      console.error('Error desconocido', error);
-      this.errorMessage = '';
-      this.errorMessages = {};  // O cualquier otro comportamiento que quieras manejar
-    }
-  }
-}
-
-  
-  /*
   login() {
     this.authService.login({ email: this.email, password: this.password })
       .subscribe(
@@ -66,5 +40,5 @@ export class LoginPage {
           }
         }
       );
-  }*/
+  }
 }

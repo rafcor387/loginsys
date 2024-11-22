@@ -9,8 +9,8 @@ const routes: Routes = [
   {
     path: 'empleados',
     loadChildren: () => import('./empleados/empleados.module').then( m => m.EmpleadosPageModule),
-    //canActivate: [RoleGuard],
-    //data: { allowedRoles: [1] } // Solo permite acceso al rol con id 1
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1] } // Solo permite acceso al rol con id 1
   },
   {
     path: 'home',
@@ -36,15 +36,15 @@ const routes: Routes = [
   {
     path: 'repuestos',
     loadChildren: () => import('./repuestos/repuestos.module').then( m => m.RepuestosPageModule),
-    //canActivate: [RoleGuard],
-    //data: { allowedRoles: [1,2] } 
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] } 
   },
  
   {
     path: 'marcas',
     loadChildren: () => import('./marcas/marcas.module').then( m => m.MarcasPageModule),
-    //canActivate: [RoleGuard],
-    //data: { allowedRoles: [1,2] }
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] }
   },
   {
     path: 'categorias',
@@ -54,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'not-found', // O redirige a la página principal
+    redirectTo: 'categorias', // O redirige a la página principal
     pathMatch: 'full',
   },
   {
