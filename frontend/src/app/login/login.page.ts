@@ -28,6 +28,8 @@ export class LoginPage {
       .subscribe(
         (response) => {
           console.log('Login exitoso', response);
+          this.errorMessages = {};
+          this.errorMessage = '';
         },
         (error) => {
           console.error('Error en el login', error);
