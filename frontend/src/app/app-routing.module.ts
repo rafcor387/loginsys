@@ -7,6 +7,11 @@ import { AuthService } from './services/auth.service';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full', // Asegura que coincida exactamente con la raíz ('/')
+  },  
+  {
     path: 'empleados',
     loadChildren: () => import('./empleados/empleados.module').then( m => m.EmpleadosPageModule),
     canActivate: [RoleGuard],
@@ -53,13 +58,13 @@ const routes: Routes = [
     data: { allowedRoles: [1,2] }
   },
   {
+    path: 'not-found',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found', // O redirige a la página principal
     pathMatch: 'full',
-  },
-  {
-    path: 'not-found',
-    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
 ];
 
