@@ -13,98 +13,117 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <!-- Campo CI -->
       <ion-item>
-        <ion-label position="floating">CI</ion-label>
+        <ion-label position="floating">CI *</ion-label>
         <ion-input
           [(ngModel)]="clienteActual.ci"
-          placeholder="Ingresa el CI del cliente"
-        ></ion-input>
+          name="ci"
+          type="number"
+          required>
+        </ion-input>
       </ion-item>
+      <div *ngIf="errorMessages?.['ci']" style="color: red; margin-bottom: 10px; text-align: center">
+        {{ errorMessages['ci'] }}
+      </div>
+
+      <!-- Campo Nombre -->
       <ion-item>
-        <ion-label position="floating">Nombre</ion-label>
+        <ion-label position="floating">Nombre *</ion-label>
         <ion-input
           [(ngModel)]="clienteActual.nombres"
-          placeholder="Ingresa el nombre del cliente"
-        ></ion-input>
+          name="nombres"
+          type="text"
+          required
+          (ionInput)="validarSoloLetras($event, 'nombres')">
+        </ion-input>
       </ion-item>
+      <div *ngIf="errorMessages?.['nombres']" style="color: red; margin-bottom: 10px; text-align: center">
+        {{ errorMessages['nombres'] }}
+      </div>
+
+      <!-- Campo Apellidos -->
       <ion-item>
-        <ion-label position="floating">Apellidos</ion-label>
+        <ion-label position="floating">Apellidos *</ion-label>
         <ion-input
           [(ngModel)]="clienteActual.apellidos"
-          placeholder="Ingresa los apellidos del cliente"
-        ></ion-input>
+          name="apellidos"
+          type="text"
+          required
+          (ionInput)="validarSoloLetras($event, 'apellidos')">
+        </ion-input>
       </ion-item>
+      <div *ngIf="errorMessages?.['apellidos']" style="color: red; margin-bottom: 10px; text-align: center">
+        {{ errorMessages['apellidos'] }}
+      </div>
+
+      <!-- Campo Teléfono -->
       <ion-item>
-        <ion-label position="floating">Correo</ion-label>
-        <ion-input
-          [(ngModel)]="clienteActual.email"
-          type="email"
-          placeholder="Ingresa el correo"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Teléfono</ion-label>
+        <ion-label position="floating">Teléfono *</ion-label>
         <ion-input
           [(ngModel)]="clienteActual.telefono"
+          name="telefono"
           type="tel"
-          placeholder="Ingresa el teléfono"
-        ></ion-input>
+          required
+          pattern="^[6-7][0-9]{7}$">
+        </ion-input>
       </ion-item>
+      <div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
+        {{ errorMessages['telefono'] }}
+      </div>
+
+      <!-- Campo Dirección -->
       <ion-item>
-        <ion-label position="floating">Dirección</ion-label>
+        <ion-label position="floating">Dirección *</ion-label>
         <ion-input
           [(ngModel)]="clienteActual.direccion"
-          placeholder="Ingresa la dirección"
-        ></ion-input>
+          name="direccion"
+          required>
+        </ion-input>
       </ion-item>
-      <ion-button
-        expand="block"
-        color="primary"
-        (click)="editandoCliente ? actualizarCliente() : agregarCliente()"
-      >
+      <div *ngIf="errorMessages?.['direccion']" style="color: red; margin-bottom: 10px; text-align: center">
+        {{ errorMessages['direccion'] }}
+      </div>
+
+      <!-- Botón de acción -->
+      <ion-button expand="block" color="primary" (click)="editandoCliente ? actualizarCliente() : agregarCliente()">
         {{ editandoCliente ? 'Actualizar' : 'Agregar' }}
       </ion-button>
-      <ion-button
-        expand="block"
-        color="medium"
-        *ngIf="editandoCliente"
-        (click)="cancelarEdicion()"
-      >
+      <ion-button expand="block" color="medium" *ngIf="editandoCliente" (click)="cancelarEdicion()">
         Cancelar
       </ion-button>
     </ion-card-content>
   </ion-card>
 
-  <!-- Tabla de clientes ya creados -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Clientes Registrados</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-grid>
+      <ion-grid fixed class="full-width-grid">
         <!-- Encabezados de la tabla -->
         <ion-row>
-          <ion-col size="2"><strong>CI</strong></ion-col>
-          <ion-col size="2"><strong>Nombre</strong></ion-col>
-          <ion-col size="2"><strong>Apellidos</strong></ion-col>
-          <ion-col size="2"><strong>Correo</strong></ion-col>
-          <ion-col size="2"><strong>Teléfono</strong></ion-col>
-          <ion-col size="2"><strong>Acciones</strong></ion-col>
+          <ion-col size="2" class="header-col"><strong>CI</strong></ion-col>
+          <ion-col size="2" class="header-col"><strong>Nombre</strong></ion-col>
+          <ion-col size="2" class="header-col"><strong>Apellidos</strong></ion-col>
+          <ion-col size="2" class="header-col"><strong>Teléfono</strong></ion-col>
+          <ion-col size="4" class="header-col"><strong>Acciones</strong></ion-col>
         </ion-row>
-
+  
+        <!-- Filas de datos -->
         <ion-row *ngFor="let cliente of clientes">
           <ion-col size="2">{{ cliente.ci }}</ion-col>
           <ion-col size="2">{{ cliente.nombres }}</ion-col>
           <ion-col size="2">{{ cliente.apellidos }}</ion-col>
-          <ion-col size="2">{{ cliente.email }}</ion-col>
           <ion-col size="2">{{ cliente.telefono }}</ion-col>
-          <ion-col size="2">
+          <ion-col size="4">
             <ion-button size="small" (click)="editarCliente(cliente)">Editar</ion-button>
             <ion-button size="small" color="danger" (click)="eliminarCliente(cliente.id)">Eliminar</ion-button>
           </ion-col>
         </ion-row>
-        
       </ion-grid>
     </ion-card-content>
   </ion-card>
+  
+  
 </ion-content>

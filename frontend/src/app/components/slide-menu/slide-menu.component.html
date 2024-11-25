@@ -2,18 +2,18 @@
   <ion-menu contentId="main-content">
     <ion-header>
       <ion-toolbar>
-        <ion-title>Menu</ion-title>
+        <ion-title>Menú</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
       <ion-list>
         <div *ngIf="userRole === 1 || userRole === 2">
-          <ion-item routerLink="/home">Home</ion-item>
-          <ion-item routerLink="/repuestos">Repuestos</ion-item>
-          <ion-item routerLink="/marcas">Marcas</ion-item>
+          <ion-item routerLink="/home">Inicio</ion-item>
           <ion-item routerLink="/categorias">Categorías</ion-item>
           <ion-item routerLink="/clientes">Clientes</ion-item>
-          <ion-item routerLink="/solicitud-grafico">Solicitud de Grafico</ion-item>
+          <ion-item routerLink="/marcas">Marcas</ion-item>
+          <ion-item routerLink="/repuestos">Repuestos</ion-item>
+          <ion-item routerLink="/solicitud-grafico">Solicitud de Gráfico</ion-item>
         </div>
         <div *ngIf="userRole === 1">
           <ion-item routerLink="/empleados">Empleados</ion-item>

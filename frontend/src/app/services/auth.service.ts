@@ -9,22 +9,10 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
-  private apiUrl = 'https://izzicode-production.up.railway.app/api';
+  //private apiUrl = 'https://izzicode-production.up.railway.app/api';
+  private apiUrl = 'http://127.0.0.1:8000/api'; 
   //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
-<<<<<<< HEAD
-  //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; // Cambia esto si es necesario
-  //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
-  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
-
-=======
-  //[src]="'http://project.test/backend/storage/app/public/'  + repuesto.imagen"
-  //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; 
-  //private apiUrl = 'http://project.test/backend/public/api'; 
-  //private apiUrl = 'http://127.0.0.1:8000/api'; 
-  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; 
->>>>>>> 79dd16e0c8b8dace8b170e2ea08d5312cba97605
-
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
   public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
 
@@ -43,7 +31,7 @@ export class AuthService {
         catchError(this.handleError) // Asegúrate de que `handleError` esté implementado
       );
   }
-
+//private apiUrl = 'https://izzicode-production.up.railway.app/api'; // Cambia esto si es necesarios
   private handleError(error: any): Observable<never> {
     let errorMsgs: { [key: string]: string } = {};
     let errorMsg = '';
