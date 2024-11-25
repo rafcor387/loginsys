@@ -57,21 +57,23 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { allowedRoles: [1,2] }
   },
-  {
-    path: 'clientes',
-    loadChildren: () => import('./clientes/clientes.module').then( m => m.ClientesPageModule),
-    canActivate: [RoleGuard],
-    data: { allowedRoles: [1,2] }
-  },
+  //{
+  //  path: 'clientes',
+  //  loadChildren: () => import('./clientes/clientes.module').then( m => m.ClientesPageModule),
+  //  canActivate: [RoleGuard],
+  //  data: { allowedRoles: [1,2] }
+  //},
   {
     path: 'solicitud-grafico',
     loadChildren: () => import('./solicitud-grafico/solicitud-grafico.module').then( m => m.SolicitudGraficoPageModule)
+    //canActivate: [RoleGuard],
+    //data: { allowedRoles: [1] }
   },
   {
     path: 'sales-prediction/:producto_id',
-    loadChildren: () => import('./sales-prediction/sales-prediction.module').then(m => m.SalesPredictionPageModule),
-    canActivate: [RoleGuard],
-    data: { allowedRoles: [1,2] }
+    loadChildren: () => import('./sales-prediction/sales-prediction.module').then(m => m.SalesPredictionPageModule)
+    //canActivate: [RoleGuard],
+    //data: { allowedRoles: [1] }
   }, 
   {
     path: 'not-found',
