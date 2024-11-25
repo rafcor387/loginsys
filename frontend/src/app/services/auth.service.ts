@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { Http } from '@capacitor-community/http';
 import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -8,16 +9,19 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
+  private apiUrl = 'https://izzicode-production.up.railway.app/api'; // Cambia esto si es necesarios
+  //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
+  //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
   //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; // Cambia esto si es necesario
-  //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
-  private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
-  //private apiUrl = 'https://nuevaerab-production.up.railway.app'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
 
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
   public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
 
   constructor(private http: HttpClient, private router: Router) {}
+
 
   getEmpleadosByCargo(cargo: string): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
@@ -77,9 +81,12 @@ export class AuthService {
         localStorage.setItem('role_id', response.role_id);
         localStorage.setItem('empleado_id', response.empleado_id);
         this.authStatusSubject.next(true); // Cambia el estado a autenticado
+        this.router.navigate(['/home']);
       })
     );
   }
+
+  
 
   // Verificar si el usuario está autenticado
   isAuthenticated(): boolean {
@@ -108,6 +115,7 @@ export class AuthService {
     localStorage.removeItem('empleado_id');
     this.authStatusSubject.next(false); // Cambia el estado a no autenticado
     this.router.navigate(['/login']); // Redirige a la página de inicio de sesión
+    console.log('La sesion se cerró');
   }
 
 

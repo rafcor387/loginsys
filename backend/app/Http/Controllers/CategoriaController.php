@@ -31,14 +31,14 @@ class CategoriaController extends Controller
                 'descripcion' => [
                     'nullable',
                     'string',
-                    'max:200',
+                    'max:300',
                     //'not_regex:/^\s*$/' // No permite solo espacios en blanco
                 ]
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
                 'nombre.max' => 'Solo se permite hasta maximo 30 caracteres en el campo nombre.',
-                'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
+                'descripcion.max' => 'La descripción no debe exceder los 300 caracteres.',
                 //'not_regex' => 'El campo no debe contener solo espacios en blanco.'
             ]);
 
@@ -67,14 +67,14 @@ class CategoriaController extends Controller
                 'descripcion' => [
                     'nullable',
                     'string',
-                    'max:200',
+                    'max:300',
                     //'not_regex:/^\s*$/'
                 ]
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.regex' => 'El nombre solo debe contener letras, números, espacios y puntos.',
                 'nombre.max' => 'Solo se permite hasta maximo 30 caracteres en el campo nombre.',
-                'descripcion.max' => 'La descripción no debe exceder los 200 caracteres.',
+                'descripcion.max' => 'La descripción no debe exceder los 300 caracteres.',
                 //'not_regex' => 'El campo no debe contener solo espacios en blanco.'
             ]);
             $validatedData['nombre'] = strtoupper($validatedData['nombre']);
@@ -88,7 +88,7 @@ class CategoriaController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+            return response()->json(['messageError' => $e->getMessage(), 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
             return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
         }
