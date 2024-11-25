@@ -13,6 +13,7 @@ export class SalesPredictionPage implements OnInit {
 
   chart: any;
   productoId: string = ''; // Inicializamos como una cadena vacía
+  message: string = '';
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
@@ -77,5 +78,18 @@ export class SalesPredictionPage implements OnInit {
         },
       },
     });
+    this.calculatePurchaseDecision(ventasReales, ventasPredichas);
+  }
+  calculatePurchaseDecision(ventasReales: number[], ventasPredichas: number[]) {
+    const totalRealSales = ventasReales.reduce((a, b) => a + b, 0);
+    const totalPredictedSales = ventasPredichas.reduce((a, b) => a + b, 0);
+
+    // Example criteria: Buy if predicted sales are greater than real sales by a certain percentage
+    const threshold = 0.1; // 10% more predicted sales
+    if (totalPredictedSales > totalRealSales * (1 + threshold)) {
+      this.message = 'Se recomienda comprar este producto.';
+    } else {
+      this.message = 'No se recomienda comprar este producto.';
+    }
   }
 }
