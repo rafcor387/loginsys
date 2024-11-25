@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { Http } from '@capacitor-community/http';
 import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -10,15 +9,10 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
-  //private apiUrl = 'https://izzicode-production.up.railway.app/api';
+  ////private apiUrl = 'https://izzicode-production.up.railway.app/api';
+  private apiUrl = 'http://127.0.0.1:8000/api'; 
   //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
-  //[src]="'http://project.test/backend/storage/app/public/'  + repuesto.imagen"
-  //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; 
-  //private apiUrl = 'http://project.test/backend/public/api'; 
-  //private apiUrl = 'http://127.0.0.1:8000/api'; 
-  //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; 
-
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
   public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
 
@@ -37,7 +31,7 @@ export class AuthService {
         catchError(this.handleError) // Asegúrate de que `handleError` esté implementado
       );
   }
-
+//private apiUrl = 'https://izzicode-production.up.railway.app/api'; // Cambia esto si es necesarios
   private handleError(error: any): Observable<never> {
     let errorMsgs: { [key: string]: string } = {};
     let errorMsg = '';
