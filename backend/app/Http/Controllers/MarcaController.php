@@ -96,7 +96,7 @@ class MarcaController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'Error con la base de datos', 'error' => $e->getMessage()], 400);
+            return response()->json(['messageError' => 'No puede borrar el registro porque esta siendo usado en otro registro', 'error' => $e->getMessage()], 400);
         } catch (\Exception $e) {
             return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
         }

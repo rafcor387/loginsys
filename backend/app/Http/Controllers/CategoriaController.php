@@ -104,7 +104,7 @@ class CategoriaController extends Controller
                 $categoria->delete(); // Elimina la categoría
                 return response()->json(['message' => 'Categoría eliminada correctamente'], 200);
             } catch (QueryException $e) {
-                return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+                return response()->json(['messageError' => 'No puede borrar el registro porque esta siendo usado en otro registro', 'errordb' => $e->getMessage()], 400);
             } catch (\Exception $e) {
                 return response()->json(['messageError' => 'Error al eliminar la categoria', 'detailsError' => $e], 500);
             }
