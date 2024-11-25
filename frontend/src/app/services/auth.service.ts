@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
-  private apiUrl = 'https://izzicode-production.up.railway.app/api';
+  private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
+  //private apiUrl = 'https://izzicode-production.up.railway.app/api';
   //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/storage/app/public/'  + repuesto.imagen"
