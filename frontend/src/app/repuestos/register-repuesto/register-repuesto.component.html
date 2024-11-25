@@ -79,14 +79,6 @@
       </div>
 
       <ion-item>
-        <ion-label position="floating">Precio Unitario</ion-label>
-        <ion-input [(ngModel)]="nuevoRepuesto.precio_unitario" name="precio_unitario" type="number" required></ion-input>
-      </ion-item>
-      <div *ngIf="errorMessages?.['precio_unitario']" style="color: red; margin-bottom: 10px; text-align: center">
-        {{ errorMessages['precio_unitario'] }}
-      </div>
-
-      <ion-item>
         <ion-label position="stacked">Seleccionar Imagen</ion-label>
         <input type="file" (change)="onImageSelected($event)" accept="image/*">
       </ion-item>

@@ -14,9 +14,19 @@ class RepuestoController extends Controller
     // Obtener todos los repuestos
     public function index()
     {
-        //return Repuesto::all();
-        $repuestos = Repuesto::with(['categoria','marca'])->get(); // Obtiene todas las marcas
-        return response()->json($repuestos);
+        try {
+            $repuestos = Repuesto::with(['categoria', 'marca'])->get(); // Obtiene todas las marcas
+            return response()->json([
+                'repuestos' => $repuestos,
+                'message' => 'listado correcto'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messageError' => 'Ocurrió un error al obtener el listado de empleados.',
+                'detailsError' => $e->getMessage() // Mensaje de error detallado (opcional)
+            ], 500);
+        }
+
     }
 
     // Obtener un repuesto específico
@@ -74,11 +84,11 @@ class RepuestoController extends Controller
                 // Se guarda solo la ruta relativa de la imagen
                 $validatedData['imagen'] = $path;
             }
- 
-            if($validatedData['codigo_oem'] != null)
-            $validatedData['codigo_oem'] = strtoupper($validatedData['codigo_oem']);
-            if($validatedData['numero_serie'] != null)
-            $validatedData['numero_serie'] = strtoupper($validatedData['numero_serie']);
+
+            if ($validatedData['codigo_oem'] != null)
+                $validatedData['codigo_oem'] = strtoupper($validatedData['codigo_oem']);
+            if ($validatedData['numero_serie'] != null)
+                $validatedData['numero_serie'] = strtoupper($validatedData['numero_serie']);
 
             // Crear el repuesto
             $repuesto = Repuesto::create($validatedData);
@@ -135,10 +145,10 @@ class RepuestoController extends Controller
             ]);
             $repuesto = Repuesto::find($id);
 
-            if($validatedData['codigo_oem'] != null)
-            $validatedData['codigo_oem'] = strtoupper($validatedData['codigo_oem']);
-            if($validatedData['numero_serie'] != null)
-            $validatedData['numero_serie'] = strtoupper($validatedData['numero_serie']);
+            if ($validatedData['codigo_oem'] != null)
+                $validatedData['codigo_oem'] = strtoupper($validatedData['codigo_oem']);
+            if ($validatedData['numero_serie'] != null)
+                $validatedData['numero_serie'] = strtoupper($validatedData['numero_serie']);
 
             $repuesto->update($validatedData);
             return response()->json([
