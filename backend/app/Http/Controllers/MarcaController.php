@@ -34,7 +34,7 @@ class MarcaController extends Controller
                 ],
                 'pais' => [
                     'required',
-                    'regex:/^[a-zA-Z\s]+$/', // Solo letras
+                    'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Solo letras y tildes
                     'max:30',
                 ],
                 'email' => [
@@ -114,7 +114,7 @@ class MarcaController extends Controller
                 ],
                 'pais' => [
                     'required',
-                    'regex:/^[a-zA-Z\s]+$/', // Solo letras
+                    'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Solo letras y tildes
                     'max:30'
                 ],
                 'email' => [
