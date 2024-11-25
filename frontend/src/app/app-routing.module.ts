@@ -41,8 +41,8 @@ const routes: Routes = [
   {
     path: 'repuestos',
     loadChildren: () => import('./repuestos/repuestos.module').then( m => m.RepuestosPageModule),
-    canActivate: [RoleGuard],
-    data: { allowedRoles: [1,2] } 
+    //canActivate: [RoleGuard],
+    //data: { allowedRoles: [1,2] } 
   },
  
   {

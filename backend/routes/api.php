@@ -38,6 +38,7 @@ Route::apiResource('categorias', CategoriaController::class);
 
 Route::apiResource('empleados', EmpleadoController::class);
 Route::get('/empleados/filter/{cargo}', [EmpleadoController::class, 'filterByCargo']);
+Route::apiResource('repuestos', RepuestoController::class);
 
 /*
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
@@ -58,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /*Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
         ->name('verification.send');*/
 
-    Route::apiResource('repuestos', RepuestoController::class);
+    
     Route::apiResource('marcas', MarcaController::class);
     //Route::apiResource('categorias', CategoriaController::class);
     Route::apiResource('cargos', CargoController::class);
