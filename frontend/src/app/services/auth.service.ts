@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { Http } from '@capacitor-community/http';
 import { Observable, throwError, BehaviorSubject, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -14,14 +13,9 @@ export class AuthService {
   //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
   //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; // Cambia esto si es necesario
-<<<<<<< HEAD
-  //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
-  //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
-  private apiUrl = 'https://izzicode-production.up.railway.app/api'; // Cambia esto si es necesarios
-=======
   //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
->>>>>>> f47253c79c10a0e81292376e30e960f86aa29eaa
+
 
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
   public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
