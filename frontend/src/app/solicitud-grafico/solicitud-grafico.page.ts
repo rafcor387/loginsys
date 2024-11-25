@@ -37,7 +37,7 @@ export class SolicitudGraficoPage {
 
     const data = { id_repuesto: this.idRepuesto, anio: this.anio };
 
-    this.http.post('http://127.0.0.1:8000/api/llenar-test-reg', data).subscribe(
+    this.http.post('https://izzicode-production.up.railway.app/api/llenar-test-reg', data).subscribe(
       (response: any) => {
         // Check if the response indicates data has been processed
         if (response.message) {

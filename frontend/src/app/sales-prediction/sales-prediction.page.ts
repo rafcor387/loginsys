@@ -25,7 +25,7 @@ export class SalesPredictionPage implements OnInit {
 
   getSalesPredictionData() {
     // Llama a la API para obtener los datos de predicción de ventas
-    this.http.get(`http://localhost:8000/api/predict-sales/${this.productoId}`).subscribe((data: any) => {
+    this.http.get(`https://izzicode-production.up.railway.app/api/predict-sales/${this.productoId}`).subscribe((data: any) => {
       const ventasReales = data.ventas_reales;
       const ventasPredichas = data.ventas_predichas;
 
