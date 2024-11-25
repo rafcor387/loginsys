@@ -12,6 +12,7 @@ export class AuthService {
   private apiUrl = 'https://izzicode-production.up.railway.app/api';
   //private apiUrl = 'http://127.0.0.1:8000/api'; 
   //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
+  //[src]="'http://project.test/backend/storage/app/public/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
   public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
