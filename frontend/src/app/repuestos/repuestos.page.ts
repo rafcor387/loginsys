@@ -62,8 +62,8 @@ export class RepuestosPage implements OnInit {
   LoadRepuestos() {
     this.authService.repuestosListar().subscribe(
       (response) => {
-        //this.repuestos = response.repuestos;
-        this.repuestos = response;
+        this.repuestos = response.repuestos;
+        //this.repuestos = response;
         console.log('Repuestos:', this.repuestos); // Agrega este log
         //this.errorMessage = '';
       },
