@@ -48,8 +48,8 @@ const routes: Routes = [
   {
     path: 'marcas',
     loadChildren: () => import('./marcas/marcas.module').then( m => m.MarcasPageModule),
-    canActivate: [RoleGuard],
-    data: { allowedRoles: [1,2] }
+    //canActivate: [RoleGuard],
+    //data: { allowedRoles: [1,2] }
   },
   {
     path: 'categorias',
