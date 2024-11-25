@@ -11,8 +11,8 @@ export class AuthService {
   //private apiUrl = 'http://proyecto2.test/loginsys/backend/public/api'; // Cambia esto si es necesarios
   //private apiUrl = 'http://proyecto.test/Izzi_Code/backend/public/api'; // Cambia esto si es necesario
   //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesario
-  private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
-  //private apiUrl = 'https://nuevaerab-production.up.railway.app'; // Cambia esto si es necesarios
+  //private apiUrl = 'http://127.0.0.1:8000/api'; // Cambia esto si es necesarios
+  private apiUrl = 'https://izzicode-production.up.railway.app/api'; // Cambia esto si es necesarios
 
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated()); // Estado inicial
   public authStatus$ = this.authStatusSubject.asObservable(); // Observable para suscripción
