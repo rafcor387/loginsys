@@ -17,7 +17,7 @@ class RepuestoController extends Controller
         try {
             $repuestos = Repuesto::with(['categoria', 'marca'])->get(); // Obtiene todas las marcas
             return response()->json([
-                'empleados' => $repuestos,
+                'repuestos' => $repuestos,
                 'message' => 'listado correcto'
             ]);
         } catch (\Exception $e) {
