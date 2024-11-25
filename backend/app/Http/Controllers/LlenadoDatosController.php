@@ -27,7 +27,7 @@ class LlenadoDatosController extends Controller
                 ->first();
 
             if ($existingData) {
-                return response()->json(['message' => 'Los datos ya han sido procesados. Por favor, haga clic en "Ver Gráfico" para ver el gráfico.'], 200);
+                return response()->json(['message' => 'Los datos ya han sido procesados. Se le redireccionara a la pagina del grafico, de no ser asi haga clic en "Ver Gráfico" para ver el gráfico.'], 200);
             }
 
             // Definir el rango de fechas para el año solicitado
