@@ -85,7 +85,7 @@ class MarcaController extends Controller
             ]);
 
             $validatedData['nombre'] = strtoupper($validatedData['nombre']);
-            $validatedData['pais'] = strtoupper($validatedData['pais']);
+            //$validatedData['pais'] = strtoupper($validatedData['pais']);
 
             $marca = Marca::create($validatedData);
 
@@ -164,7 +164,7 @@ class MarcaController extends Controller
             $marca = Marca::findOrFail($id); // Busca la marca o lanza un error 404
 
             $validatedData['nombre'] = strtoupper($validatedData['nombre']);
-            $validatedData['pais'] = strtoupper($validatedData['pais']);
+            //$validatedData['pais'] = strtoupper($validatedData['pais']);
 
             $marca->update($validatedData); // Actualiza la marca
             return response()->json([

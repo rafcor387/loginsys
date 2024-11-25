@@ -23,7 +23,7 @@ export class RegisterMarcaComponent implements OnInit {
 
   // Lista de países
   countries: string[] = [
-    'Argentina', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
+    'Argentina', 'Bolivia', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
     'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra'
     // Agrega más países según sea necesario
   ];
