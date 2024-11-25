@@ -43,7 +43,8 @@ class EmpleadoController extends Controller
                 'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
-                'email' => ['required', 'email', 'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', 'unique:empleados,email', 'not_regex:/^\s*$/'],
+                'email' => 
+                ['required', 'email', 'regex:/(.*)@([a-zA-Z0-9.-]+)\.com$/i', 'unique:empleados,email', 'not_regex:/^\s*$/'],
                 'direccion' => 'required|string|max:255|regex:/^[A-Za-z0-9. ]+$/',
                 'fecha_contratacion' => 'required|date|before_or_equal:today|after_or_equal:today',
                 'salario' => 'required|numeric|min:1000|max:1000000',
@@ -104,7 +105,7 @@ class EmpleadoController extends Controller
                 'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
-                'email' => ['required', 'email', 'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', 'not_regex:/^\s*$/'],
+                'email' => ['required', 'email', 'regex:/(.*)@([a-zA-Z0-9.-]+)\.com$/i', 'not_regex:/^\s*$/'],
                 'direccion' => 'required|string|max:100|regex:/^[A-Za-z0-9. ]+$/',
                 'fecha_contratacion' => 'required|date|before_or_equal:today',
                 'salario' => 'required|numeric|min:1000|max:1000000',

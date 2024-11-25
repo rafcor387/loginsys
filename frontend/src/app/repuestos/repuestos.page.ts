@@ -125,11 +125,11 @@ export class RepuestosPage implements OnInit {
           role: 'default',
         },
         {
-          text: 'codigo_oem: ' + repuesto.codigo_oem,
+          text: 'Codigo OEM: ' + repuesto.codigo_oem,
           role: 'default',
         },
         {
-          text: 'numero_serie: ' + repuesto.numero_serie,
+          text: 'Numero Serie: ' + repuesto.numero_serie,
           role: 'default',
         },
         {
@@ -149,11 +149,11 @@ export class RepuestosPage implements OnInit {
           role: 'default',
         },
         {
-          text: 'costo_unitario: ' + repuesto.costo_unitario,
+          text: 'Costo Unitario: ' + repuesto.costo_unitario,
           role: 'default',
         },
         {
-          text: 'precio_unitario: ' + repuesto.precio_unitario,
+          text: 'Precio Unitario: ' + repuesto.precio_unitario,
           role: 'default',
         },
       ],
