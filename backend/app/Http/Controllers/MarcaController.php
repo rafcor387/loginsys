@@ -174,7 +174,7 @@ class MarcaController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+            return response()->json(['messageError' => $e->getMessage(), 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
             return response()->json(['messageError' => 'Error al editar la marca', 'detailsError' => $e], 500);
         }
