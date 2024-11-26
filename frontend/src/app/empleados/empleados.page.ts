@@ -14,12 +14,12 @@ import { ActionSheetController } from '@ionic/angular';
 export class EmpleadosPage implements OnInit {
   empleados: any[] = []; // Array para almacenar los empleados
   usuariosExistentes: { [key: number]: boolean } = {}; // Para almacenar el estado de existencia
-  user: any[] = [];
+  usuariolocal: any;
   errorMessage: string = ''; 
   Message: string = '';
   selectedCargo: string = 'Ambos';
   empleadoIdLocalStorage = localStorage.getItem('empleado_id');
-  userlocalstorage = localStorage.getItem('user');
+  usuario:any;
 
   constructor(
     private authService: AuthService,
@@ -36,7 +36,17 @@ export class EmpleadosPage implements OnInit {
   async eliminarUsuario(idEmpleado: number) {
     this.Message = '';
     this.errorMessage = '';
-    console.log('usuario es', (this.userlocalstorage));
+
+    this.authService.getUser().subscribe(
+      (response) => {
+        this.usuario = response.email;
+        console.log('el usario es', this.usuario);
+      },
+      (error) => {
+        console.error('Error al obtener el usuario:', error);
+      }
+    );
+    
     const alert = await this.alertController.create({
       header: 'Confirmación',
       message: '¿Estás seguro de que deseas eliminar este usuario?',
@@ -48,14 +58,27 @@ export class EmpleadosPage implements OnInit {
         {
           text: 'Eliminar',
           handler: () => {
-            this.authService.eliminarUsuario(idEmpleado).subscribe(
+            this.authService.BuscarUsuario(idEmpleado).subscribe(
               (response) => {
-                this.filterEmpleados();
-                console.log('Usuario eliminado con éxito:', response);
-                this.Message = response.message;
+                this.usuariolocal = response.user;
+                if(this.usuario == this.usuariolocal){
+                  this.errorMessage = 'No puede eliminar el usuario'
+                  return;
+                }
+
+                this.authService.BuscarUsuario(idEmpleado).subscribe(
+                  (response) => {
+                    this.filterEmpleados();
+                    console.log('Usuario eliminado con éxito:', response);
+                    this.Message = response.message;
+                  },
+                  (error) => {
+                    console.error('Error al eliminar el usuario:', error);
+                  }
+                );
               },
               (error) => {
-                console.error('Error al eliminar el usuario:', error);
+                console.error('Error al buscar el usuario:', error);
               }
             );
           },

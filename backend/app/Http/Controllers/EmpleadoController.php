@@ -43,8 +43,8 @@ class EmpleadoController extends Controller
                 'apellidos' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/',
                 'id_cargo' => 'required|exists:cargos,id',
                 'telefono' => 'required|numeric|regex:/^[6-7][0-9]{7}$/',
-                'email' => 
-                ['required', 'email', 'regex:/(.*)@([a-zA-Z0-9.-]+)\.com$/i', 'unique:empleados,email', 'not_regex:/^\s*$/'],
+                'email' =>
+                    ['required', 'email', 'regex:/(.*)@([a-zA-Z0-9.-]+)\.com$/i', 'unique:empleados,email', 'not_regex:/^\s*$/'],
                 'direccion' => 'required|string|max:255|regex:/^[A-Za-z0-9. ]+$/',
                 'fecha_contratacion' => 'required|date|before_or_equal:today|after_or_equal:today',
                 'salario' => 'required|numeric|min:1000|max:1000000',
@@ -156,10 +156,10 @@ class EmpleadoController extends Controller
     // Eliminar un empleado
     public function destroy($id)
     {
-        try{
+        try {
             $empleado = Empleado::find($id);
             $empleado->delete();
-        }catch (ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json([
                 'messageError' => 'Error de validación',
                 'validationError' => $e->errors()
@@ -185,6 +185,19 @@ class EmpleadoController extends Controller
         }
     }
 
+    public function BuscarUser($idEmpleado)
+    {
+        $usuario = User::where('id_empleado', $idEmpleado)->first();
+        if (!$usuario) {
+            return response()->json(['messageError' => 'Usuario no encontrado'], 404);
+        }
+        //$usuario->delete();
+        return response()->json([
+            'message' => 'Usuario enviado',
+            'user' => $usuario,
+        ], 200);
+    }
+
     public function eliminarUser($idEmpleado)
     {
         $usuario = User::where('id_empleado', $idEmpleado)->first();
@@ -192,7 +205,9 @@ class EmpleadoController extends Controller
             return response()->json(['messageError' => 'Usuario no encontrado'], 404);
         }
         $usuario->delete();
-        return response()->json(['message' => 'Usuario eliminado con éxito'], 200);
+        return response()->json([
+            'message' => 'Usuario eliminado',
+        ], 200);
     }
 
     public function generarCodigo($idEmpleado)
@@ -224,11 +239,11 @@ class EmpleadoController extends Controller
         try {
             //$cargo = $request->query('cargo');
             if ($cargo === '1') {
-                $empleados = Empleado::where('id_cargo', 1)->with('cargo','users')->get();
+                $empleados = Empleado::where('id_cargo', 1)->with('cargo', 'users')->get();
             } elseif ($cargo === '2') {
-                $empleados = Empleado::where('id_cargo', 2)->with('cargo','users')->get();
+                $empleados = Empleado::where('id_cargo', 2)->with('cargo', 'users')->get();
             } else {
-                $empleados = Empleado::whereIn('id_cargo', [1, 2])->with('cargo','users')->get();
+                $empleados = Empleado::whereIn('id_cargo', [1, 2])->with('cargo', 'users')->get();
             }
 
             return response()->json([
