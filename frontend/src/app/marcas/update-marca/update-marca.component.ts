@@ -13,12 +13,12 @@ export class UpdateMarcaComponent  implements OnInit {
   errorMessage: string = ''; 
   errorMessages: { [key: string]: string } = {};
 
-  // Lista de países
   countries: string[] = [
-    'Argentina', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
-    'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra'
-    // Agrega más países según sea necesario
-  ];
+    'Argentina', 'Bolivia', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
+    'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra', 'Japón', 'Alemania', 'Italia', 
+    'Corea del Sur', 'China', 'Suecia', 'Francia', 'Australia'
+];
+
 
   isSelectVisible: boolean = false; // Controla la visibilidad del select
 

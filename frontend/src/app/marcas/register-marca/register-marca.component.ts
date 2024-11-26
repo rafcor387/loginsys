@@ -24,9 +24,10 @@ export class RegisterMarcaComponent implements OnInit {
   // Lista de países
   countries: string[] = [
     'Argentina', 'Bolivia', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
-    'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra'
-    // Agrega más países según sea necesario
-  ];
+    'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra', 'Japón', 'Alemania', 'Italia', 
+    'Corea del Sur', 'China', 'Suecia', 'Francia', 'Australia'
+];
+
 
   constructor(
     private modalController: ModalController,
