@@ -14,10 +14,10 @@ export class UpdateMarcaComponent  implements OnInit {
   errorMessages: { [key: string]: string } = {};
 
   countries: string[] = [
-    'Argentina', 'Bolivia', 'Brasil', 'Canadá', 'Chile', 'Colombia', 'España', 'Estados Unidos', 
-    'México', 'Perú', 'Reino Unido', 'Uruguay', 'Inglaterra', 'Japón', 'Alemania', 'Italia', 
-    'Corea del Sur', 'China', 'Suecia', 'Francia', 'Australia'
-];
+    'Alemania', 'Argentina', 'Australia', 'Bolivia', 'Brasil', 'Canadá', 'Chile', 'China', 
+    'Colombia', 'Corea del Sur', 'España', 'Estados Unidos', 'Francia', 'Inglaterra', 
+    'Italia', 'Japón', 'México', 'Perú', 'Reino Unido', 'Suecia', 'Uruguay'];
+
 
 
   isSelectVisible: boolean = false; // Controla la visibilidad del select

@@ -19,6 +19,7 @@ export class EmpleadosPage implements OnInit {
   Message: string = '';
   selectedCargo: string = 'Ambos';
   empleadoIdLocalStorage = localStorage.getItem('empleado_id');
+  userlocalstorage = localStorage.getItem('user');
 
   constructor(
     private authService: AuthService,
@@ -35,6 +36,7 @@ export class EmpleadosPage implements OnInit {
   async eliminarUsuario(idEmpleado: number) {
     this.Message = '';
     this.errorMessage = '';
+    console.log('usuario es', (this.userlocalstorage));
     const alert = await this.alertController.create({
       header: 'Confirmación',
       message: '¿Estás seguro de que deseas eliminar este usuario?',

@@ -78,6 +78,7 @@ export class AuthService {
         localStorage.setItem('token', response.access_token);
         localStorage.setItem('role_id', response.role_id);
         localStorage.setItem('empleado_id', response.empleado_id);
+        localStorage.setItem('user',response.user);
         this.authStatusSubject.next(true); // Cambia el estado a autenticado
         this.router.navigate(['/home']);
       })

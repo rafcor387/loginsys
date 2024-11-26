@@ -82,6 +82,7 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
                 'role_id' => $roleId,
                 'empleado_id' => $idempleado,
+                'user' => $user,
             ]);
 
         } catch (InvalidCredentialsException $e) {
