@@ -14,6 +14,7 @@ export class SalesPredictionPage implements OnInit {
   chart: any;
   productoId: string = ''; // Inicializamos como una cadena vacía
   message: string = '';
+  repuestoNombre: string = '';
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
@@ -30,6 +31,13 @@ export class SalesPredictionPage implements OnInit {
       const ventasPredichas = data.ventas_predichas;
 
       this.createChart(ventasReales, ventasPredichas);
+      this.getRepuestoNombre();
+    });
+  }
+
+  getRepuestoNombre() {
+    this.http.get(`https://izzicode-production.up.railway.app/api/repuestos/${this.productoId}`).subscribe((data: any) => {
+      this.repuestoNombre = data.nombre; // Asigna el nombre del repuesto a la variable
     });
   }
 
