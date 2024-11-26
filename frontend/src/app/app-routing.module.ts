@@ -57,12 +57,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { allowedRoles: [1,2] }
   },
-  //{
-  //  path: 'clientes',
-  //  loadChildren: () => import('./clientes/clientes.module').then( m => m.ClientesPageModule),
-  //  canActivate: [RoleGuard],
-  //  data: { allowedRoles: [1,2] }
-  //},
+  {
+    path: 'clientes',
+    loadChildren: () => import('./clientes/clientes.module').then( m => m.ClientesPageModule),
+    canActivate: [RoleGuard],
+    data: { allowedRoles: [1,2] }
+  },
   {
     path: 'solicitud-grafico',
     loadChildren: () => import('./solicitud-grafico/solicitud-grafico.module').then( m => m.SolicitudGraficoPageModule),

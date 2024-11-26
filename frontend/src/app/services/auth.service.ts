@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   //private apiUrl = 'http://project.test/backend/public/api'; // Cambia esto si es necesarios
-  //private apiUrl = 'https://izzicode-production.up.railway.app/api';
-  private apiUrl = 'http://127.0.0.1:8000/api'; 
+  private apiUrl = 'https://izzicode-production.up.railway.app/api';
+  //private apiUrl = 'http://127.0.0.1:8000/api'; 
   //[src]="'https://izzicode-production.up.railway.app/storage/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/storage/app/public/'  + repuesto.imagen"
   //[src]="'http://project.test/backend/public/storage/'  + repuesto.imagen"
@@ -154,6 +154,7 @@ export class AuthService {
       .delete(`${this.apiUrl}/empleados/${empleadoId}`, { headers })
       .pipe(catchError(this.handleError));
   }
+
   // Método para actualizar un repuesto
   ActualizarEmpleado(empleadoId: number, empleadoData: any): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
@@ -166,47 +167,45 @@ export class AuthService {
   }
 
   // CRUD Clientes
-AgregarCliente(clienteData: any): Observable<any> {
-  const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`, // Establecer el token en los headers
-  });
-  return this.http
-    .post(`${this.apiUrl}/clientes`, clienteData, { headers }) // Pasar los headers aquí
-    .pipe(catchError(this.handleError)); // Manejo de errores
-}
+  AgregarCliente(clienteData: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .post(`${this.apiUrl}/clientes`, clienteData, { headers }) // Pasar los headers aquí
+      .pipe(catchError(this.handleError)); // Manejo de errores
+  }
 
-ListarClientes(): Observable<any> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`,
-  });
-  return this.http
-    .get<any[]>(`${this.apiUrl}/clientes`, { headers })
-    .pipe(catchError(this.handleError));
-}
+  ListarClientes(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .get<any[]>(`${this.apiUrl}/clientes`, { headers })
+      .pipe(catchError(this.handleError));
+  }
 
+  EliminarCliente(clienteId: number): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .delete(`${this.apiUrl}/clientes/${clienteId}`, { headers }) // Pasar los headers aquí
+      .pipe(catchError(this.handleError)); // Manejo de errores
+  }
 
-EliminarCliente(clienteId: number): Observable<any> {
-  const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`, // Establecer el token en los headers
-  });
-  return this.http
-    .delete(`${this.apiUrl}/clientes/${clienteId}`, { headers }) // Pasar los headers aquí
-    .pipe(catchError(this.handleError)); // Manejo de errores
-}
-
-ActualizarCliente(clienteId: number, clienteData: any): Observable<any> {
-  const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`, // Establecer el token en los headers
-  });
-  return this.http
-    .put(`${this.apiUrl}/clientes/${clienteId}`, clienteData, { headers }) // Pasar los headers aquí
-    .pipe(catchError(this.handleError)); // Manejo de errores
-}
-
+  ActualizarCliente(clienteId: number, clienteData: any): Observable<any> {
+    const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Establecer el token en los headers
+    });
+    return this.http
+      .put(`${this.apiUrl}/clientes/${clienteId}`, clienteData, { headers }) // Pasar los headers aquí
+      .pipe(catchError(this.handleError)); // Manejo de errores
+  }
 
   //crud repuestos
   AgregarRepuesto(repuestoData: any): Observable<any> {
