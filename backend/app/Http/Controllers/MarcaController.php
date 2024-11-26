@@ -125,7 +125,7 @@ class MarcaController extends Controller
                 ],
                 'direccion' => [
                     'nullable',
-                    'regex:/^[a-zA-Z0-9., ]+$/',
+                    'regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ.,\- ]+$/u',
                     'max:60',
                 ],
                 'telefono' => [
