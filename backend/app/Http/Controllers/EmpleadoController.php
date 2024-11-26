@@ -158,13 +158,17 @@ class EmpleadoController extends Controller
     {
         $empleado = Empleado::find($id);
 
-        if ($empleado) {
+        try{
             $empleado->delete();
-            return response()->json(['message' => 'Empleado eliminado con éxito'], 200);
-        } else {
-            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }catch (ValidationException $e) {
+            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
         }
     }
+
     public function eliminarUser($idEmpleado)
     {
         $usuario = User::where('id_empleado', $idEmpleado)->first();
