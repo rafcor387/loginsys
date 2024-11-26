@@ -40,9 +40,22 @@ export class ClientesPage implements OnInit {
           this.mostrarToast('Cliente agregado exitosamente.');
           this.listarClientes();
           this.clienteActual = {};
+          this.errorMessages = {}; // Clear any existing error messages
         },
-        error: () => {
-          this.mostrarToast('Error al agregar el cliente.');
+        error: (err) => {
+          console.error(err); // Keep this for debugging
+          
+          if (err.error?.validationError) {
+            // Handle validation errors
+            this.errorMessages = err.error.validationError;
+            // Show a general validation error message
+            this.mostrarToast('Por favor corrija los errores en el formulario.');
+          } else {
+            // Handle other types of errors
+            const errorMessage = err.error?.messageError || err.message || 'Error desconocido';
+            this.mostrarToast('Error al agregar el cliente: ' + errorMessage);
+            this.errorMessages = {};
+          }
         },
       });
     }
@@ -62,11 +75,24 @@ export class ClientesPage implements OnInit {
             this.mostrarToast('Cliente actualizado exitosamente.');
             this.listarClientes();
             this.cancelarEdicion();
+            this.errorMessages = {}; // Clear any existing error messages
           },
-          error: () => {
-            this.mostrarToast('Error al actualizar el cliente.');
+          error: (err) => {
+            console.error(err);
+            
+            if (err.error?.validationError) {
+              // Handle validation errors
+              this.errorMessages = err.error.validationError;
+              // Show a general validation error message
+              this.mostrarToast('Por favor corrija los errores en el formulario.');
+            } else {
+              // Handle other types of errors
+              const errorMessage = err.error?.messageError || err.message || 'Error desconocido';
+              this.mostrarToast('Error al actualizar el cliente: ' + errorMessage);
+              this.errorMessages = {};
+            }
           },
-        });
+      });
     }
   }
 
@@ -82,6 +108,12 @@ export class ClientesPage implements OnInit {
     });
   }
 
+  // Optional: Clear error messages when the user starts typing
+  validarCampo(campo: string) {
+    if (this.errorMessages[campo]) {
+        delete this.errorMessages[campo]; // Remove the error message for the specific field
+    }
+  }
   cancelarEdicion() {
     this.clienteActual = {};
     this.editandoCliente = null;

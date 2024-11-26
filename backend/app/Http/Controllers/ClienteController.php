@@ -40,7 +40,15 @@ class ClienteController extends Controller
             'ci.unique' => 'El CI ya está registrado.',
             'ci.required' => 'El campo CI es obligatorio.',
             'ci.digits_between' => 'El CI debe tener entre 6 y 11 dígitos.',
-            // Otros mensajes personalizados aquí...
+            'nombres.required' => 'El campo Nombre es obligatorio.',
+            'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+            'apellidos.required' => 'El campo Apellidos es obligatorio.',
+            'apellidos.regex' => 'Los apellidos solo pueden contener letras y espacios.',
+            'telefono.required' => 'El campo Teléfono es obligatorio.',
+            'telefono.numeric' => 'El teléfono debe ser un número válido.',
+            'telefono.regex' => 'El teléfono debe comenzar con 6 o 7 y tener 8 dígitos.',
+            'direccion.required' => 'El campo Dirección es obligatorio.',
+            'direccion.regex' => 'La dirección solo puede contener letras, números y puntos.'
         ]);
 
         $validatedData['nombres'] = strtoupper($validatedData['nombres']);
@@ -85,7 +93,15 @@ class ClienteController extends Controller
             'ci.required' => 'El campo CI es obligatorio.',
             'ci.unique' => 'El CI ya está registrado para otro cliente.',
             'ci.digits_between' => 'El CI debe tener entre 6 y 11 dígitos.',
-            // Otros mensajes personalizados aquí...
+            'nombres.required' => 'El campo Nombre es obligatorio.',
+            'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+            'apellidos.required' => 'El campo Apellidos es obligatorio.',
+            'apellidos.regex' => 'Los apellidos solo pueden contener letras y espacios.',
+            'telefono.required' => 'El campo Teléfono es obligatorio.',
+            'telefono.numeric' => 'El teléfono debe ser un número válido.',
+            'telefono.regex' => 'El teléfono debe comenzar con 6 o 7 y tener 8 dígitos.',
+            'direccion.required' => 'El campo Dirección es obligatorio.',
+            'direccion.regex' => 'La dirección solo puede contener letras, números y puntos.'
         ]);
 
         $validatedData['nombres'] = strtoupper($validatedData['nombres']);
@@ -98,7 +114,10 @@ class ClienteController extends Controller
             'cliente actualizado' => $cliente
         ], 201);
     } catch (ValidationException $e) {
-        return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+        return response()->json([
+            'messageError' => 'Error de validación',
+            'errors' => $e->errors()  // This will send the errors in the format Laravel uses
+        ], 422);
     } catch (QueryException $e) {
         return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
     } catch (\Exception $e) {

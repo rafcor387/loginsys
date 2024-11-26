@@ -13,77 +13,78 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <!-- Campo CI -->
-      <ion-item>
-        <ion-label position="floating">CI *</ion-label>
-        <ion-input
-          [(ngModel)]="clienteActual.ci"
-          name="ci"
-          type="number"
-          required>
-        </ion-input>
-      </ion-item>
-      <div *ngIf="errorMessages?.['ci']" style="color: red; margin-bottom: 10px; text-align: center">
-        {{ errorMessages['ci'] }}
-      </div>
+<!-- Campo CI -->
+<ion-item>
+  <ion-label position="floating">CI *</ion-label>
+  <ion-input
+      [(ngModel)]="clienteActual.ci"
+      name="ci"
+      type="number"
+      required>
+  </ion-input>
+</ion-item>
+<div *ngIf="errorMessages?.['ci']" style="color: red; margin-bottom: 10px; text-align: center">
+  {{ errorMessages['ci'] }}
+</div>
 
-      <!-- Campo Nombre -->
-      <ion-item>
-        <ion-label position="floating">Nombre *</ion-label>
-        <ion-input
-          [(ngModel)]="clienteActual.nombres"
-          name="nombres"
-          type="text"
-          required
-          (ionInput)="validarSoloLetras($event, 'nombres')">
-        </ion-input>
-      </ion-item>
-      <div *ngIf="errorMessages?.['nombres']" style="color: red; margin-bottom: 10px; text-align: center">
-        {{ errorMessages['nombres'] }}
-      </div>
+<!-- Campo Nombre -->
+<ion-item>
+  <ion-label position="floating">Nombre *</ion-label>
+  <ion-input
+      [(ngModel)]="clienteActual.nombres"
+      name="nombres"
+      type="text"
+      required
+      (ionInput)="validarSoloLetras($event, 'nombres'); validarCampo('nombres')">
+  </ion-input>
+</ion-item>
+<div *ngIf="errorMessages?.['nombres']" style="color: red; margin-bottom: 10px; text-align: center">
+  {{ errorMessages['nombres'] }}
+</div>
 
-      <!-- Campo Apellidos -->
-      <ion-item>
-        <ion-label position="floating">Apellidos *</ion-label>
-        <ion-input
-          [(ngModel)]="clienteActual.apellidos"
-          name="apellidos"
-          type="text"
-          required
-          (ionInput)="validarSoloLetras($event, 'apellidos')">
-        </ion-input>
-      </ion-item>
-      <div *ngIf="errorMessages?.['apellidos']" style="color: red; margin-bottom: 10px; text-align: center">
-        {{ errorMessages['apellidos'] }}
-      </div>
+<!-- Campo Apellidos -->
+<ion-item>
+  <ion-label position="floating">Apellidos *</ion-label>
+  <ion-input
+      [(ngModel)]="clienteActual.apellidos"
+      name="apellidos"
+      type="text"
+      required
+      (ionInput)="validarSoloLetras($event, 'apellidos'); validarCampo('apellidos')">
+  </ion-input>
+</ion-item>
+<div *ngIf="errorMessages?.['apellidos']" style="color: red; margin-bottom: 10px; text-align: center">
+  {{ errorMessages['apellidos'] }}
+</div>
 
-      <!-- Campo Teléfono -->
-      <ion-item>
-        <ion-label position="floating">Teléfono *</ion-label>
-        <ion-input
-          [(ngModel)]="clienteActual.telefono"
-          name="telefono"
-          type="tel"
-          required
-          pattern="^[6-7][0-9]{7}$">
-        </ion-input>
-      </ion-item>
-      <div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
-        {{ errorMessages['telefono'] }}
-      </div>
+<!-- Campo Teléfono -->
+<ion-item>
+  <ion-label position="floating">Celular *</ion-label>
+  <ion-input
+      [(ngModel)]="clienteActual.telefono"
+      name="telefono"
+      type="tel"
+      required
+      (ionInput)="validarCampo('telefono')">
+  </ion-input>
+</ion-item>
+<div *ngIf="errorMessages?.['telefono']" style="color: red; margin-bottom: 10px; text-align: center">
+  {{ errorMessages['telefono'] }}
+</div>
 
-      <!-- Campo Dirección -->
-      <ion-item>
-        <ion-label position="floating">Dirección *</ion-label>
-        <ion-input
-          [(ngModel)]="clienteActual.direccion"
-          name="direccion"
-          required>
-        </ion-input>
-      </ion-item>
-      <div *ngIf="errorMessages?.['direccion']" style="color: red; margin-bottom: 10px; text-align: center">
-        {{ errorMessages['direccion'] }}
-      </div>
+<!-- Campo Dirección -->
+<ion-item>
+  <ion-label position="floating">Dirección *</ion-label>
+  <ion-input
+      [(ngModel)]="clienteActual.direccion"
+      name="direccion"
+      required
+      (ionInput)="validarCampo('direccion')">
+  </ion-input>
+</ion-item>
+<div *ngIf="errorMessages?.['direccion']" style="color: red; margin-bottom: 10px; text-align: center">
+  {{ errorMessages['direccion'] }}
+</div>
 
       <!-- Botón de acción -->
       <ion-button expand="block" color="primary" (click)="editandoCliente ? actualizarCliente() : agregarCliente()">
