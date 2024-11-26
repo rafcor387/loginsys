@@ -79,12 +79,21 @@ class RepuestoController extends Controller
                 'numero_serie.max' => 'El numero de serie excede el número de caracteres.',
             ]);
 
-            // Manejo de la imagen
             if ($request->hasFile('imagen')) {
-                // Guarda la imagen en el disco 'public' dentro de la carpeta 'imagenes'
-                $path = $request->file('imagen')->store('imagenes', 'public');
-                // Se guarda solo la ruta relativa de la imagen
-                $validatedData['imagen'] = $path;
+                // Obtén el archivo subido
+                $file = $request->file('imagen');
+             
+                // Define la ruta donde se guardará en la carpeta 'public/storage/imagenes'
+                $path = 'storage/imagenes';
+             
+                // Genera un nombre único para evitar colisiones
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+             
+                // Mueve el archivo directamente a la carpeta public/storage/imagenes
+                $file->move(public_path($path), $filename);
+             
+                // Guarda la ruta relativa del archivo
+                $validatedData['imagen'] = $path . '/' . $filename;
             }
 
             if ($validatedData['codigo_oem'] != null)

@@ -14,12 +14,12 @@ import { ActionSheetController } from '@ionic/angular';
 export class EmpleadosPage implements OnInit {
   empleados: any[] = []; // Array para almacenar los empleados
   usuariosExistentes: { [key: number]: boolean } = {}; // Para almacenar el estado de existencia
-  user: any[] = [];
-  errorMessage: string = ''; 
+  usuariohaborrar: any;
+  errorMessage: string = '';
   Message: string = '';
   selectedCargo: string = 'Ambos';
   empleadoIdLocalStorage = localStorage.getItem('empleado_id');
-  userlocalstorage = localStorage.getItem('user');
+  usuario: any;
 
   constructor(
     private authService: AuthService,
@@ -36,7 +36,17 @@ export class EmpleadosPage implements OnInit {
   async eliminarUsuario(idEmpleado: number) {
     this.Message = '';
     this.errorMessage = '';
-    console.log('usuario es', (this.userlocalstorage));
+
+    this.authService.getUser().subscribe(
+      (response) => {
+        this.usuario = response.email;
+        console.log('el usuario local es', this.usuario);
+      },
+      (error) => {
+        console.error('Error al obtener el usuario:', error);
+      }
+    );
+
     const alert = await this.alertController.create({
       header: 'Confirmación',
       message: '¿Estás seguro de que deseas eliminar este usuario?',
@@ -48,27 +58,39 @@ export class EmpleadosPage implements OnInit {
         {
           text: 'Eliminar',
           handler: () => {
-            this.authService.eliminarUsuario(idEmpleado).subscribe(
+            this.authService.BuscarUsuario(idEmpleado).subscribe(
               (response) => {
-                this.filterEmpleados();
-                console.log('Usuario eliminado con éxito:', response);
-                this.Message = response.message;
+                this.usuariohaborrar = response.user.email;
+                console.log('el user pa borrar es:', this.usuariohaborrar);
+                if (this.usuario == this.usuariohaborrar) {
+                  this.errorMessage = 'No puede eliminar el usuario';
+                  return;
+                }
+                this.authService.eliminarUsuario(idEmpleado).subscribe(
+                  (response) => {
+                    this.filterEmpleados();
+                    console.log('Usuario eliminado con éxito:', response);
+                    this.Message = response.message;
+                  },
+                  (error) => {
+                    console.error('Error al eliminar el usuario:', error);
+                  }
+                );
               },
               (error) => {
-                console.error('Error al eliminar el usuario:', error);
+                console.error('Error al buscar el usuario:', error);
               }
             );
           },
         },
       ],
     });
-  
+
     await alert.present();
   }
-  
 
   filterEmpleados() {
-    this.errorMessage = ''; 
+    this.errorMessage = '';
     this.Message = '';
     this.authService.getEmpleadosByCargo(this.selectedCargo).subscribe(
       (response) => {
@@ -94,7 +116,7 @@ export class EmpleadosPage implements OnInit {
 
   async openRegisterModal() {
     this.Message = '';
-    this.errorMessage='';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: RegisterEmpleadoComponent,
     });
@@ -110,7 +132,7 @@ export class EmpleadosPage implements OnInit {
 
   async openUpdateModal(empleado: any) {
     this.Message = '';
-    this.errorMessage='';
+    this.errorMessage = '';
     const modal = await this.modalController.create({
       component: UpdateEmpleadoComponent,
       componentProps: { empleado: { ...empleado } },
@@ -126,11 +148,9 @@ export class EmpleadosPage implements OnInit {
     return await modal.present();
   }
 
-
-
   DeleteEmpleado(empleadoId: number) {
     this.Message = '';
-    this.errorMessage='';
+    this.errorMessage = '';
     console.log('id del empleado es', Number(this.empleadoIdLocalStorage));
 
     this.alertController
@@ -173,7 +193,7 @@ export class EmpleadosPage implements OnInit {
 
   async Create_User(idEmpleado: number) {
     this.Message = '';
-    this.errorMessage='';
+    this.errorMessage = '';
     this.authService.createUser(idEmpleado).subscribe(
       async (response) => {
         console.log('Usuario creado:', response);
@@ -199,10 +219,10 @@ export class EmpleadosPage implements OnInit {
 
     await alert.present();
   }
-  
+
   async showEmpleadoDetails(empleado: any) {
     this.Message = '';
-    this.errorMessage='';
+    this.errorMessage = '';
     const actionSheet = await this.actionSheetController.create({
       header: 'Detalles del Empleado',
       buttons: [
