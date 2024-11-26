@@ -160,11 +160,28 @@ class EmpleadoController extends Controller
             $empleado = Empleado::find($id);
             $empleado->delete();
         }catch (ValidationException $e) {
-            return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
+            return response()->json([
+                'messageError' => 'Error de validación',
+                'validationError' => $e->errors()
+            ], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => $e->getMessage(), 'errordb' => $e->getMessage()], 400);
+            // Verificar si el error es por restricción de clave foránea
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1451')) {
+                return response()->json([
+                    'messageError' => 'No se puede eliminar el objeto porque está siendo referenciado en otra tabla.',
+                    'errordb' => $e->getMessage()
+                ], 400);
+            }
+            // Manejo genérico para otros errores de base de datos
+            return response()->json([
+                'messageError' => 'Error en la base de datos.',
+                'errordb' => $e->getMessage()
+            ], 400);
         } catch (\Exception $e) {
-            return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
+            return response()->json([
+                'messageError' => 'Error al procesar la solicitud',
+                'detailsError' => $e->getMessage()
+            ], 500);
         }
     }
 
