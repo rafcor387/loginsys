@@ -176,7 +176,7 @@ class MarcaController extends Controller
         } catch (QueryException $e) {
             return response()->json(['messageError' => $e->getMessage(), 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
-            return response()->json(['messageError' => 'Error al editar la marca', 'detailsError' => $e], 500);
+            return response()->json(['messageError' => $e->getMessage(), 'detailsError' => $e], 500);
         }
     }
 
