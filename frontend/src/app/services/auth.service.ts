@@ -154,7 +154,6 @@ export class AuthService {
       .delete(`${this.apiUrl}/empleados/${empleadoId}`, { headers })
       .pipe(catchError(this.handleError));
   }
-
   // Método para actualizar un repuesto
   ActualizarEmpleado(empleadoId: number, empleadoData: any): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
@@ -187,6 +186,7 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
+
   EliminarCliente(clienteId: number): Observable<any> {
     const token = localStorage.getItem('token'); // Recuperar el token del Local Storage
     const headers = new HttpHeaders({
@@ -206,6 +206,7 @@ export class AuthService {
       .put(`${this.apiUrl}/clientes/${clienteId}`, clienteData, { headers }) // Pasar los headers aquí
       .pipe(catchError(this.handleError)); // Manejo de errores
   }
+
 
   //crud repuestos
   AgregarRepuesto(repuestoData: any): Observable<any> {
