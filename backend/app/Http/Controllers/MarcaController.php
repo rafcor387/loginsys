@@ -47,7 +47,7 @@ class MarcaController extends Controller
                 ],
                 'direccion' => [
                     'nullable',
-                    'regex:/^[a-zA-Z0-9. ]+$/',
+                    'regex:/^[a-zA-Z0-9., ]+$/',
                     'max:60',
                 ],
                 'telefono' => [
@@ -57,7 +57,7 @@ class MarcaController extends Controller
                 'sitio_web' => [
                     'nullable',
                     'string',
-                    'max:30',
+                    'max:60',
                     'url'
                 ],
                 'descripcion' => [
@@ -79,7 +79,7 @@ class MarcaController extends Controller
                 'direccion.regex' => 'La dirección solo debe contener letras y números.',
                 'direccion.max' => 'Solo se permite hasta maximo 60 caracteres en el campo nombre.',
                 'telefono.regex' => 'El celular de contacto debe ser válido',
-                'sitio_web.max' => 'El sitio web no puede ser mas de 30 caracteres',
+                'sitio_web.max' => 'El sitio web no puede ser mas de 60 caracteres',
                 'sitio_web.url' => 'Error con la url de sitio web.',
                 'descripcion.max' => 'La descripcion no puede ser mas de 200 caracteres'
             ]);
@@ -124,7 +124,7 @@ class MarcaController extends Controller
                 ],
                 'direccion' => [
                     'nullable',
-                    'regex:/^[a-zA-Z0-9. ]+$/',
+                    'regex:/^[a-zA-Z0-9., ]+$/',
                     'max:60',
                 ],
                 'telefono' => [
@@ -134,7 +134,7 @@ class MarcaController extends Controller
                 'sitio_web' => [
                     'nullable',
                     'string',
-                    'max:30',
+                    'max:60',
                     'url'
                 ],
                 'descripcion' => [
@@ -156,7 +156,7 @@ class MarcaController extends Controller
                 'direccion.max' => 'Solo se permite hasta maximo 60 caracteres en el campo nombre.',
                 //'telefono.required' => 'El teléfono es obligatorio.',
                 'telefono.regex' => 'El celular de contacto debe ser válido',
-                'sitio_web.max' => 'El sitio web no puede ser mas de 30 caracteres',
+                'sitio_web.max' => 'El sitio web no puede ser mas de 60 caracteres',
                 'sitio_web.url' => 'Error con la url de sitio web.',
                 'descripcion.max' => 'La descripcion no puede ser mas de 200 caracteres'
             ]);
