@@ -159,6 +159,9 @@ class EmpleadoController extends Controller
         try {
             $empleado = Empleado::find($id);
             $empleado->delete();
+            return response()->json([
+                'message' => 'Empleado eliminado con éxito',
+            ], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'messageError' => 'Error de validación',
