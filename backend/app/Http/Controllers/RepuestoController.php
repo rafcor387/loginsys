@@ -185,6 +185,9 @@ class RepuestoController extends Controller
         try {
             $repuesto = Repuesto::find($id);
             $repuesto->delete();
+            return response()->json([
+                'message' => 'Repuesto eliminado con éxito',
+            ], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'messageError' => 'Error de validación',

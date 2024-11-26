@@ -187,6 +187,9 @@ class MarcaController extends Controller
         try {
             $marca = Marca::find($id); // Busca la marca
             $marca->delete(); // Elimina la marca
+            return response()->json([
+                'message' => 'Marca eliminado con éxito',
+            ], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'messageError' => 'Error de validación',

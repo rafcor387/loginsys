@@ -100,6 +100,9 @@ class CategoriaController extends Controller
         try{
             $categoria = Categoria::find($id);
             $categoria->delete();
+            return response()->json([
+                'message' => 'Categoria eliminado con éxito',
+            ], 201);
         }catch (ValidationException $e) {
             return response()->json([
                 'messageError' => 'Error de validación',
