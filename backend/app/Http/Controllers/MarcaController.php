@@ -96,7 +96,7 @@ class MarcaController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => 'No puede borrar el registro porque esta siendo usado en otro registro', 'error' => $e->getMessage()], 400);
+            return response()->json(['messageError' => 'Error con la base de datos', 'error' => $e->getMessage()], 400);
         } catch (\Exception $e) {
             return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
         }
@@ -120,7 +120,7 @@ class MarcaController extends Controller
                 'email' => [
                     'nullable',
                     'email',
-                    'regex:/(.*)@(gmail|yahoo|outlook)\.com$/i', // Solo Gmail, Yahoo o Outlook
+                    'regex:/(.*)@([a-zA-Z0-9.-]+)\.[a-zA-Z]{2,}$/i',
                 ],
                 'direccion' => [
                     'nullable',
@@ -183,20 +183,33 @@ class MarcaController extends Controller
     // Eliminar una marca
     public function destroy($id)
     {
-        $marca = Marca::find($id); // Busca la marca
-
-        if ($marca) {
-            try {
-                $marca->delete(); // Elimina la marca
-                return response()->json(['message' => 'Marca eliminada correctamente'], 200);
-            } catch (QueryException $e) {
-                return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
-            } catch (\Exception $e) {
-                return response()->json(['messageError' => 'Error al editar la marca', 'detailsError' => $e], 500);
+        try {
+            $marca = Marca::find($id); // Busca la marca
+            $marca->delete(); // Elimina la marca
+        } catch (ValidationException $e) {
+            return response()->json([
+                'messageError' => 'Error de validación',
+                'validationError' => $e->errors()
+            ], 422);
+        } catch (QueryException $e) {
+            // Verificar si el error es por restricción de clave foránea
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1451')) {
+                return response()->json([
+                    'messageError' => 'No se puede eliminar el objeto porque está siendo referenciado en otra tabla.',
+                    'errordb' => $e->getMessage()
+                ], 400);
             }
-
-        } else {
-            return response()->json(['message' => 'Marca no encontrada'], 404);
+            // Manejo genérico para otros errores de base de datos
+            return response()->json([
+                'messageError' => 'Error en la base de datos.',
+                'errordb' => $e->getMessage()
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messageError' => 'Error al procesar la solicitud',
+                'detailsError' => $e->getMessage()
+            ], 500);
         }
+
     }
 }

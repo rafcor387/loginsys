@@ -222,9 +222,7 @@ class EmpleadoController extends Controller
     public function filterByCargo($cargo)
     {
         try {
-
             //$cargo = $request->query('cargo');
-
             if ($cargo === '1') {
                 $empleados = Empleado::where('id_cargo', 1)->with('cargo','users')->get();
             } elseif ($cargo === '2') {
@@ -238,8 +236,7 @@ class EmpleadoController extends Controller
                 'message' => 'Empleados filtrados correctamente'
             ]);
         } catch (\Exception $e) {
-            return response()->json(['messageError' => 'Error al crear el empleado', 'detailsError' => $e], 500);
+            return response()->json(['messageError' => 'Error filtrar empleados', 'detailsError' => $e], 500);
         }
-
     }
 }

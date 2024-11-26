@@ -88,7 +88,7 @@ class CategoriaController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['messageError' => 'Error de validación', 'validationError' => $e->errors()], 422);
         } catch (QueryException $e) {
-            return response()->json(['messageError' => $e->getMessage(), 'errordb' => $e->getMessage()], 400);
+            return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
         } catch (\Exception $e) {
             return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
         }
@@ -97,20 +97,32 @@ class CategoriaController extends Controller
     // Eliminar una categoría
     public function destroy($id)
     {
-        $categoria = Categoria::find($id); // Busca la categoría
-
-        if ($categoria) {
-            try {
-                $categoria->delete(); // Elimina la categoría
-                return response()->json(['message' => 'Categoría eliminada correctamente'], 200);
-            } catch (QueryException $e) {
-                return response()->json(['messageError' => 'No puede borrar el registro porque esta siendo usado en otro registro', 'errordb' => $e->getMessage()], 400);
-            } catch (\Exception $e) {
-                return response()->json(['messageError' => 'Error al eliminar la categoria', 'detailsError' => $e], 500);
+        try{
+            $categoria = Categoria::find($id);
+            $categoria->delete();
+        }catch (ValidationException $e) {
+            return response()->json([
+                'messageError' => 'Error de validación',
+                'validationError' => $e->errors()
+            ], 422);
+        } catch (QueryException $e) {
+            // Verificar si el error es por restricción de clave foránea
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1451')) {
+                return response()->json([
+                    'messageError' => 'No se puede eliminar el objeto porque está siendo referenciado en otra tabla.',
+                    'errordb' => $e->getMessage()
+                ], 400);
             }
-
-        } else {
-            return response()->json(['message' => 'Categoría no encontrada'], 404);
+            // Manejo genérico para otros errores de base de datos
+            return response()->json([
+                'messageError' => 'Error en la base de datos.',
+                'errordb' => $e->getMessage()
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messageError' => 'Error al procesar la solicitud',
+                'detailsError' => $e->getMessage()
+            ], 500);
         }
     }
 }

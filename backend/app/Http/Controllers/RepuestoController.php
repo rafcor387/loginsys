@@ -72,6 +72,8 @@ class RepuestoController extends Controller
                 'codigo_oem.unique' => 'El código OEM ya existe.',
                 'codigo_oem.regex' => 'El código OEM es invalido.',
                 'codig_oem.max' => 'La codigo oem excede el número de caracteres.',
+                'codigo_oem.required' => 'El código OEM es obligatorio.',
+                'numero_serie.required' => 'El número de serie es obligatorio.',
                 'numero_serie.regex' => 'El número de serie es invalido.',
                 'numero_serie.uniqeu' => 'El número de serie ya existe.',
                 'numero_serie.max' => 'El numero de serie excede el número de caracteres.',
@@ -111,7 +113,7 @@ class RepuestoController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'max:100|regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ. ]+$/',
+                'nombre' => 'required|max:100|regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ. ]+$/',
                 'descripcion' => 'max:100|nullable',
                 'cantidad_stock' => 'integer|min:0',
                 //'imagen' => 'nullable|image', // Validación para imagen
@@ -119,8 +121,8 @@ class RepuestoController extends Controller
                 'id_categoria' => 'integer|exists:categorias,id',
                 'costo_unitario' => 'numeric|min:0',
                 'precio_unitario' => 'numeric|min:0',
-                'codigo_oem' => 'nullable|string|max:50|regex:/^[A-Za-z0-9-. ]{6,20}$/',
-                'numero_serie' => 'nullable|string|max:100|regex:/^[A-HJ-NPR-Z0-9a-hj-npr-z]{6,30}$/',
+                'codigo_oem' => 'required|string|max:50|regex:/^[A-Za-z0-9-. ]{6,20}$/',
+                'numero_serie' => 'required|string|max:100|regex:/^[A-HJ-NPR-Z0-9a-hj-npr-z]{6,30}$/',
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.max' => 'El nombre excede el número de caracteres.',
@@ -141,7 +143,11 @@ class RepuestoController extends Controller
                 'precio_unitario.numeric' => 'El campo de precio unitario debe contener solo números.',
                 'precio_unitario.min' => 'El precio unitario debe ser positivo.',
                 'codigo_oem.regex' => 'El código OEM es invalido.',
+                'codig_oem.max' => 'La codigo oem excede el número de caracteres.',
+                'codigo_oem.required' => 'El código OEM es obligatorio.',
+                'numero_serie.required' => 'El número de serie es obligatorio.',
                 'numero_serie.regex' => 'El número de serie es invalido.',
+                'numero_serie.max' => 'El numero de serie excede el número de caracteres.',
             ]);
             $repuesto = Repuesto::find($id);
 
@@ -167,19 +173,32 @@ class RepuestoController extends Controller
     // Eliminar un repuesto
     public function destroy($id)
     {
-        $repuesto = Repuesto::find($id);
-
-        if ($repuesto) {
-            try {
-                $repuesto->delete();
-                return response()->json(['message' => 'Repuesto eliminado correctamente'], 200); // 204 No Content
-            } catch (QueryException $e) {
-                return response()->json(['messageError' => 'Error con la base de datos', 'errordb' => $e->getMessage()], 400);
-            } catch (\Exception $e) {
-                return response()->json(['messageError' => 'Error al editar el empleado', 'detailsError' => $e], 500);
+        try {
+            $repuesto = Repuesto::find($id);
+            $repuesto->delete();
+        } catch (ValidationException $e) {
+            return response()->json([
+                'messageError' => 'Error de validación',
+                'validationError' => $e->errors()
+            ], 422);
+        } catch (QueryException $e) {
+            // Verificar si el error es por restricción de clave foránea
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1451')) {
+                return response()->json([
+                    'messageError' => 'No se puede eliminar el objeto porque está siendo referenciado en otra tabla.',
+                    'errordb' => $e->getMessage()
+                ], 400);
             }
-        } else {
-            return response()->json(['message' => 'Repuesto no encontrada'], 404);
+            // Manejo genérico para otros errores de base de datos
+            return response()->json([
+                'messageError' => 'Error en la base de datos.',
+                'errordb' => $e->getMessage()
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messageError' => 'Error al procesar la solicitud',
+                'detailsError' => $e->getMessage()
+            ], 500);
         }
     }
 }
