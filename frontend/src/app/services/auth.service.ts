@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   BuscarUsuario(idEmpleado: number): Observable<any> {
-    return this.http.delete<any>(
+    return this.http.get<any>(
       `${this.apiUrl}/Buscar_usuario/${idEmpleado}`
     );
   }

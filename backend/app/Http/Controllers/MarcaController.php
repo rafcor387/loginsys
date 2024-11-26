@@ -149,7 +149,7 @@ class MarcaController extends Controller
                 'pais.required' => 'El país es obligatorio.',
                 'pais.regex' => 'El país solo debe contener letras.',
                 'pais.max' => 'Solo se permite hasta maximo 30 caracteres en el campo pais.',
-                'email.regex' => 'El email solo debe ser de dominio Gmail, Yahoo o Outlook.',
+                'email.regex' => 'El correo electrónico debe ser válido.',
                 'email.email' => 'Introduzca un email valido',
                 'email.unique' => 'No puede repetir el email',
                 'direccion.regex' => 'La dirección solo debe contener letras y números.',
