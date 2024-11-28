@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class SlideMenuComponent implements OnInit {
   userRole: number = 0;
   isAuthenticated: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private menuCtrl: MenuController) {}
 
   ngOnInit() {
     // Escucha los cambios en el estado de autenticación
@@ -21,17 +22,14 @@ export class SlideMenuComponent implements OnInit {
         const storedRoleId = localStorage.getItem('role_id');
         if (storedRoleId) {
           this.userRole = parseInt(storedRoleId, 10);
-          console.log('Desde el slide-menu, decimo ID-role:',this.userRole);
+          console.log('Desde el slide-menu, decimo ID-role:', this.userRole);
         }
       }
     });
+  }
 
-    // Recupera el 'role_id' del localStorage si existe y conviértelo a número
-
-    /*
-    // Verifica si el token de autenticación está presente en el localStorage
-    const token = localStorage.getItem('token');
-    this.isAuthenticated = !!token; // Se convierte en `true` si hay un token, `false` si no.
-    */
+  // Función para cerrar el menú lateral
+  closeMenu() {
+    this.menuCtrl.close(); // Cierra el menú abierto actualmente
   }
 }

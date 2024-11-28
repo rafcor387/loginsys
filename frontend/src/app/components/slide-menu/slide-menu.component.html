@@ -1,8 +1,14 @@
 <div *ngIf="isAuthenticated">
-  <ion-menu contentId="main-content">
+  <ion-menu contentId="main-content" id="side-menu">
     <ion-header>
       <ion-toolbar>
         <ion-title>Menú</ion-title>
+        <!-- Botón para cerrar el menú -->
+        <ion-buttons slot="end">
+          <ion-button (click)="closeMenu()">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -21,4 +27,8 @@
       </ion-list>
     </ion-content>
   </ion-menu>
+
+  <div id="main-content">
+    <!-- Contenido principal aquí -->
+  </div>
 </div>
