@@ -27,7 +27,7 @@ class CategoriaController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/|not_regex:/^\s*$/',
+                'nombre' => 'required|string|max:30|regex:/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/|not_regex:/^\s*$/',
                 'descripcion' => [
                     'nullable',
                     'string',
@@ -63,7 +63,7 @@ class CategoriaController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nombre' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/|not_regex:/^\s*$/',
+                'nombre' => 'required|string|max:30|regex:/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]+$/|not_regex:/^\s*$/',
                 'descripcion' => [
                     'nullable',
                     'string',

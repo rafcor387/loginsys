@@ -48,8 +48,8 @@ class RepuestoController extends Controller
                 'id_categoria' => 'required|integer|exists:categorias,id',
                 'costo_unitario' => 'required|numeric|min:1',
                 'precio_unitario' => 'required|numeric|min:1',
-                'codigo_oem' => 'nullable|string|max:50|unique:repuestos,codigo_oem|regex:/^[A-Za-z0-9-. ]{6,20}$/',
-                'numero_serie' => 'nullable|string|max:100|unique:repuestos,numero_serie|regex:/^[A-HJ-NPR-Z0-9a-hj-npr-z]{6,30}$/',
+                'codigo_oem' => 'required|string|max:50|unique:repuestos,codigo_oem|regex:/^[A-Za-z0-9-. ]{6,20}$/',
+                'numero_serie' => 'required|string|max:100|unique:repuestos,numero_serie|regex:/^[A-HJ-NPR-Z0-9a-hj-npr-z]{6,30}$/',
             ], [
                 'nombre.required' => 'El campo de nombre es obligatorio.',
                 'nombre.max' => 'El nombre excede el número de caracteres.',
